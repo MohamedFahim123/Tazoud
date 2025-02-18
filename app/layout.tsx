@@ -3,8 +3,8 @@ import "./globals.css";
 
 
 export const metadata: Metadata = {
-  title: "SkillNi",
-  description: "Your Best Job Portal",
+  title: "TAZOUD",
+  description: "",
 };
 
 export default function RootLayout({
