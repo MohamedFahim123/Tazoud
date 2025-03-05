@@ -21,12 +21,8 @@ export default function AddNewProductsPage() {
       <ProductsImages />
 
       <div className="flex items-center justify-end gap-4 mt-7">
-        <span className="px-8 py-3 text-white bg-primary cursor-pointer ">
-          Add Product
-        </span>
-        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">
-          Cancel
-        </span>
+        <span className="px-8 py-3 text-white bg-primary cursor-pointer ">Add Product</span>
+        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">Cancel</span>
       </div>
     </div>
   );
