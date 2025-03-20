@@ -13,17 +13,21 @@ export default function Layout({ children }: LayoutInterface) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = Cookies.get("TAZOUD_TOKEN");
-    if (!token) {
-      router.push("/auth/login");
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   const token = Cookies.get("TAZOUD_TOKEN");
+  //   if (!token) {
+  //     router.push("/auth/login");
+  //   }
+  // }, [router]);
 
   return (
     <div className="flex min-h-screen">
       {sidebarOpen && <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden" onClick={() => setSidebarOpen(false)} />}
-      <div className={`fixed inset-y-0 left-0 z-50 bg-white shadow-md transform transition-all md:relative md:translate-x-0 ${sidebarOpen ? "translate-x-0 w-64" : "-translate-x-full w-0"} md:w-64`}>
+      <div
+        className={`fixed inset-y-0 left-0 z-50 bg-white shadow-md transform transition-all md:relative md:translate-x-0 ${
+          sidebarOpen ? "translate-x-0 w-64" : "-translate-x-full w-0"
+        } md:w-64`}
+      >
         <SideBar collapsed={collapsed} setCollapsed={setCollapsed} />
       </div>
 
