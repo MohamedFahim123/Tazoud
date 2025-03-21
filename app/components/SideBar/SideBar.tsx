@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AiFillProduct, AiOutlineUnorderedList } from "react-icons/ai";
 import { BsBoxFill } from "react-icons/bs";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBell, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
+import { FaBell, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
@@ -40,14 +40,14 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
   }, [setCollapsed]);
 
   return (
-    <Sidebar collapsed={collapsed} className={`min-h-screen shadow-lg ${styles.sideBarContainer}`}>
-      <div className="flex justify-center my-2">
+    <Sidebar collapsed={collapsed} className={`min-h-screen shadow-lg bg-white overflow-hidden rounded-lg`}>
+      {/* <div className="flex justify-center my-2">
         {collapsed ? (
           <FaArrowAltCircleRight className="cursor-pointer" size={30} onClick={() => setCollapsed(!collapsed)} />
         ) : (
           <FaArrowAltCircleLeft className="cursor-pointer" onClick={() => setCollapsed(!collapsed)} size={30} />
         )}
-      </div>
+      </div> */}
       <Menu>
         <MenuItem icon={<MdDashboard />} onClick={() => router.push("/dashboard")} className={pathname === "/dashboard" ? `${styles.activeMenuItem}` : ""}>
           Dashboard
@@ -83,11 +83,19 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
           </MenuItem>
         </SubMenu>
 
-        <MenuItem icon={<FaBell />} onClick={() => router.push("/dashboard/notifications")} className={isActive("/dashboard/notifications") ? `${styles.activeMenuItem}` : ""}>
+        <MenuItem
+          icon={<FaBell />}
+          onClick={() => router.push("/dashboard/notifications")}
+          className={isActive("/dashboard/notifications") ? `${styles.activeMenuItem}` : ""}
+        >
           Notifications
         </MenuItem>
 
-        <MenuItem icon={<FaSignOutAlt />} onClick={() => router.push("/dashboard/requests")} className={isActive("/dashboard/requests") ? `${styles.activeMenuItem}` : ""}>
+        <MenuItem
+          icon={<FaSignOutAlt />}
+          onClick={() => router.push("/dashboard/requests")}
+          className={isActive("/dashboard/requests") ? `${styles.activeMenuItem}` : ""}
+        >
           Requests
         </MenuItem>
       </Menu>
