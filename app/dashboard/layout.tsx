@@ -7,8 +7,8 @@ import LogoutBtn from "../components/LogoutBtn/LogoutBtn";
 import SideBar from "../components/SideBar/SideBar";
 import { LayoutInterface } from "../utils/interfaces";
 import styles from "./dashboardMain.module.css";
-import SideMenu from "../components/SideMenu/SideMenu";
-import Link from "next/link";
+// import SideMenu from "../components/SideMenu/SideMenu";
+// import Link from "next/link";
 
 export default function Layout({ children }: LayoutInterface) {
   const [collapsed, setCollapsed] = useState(false);
@@ -26,10 +26,10 @@ export default function Layout({ children }: LayoutInterface) {
     <div className="flex h-screen">
       {/* {sidebarOpen && <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden" onClick={() => setSidebarOpen(false)} />} */}
       <div
-        // className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4 overflow-scroll"
-        // className={`fixed inset-y-0 left-0 z-50 bg-white shadow-md transform transition-all md:relative md:translate-x-0 ${
-        //   sidebarOpen ? "translate-x-0 w-64" : "-translate-x-full w-0"
-        // } md:w-64`}
+      // className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4 overflow-scroll"
+      // className={`fixed inset-y-0 left-0 z-50 bg-white shadow-md transform transition-all md:relative md:translate-x-0 ${
+      //   sidebarOpen ? "translate-x-0 w-64" : "-translate-x-full w-0"
+      // } md:w-64`}
       >
         {/* <Link href="/" className="flex items-center justify-center lg:justify-start gap-2">
           <h1 className="hidden lg:block  font-bold">TAZOUD</h1>
@@ -39,7 +39,7 @@ export default function Layout({ children }: LayoutInterface) {
       </div>
 
       <div
-        className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-scroll flex flex-col"
+        className="flex-1 bg-[#F7F8FA] overflow-scroll flex flex-col"
         // className="flex flex-col flex-1"
       >
         <header className="flex justify-between items-center px-4 md:px-6 py-4">

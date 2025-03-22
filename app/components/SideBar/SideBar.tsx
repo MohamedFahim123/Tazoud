@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AiFillProduct, AiOutlineUnorderedList } from "react-icons/ai";
 import { BsBoxFill } from "react-icons/bs";
-import { FaBell, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBell, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
@@ -25,7 +25,7 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 970) {
         setCollapsed(true);
       } else {
         setCollapsed(false);
@@ -41,13 +41,13 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
 
   return (
     <Sidebar collapsed={collapsed} className={`min-h-screen shadow-lg bg-white overflow-hidden rounded-lg`}>
-      {/* <div className="flex justify-center my-2">
+      <div className="flex justify-center my-2">
         {collapsed ? (
           <FaArrowAltCircleRight className="cursor-pointer" size={30} onClick={() => setCollapsed(!collapsed)} />
         ) : (
           <FaArrowAltCircleLeft className="cursor-pointer" onClick={() => setCollapsed(!collapsed)} size={30} />
         )}
-      </div> */}
+      </div>
       <Menu>
         <MenuItem icon={<MdDashboard />} onClick={() => router.push("/dashboard")} className={pathname === "/dashboard" ? `${styles.activeMenuItem}` : ""}>
           Dashboard
