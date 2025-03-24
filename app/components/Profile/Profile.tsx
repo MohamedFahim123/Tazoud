@@ -16,7 +16,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="w-full flex flex-col lg:flex-row items-start justify-center mt-4 gap-6">
+    <div className="w-full flex flex-col md:flex-row items-start justify-center mt-4 gap-6">
       <div className="bg-slate-100 py-6 px-4 rounded-md w-full md:w-64">
         <ul className="flex flex-col gap-6">
           <li
@@ -49,7 +49,7 @@ export default function Profile() {
         </ul>
       </div>
 
-      <div className="flex-1 ">
+      <div className="flex-1 w-[100%] ">
         {tab === "profile-info" ? <ProfileDetails /> : null}
         {tab === "payment-method" ? <ProfileMethods /> : null}
         {tab === "change-password" ? <ChangePassword /> : null}
