@@ -14,7 +14,6 @@ export default function Layout({ children }: LayoutInterface) {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  // useEffect(() => {
 
   return (
     <AuthGuard>

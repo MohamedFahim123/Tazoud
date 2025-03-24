@@ -1,49 +1,9 @@
 " use client";
 
-import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-import axios, { AxiosError } from "axios";
 import Image from "next/image";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { profileType } from "./Profile";
 
-export default function ProfileDetails() {
-  const [profileData, setProfileData] = useState<{
-    name?: string;
-    email?: string;
-    phone?: string;
-    image?: string;
-    locale?: string;
-  }>();
-
-  const [error, setError] = useState<string | null>(null);
-
-  const getProfile = async () => {
-    try {
-      const token = Cookies.get("TAZOUD_TOKEN");
-      if (!token) {
-        setError("Unauthorized: No token found");
-        return;
-      }
-
-      const { data } = await axios.get(dashboardEndPoints.profile, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setProfileData(data.data.user);
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Failed to load profile data");
-    }
-  };
-
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
-
+export default function ProfileDetails({ profileData }: { profileData?: profileType }) {
   return (
     <>
       <div className="flex flex-col md:flex-row items-center gap-6 bg-slate-100 py-6 px-4 rounded-md">
