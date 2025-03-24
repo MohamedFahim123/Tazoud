@@ -1,57 +1,27 @@
 "use client";
 
+import { getProfile } from "@/app/rtk/slices/profileSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaUnlockKeyhole } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import ChangePassword from "./ChangePassword";
 import ProfileDetails from "./ProfileDetails";
 import ProfileMethods from "./ProfileMethods";
-import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
-import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-
-export type profileType = {
-  name?: string;
-  email?: string;
-  phone?: string;
-  image?: string;
-  locale?: string;
-};
 
 export default function Profile() {
   const [tab, setTab] = useState("profile-info");
 
-  const [profileData, setProfileData] = useState<profileType>();
-
-  const [error, setError] = useState<string | null>(null);
-
-  const getProfile = async () => {
-    try {
-      const token = Cookies.get("TAZOUD_TOKEN");
-      if (!token) {
-        setError("Unauthorized: No token found");
-        return;
-      }
-
-      const { data } = await axios.get(dashboardEndPoints.profile, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setProfileData(data.data.user);
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
-      setError(error.response?.data?.message || "Failed to load profile data");
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const { profile, error, loading } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    dispatch(getProfile());
+  }, [dispatch]);
 
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
+  if (error) return <p className="text-red-500">{error}</p>;
 
   const handleTabChange = (tab: string) => {
     setTab(tab);
@@ -92,7 +62,7 @@ export default function Profile() {
       </div>
 
       <div className="flex-1 w-[100%] ">
-        {tab === "profile-info" ? <ProfileDetails profileData={profileData} /> : null}
+        {tab === "profile-info" ? <ProfileDetails profile={profile ?? undefined} loading={loading} /> : null}
         {tab === "payment-method" ? <ProfileMethods /> : null}
         {tab === "change-password" ? <ChangePassword /> : null}
       </div>

@@ -23,7 +23,6 @@ const loadUserFromToken = (): User | null => {
   if (typeof window !== "undefined") {
     const token = Cookies.get("TAZOUD_TOKEN");
     if (token) {
-      // Decode token if needed or fetch user details from backend
       return { id: 0, name: "", email: "", phone: "", image: "", locale: "", role: "", permissions: [] };
     }
   }
