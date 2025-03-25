@@ -58,8 +58,6 @@ export const updateProfile = createAsyncThunk<ProfileTypes, { name: string; phon
           Accept: "application/json",
         },
       });
-      console.log(response);
-
       return response.data.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;

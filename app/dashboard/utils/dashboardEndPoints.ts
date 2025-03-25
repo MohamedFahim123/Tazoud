@@ -9,6 +9,6 @@ interface dashboardEndPointsInterface {
 }
 
 export const dashboardEndPoints: dashboardEndPointsInterface = {
-  profile: `${baseUrl}/staff/show-profile`,
-  updateProfile: `${baseUrl}/staff//update-profile`,
+  profile: `${baseUrl}/staff/show-profile?t=${new Date().getTime()}`,
+  updateProfile: `${baseUrl}/staff/update-profile?t=${new Date().getTime()}`,
 };

@@ -2,24 +2,20 @@
 
 import { getProfile, updateProfile } from "@/app/rtk/slices/profileSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
+import { AxiosError } from "axios";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import CustomInput from "../CustomInput/CustomInput";
 import Loading from "../Loading/Loading";
-import { AxiosError } from "axios";
 
 export default function UpdateProfile() {
   const dispatch = useDispatch<AppDispatch>();
   const { profile, loading, updating } = useSelector((state: RootState) => state.profile);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -37,6 +33,7 @@ export default function UpdateProfile() {
     onSubmit: async (values) => {
       try {
         await dispatch(updateProfile(values)).unwrap();
+        await dispatch(getProfile());
         toast.success("Profile updated successfully");
       } catch (error) {
         toast.error((error as AxiosError<{ message: string }>).response?.data?.message || "Failed to update profile");
@@ -73,12 +70,12 @@ export default function UpdateProfile() {
           </div>
           <div className="flex items-left justify-center flex-col gap-3 py-6 px-4 mt-4">
             <h3 className="text-lg font-bold">Personal Information</h3>
-            <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
+            <div className="flex items-center justify-start gap-2  ">
               <span className="text-primary">Full Name :</span>
               <CustomInput name="name" id="name" type="text" onChange={formik.handleChange} value={formik.values.name} />
               {formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
             </div>
-            <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
+            <div className="flex items-center justify-start gap-2  ">
               <span className="text-primary">Phone:</span>
               <CustomInput name="phone" id="phone" type="text" onChange={formik.handleChange} value={formik.values.phone} />
               {formik.errors.phone && <p className="text-red-500 text-sm">{formik.errors.phone}</p>}
