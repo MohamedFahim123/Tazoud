@@ -25,13 +25,7 @@ const LoginForm = () => {
       const response = await dispatch(loginUser(values)).unwrap();
 
       if (response?.data?.token) {
-        Cookies.set("TAZOUD_TOKEN", response?.data?.token, {
-          expires: 7,
-          secure: true,
-          sameSite: "Lax",
-          path: "/",
-        });
-
+        Cookies.set("TAZOUD_TOKEN", response?.data?.token, { expires: 7 });
         toast.success("Login successful!");
         router.push("/dashboard");
       } else {
