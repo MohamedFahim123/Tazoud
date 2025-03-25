@@ -51,10 +51,11 @@ export const updateProfile = createAsyncThunk<ProfileTypes, { name: string; phon
         formData.append("image", profileData.image);
       }
 
-      const response = await axios.post<{ data: ProfileTypes }>(dashboardEndPoints.updateProfile, {
+      const response = await axios.post<{ data: ProfileTypes }>(dashboardEndPoints.updateProfile, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
+          Accept: "application/json",
         },
       });
       console.log(response);

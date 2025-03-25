@@ -62,7 +62,7 @@ export default function UpdateProfile() {
             <div className="flex-shrink-0 bg-primary rounded-full h-[160px] w-[160px] flex items-center justify-center">
               <Image
                 className="rounded-full mt-1 mx-auto"
-                src={previewImage || profile?.user.image || "/default-avatar.png"}
+                src={previewImage || profile?.user.image || "/images/profile.png"}
                 alt="avatar"
                 width={150}
                 height={150}
