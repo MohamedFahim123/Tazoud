@@ -3,6 +3,8 @@
 import { ProfileTypes } from "@/app/rtk/slices/profileSlice";
 import Image from "next/image";
 import Loading from "../Loading/Loading";
+import { BiEdit } from "react-icons/bi";
+import Link from "next/link";
 
 export default function ProfileDetails({ profile, loading }: { profile?: ProfileTypes; loading?: boolean }) {
   return (
@@ -15,8 +17,15 @@ export default function ProfileDetails({ profile, loading }: { profile?: Profile
             <div className="flex-shrink-0 bg-primary rounded-full h-[160px] w-[160px] flex items-center justify-center">
               <Image className="rounded-full mt-1 mx-auto" src={profile?.user?.image || "/images/profile.png"} alt="avatar" width={150} height={150} />
             </div>
-            <div className="text-center md:text-left">
-              <h3 className="text-xl font-semibold text-primary ">{profile?.user?.name}</h3>
+            <div className="flex items-center justify-between w-full">
+              <div className="text-center md:text-left">
+                <h3 className="text-xl font-semibold text-primary ">{profile?.user?.name}</h3>
+              </div>
+              <div className="edit">
+                <Link href="/dashboard/profile/update-profile">
+                  <BiEdit className="text-2xl text-primary cursor-pointer" />
+                </Link>
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-3 py-6 px-4 mt-4">

@@ -21,7 +21,13 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
   return (
     <div className="relative">
       {type === "checkbox" ? (
-        <input id={id} type={type} value="" className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary" />
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value=""
+          className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary"
+        />
       ) : (
         <label htmlFor={id} className={`text-gray_dark block mb-2 text-sm font-medium`}>
           {label}
@@ -36,6 +42,7 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
         <input
           type={type === "password" ? (viewPassword ? "text" : type) : type}
           id={id}
+          name={name}
           onChange={onChange}
           onBlur={onBlur}
           value={value}
@@ -49,8 +56,6 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
           {viewPassword ? <FaEyeSlash className="text-primary" /> : <FaEye className=" text-primary" />}
         </div>
       )}
-
-      {/* {error?.[name] && <p className={`${styles.error} text-red-500 text-xs`}>{error[name]?.message as string}</p>} */}
     </div>
   );
 };
