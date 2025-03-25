@@ -19,8 +19,18 @@ interface AuthState {
   error: string | null;
 }
 
+const loadUserFromToken = (): User | null => {
+  if (typeof window !== "undefined") {
+    const token = Cookies.get("TAZOUD_TOKEN");
+    if (token) {
+      return { id: 0, name: "", email: "", phone: "", image: "", locale: "", role: "", permissions: [] };
+    }
+  }
+  return null;
+};
+
 const initialState: AuthState = {
-  user: null,
+  user: loadUserFromToken(),
   loading: false,
   error: null,
 };
@@ -29,7 +39,6 @@ const initialState: AuthState = {
 export const loginUser = createAsyncThunk("auth/loginUser", async (credentials: { email: string; password: string }, { rejectWithValue }) => {
   try {
     const response = await axios.post(authEndPoints.login, credentials);
-    Cookies.set("TAZOUD_TOKEN", response?.data?.token, { expires: 7 });
     return response.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;

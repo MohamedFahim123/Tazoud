@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import CustomInput from "../CustomInput/CustomInput";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,34 +12,34 @@ import { loginUser } from "@/app/rtk/slices/authSlice";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import Cookies from "js-cookie";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const [serverError, setServerError] = useState("");
+  const { user } = useSelector((state: RootState) => state.auth);
 
   async function loginSubmit(values: { email: string; password: string }) {
-    setServerError("");
     try {
       const response = await dispatch(loginUser(values)).unwrap();
 
       if (response?.data?.token) {
-        toast.success("Login successful!", { position: "top-right" });
+        Cookies.set("TAZOUD_TOKEN", response?.data?.token, { expires: 7 });
+        toast.success("Login successful!");
         router.push("/dashboard");
       } else {
-        toast.error("Invalid response from server", { position: "top-right" });
+        toast.error("Invalid response from server");
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-      setServerError(error.message || "Login failed");
-      toast.error(error.message, { position: "top-right" });
+      toast.error(error.message || "Login failed");
     }
   }
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    email: Yup.string().email("Invalid Email").required("Email Is Required"),
+    password: Yup.string().min(6, "Password Must Be At Least 6 Characters").required("Password Is Required"),
   });
 
   const formik = useFormik({
@@ -50,6 +50,12 @@ const LoginForm = () => {
     validationSchema,
     onSubmit: loginSubmit,
   });
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5 bg-white">
@@ -76,9 +82,6 @@ const LoginForm = () => {
         placeHolder="Enter Your Password"
       />
       {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm">{formik.errors.password}</p>}
-
-      {/* Error Message */}
-      {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
 
       {/* Remember Me & Forgot Password */}
       <div className="flex justify-between items-start mb-5">

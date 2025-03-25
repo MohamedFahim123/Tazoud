@@ -1,55 +1,94 @@
+"use client";
+
+import { getProfile, updateProfile } from "@/app/rtk/slices/profileSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
+import { useFormik } from "formik";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import CustomInput from "../CustomInput/CustomInput";
+import Loading from "../Loading/Loading";
+import { AxiosError } from "axios";
 
 export default function UpdateProfile() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { profile, loading, updating } = useSelector((state: RootState) => state.profile);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      name: profile?.user.name || "",
+      phone: profile?.user.phone || "",
+      image: null as File | null,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Name is required"),
+      phone: Yup.string()
+        .matches(/^[0-9]{10,15}$/, "Invalid phone number")
+        .required("Phone number is required"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        await dispatch(updateProfile(values)).unwrap();
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        toast.error((error as AxiosError<{ message: string }>).response?.data?.message || "Failed to update profile");
+      }
+    },
+  });
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      formik.setFieldValue("image", file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center gap-6 bg-slate-100 py-6 px-4 rounded-md">
-        <div className="flex-shrink-0 bg-primary rounded-full h-[160px] w-[160px] flex items-center justify-center">
-          <Image className="rounded-full mt-1 mx-auto" src="/images/profile.png" alt="avatar" width={150} height={150} />
-        </div>
-        <div className="text-center md:text-left">
-          <h3 className="text-xl font-semibold text-primary ">John Doe</h3>
-          <p className="text-sm text-gray-500">I am Professional Graphic Designer</p>
-        </div>
-      </div>
-      <div className="flex items-left justify-center flex-col gap-3 py-6 px-4 mt-4">
-        <h3 className="text-lg font-bold">Personal Information</h3>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Full Name :</span>
-          <p>John Doe</p>
-        </div>
-        <div className="flex items-start justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className=" text-primary">About:</span>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis doloribus rem in, accusantium totam, dolorum porro ab numquam, quaerat sapiente nemo tempore nam esse tempora quam
-            cumque alias corrupti ullam.
-          </p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Email:</span>
-          <p>example@gmail.com</p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Phone:</span>
-          <p>01005697324</p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Date of Birth:</span>
-          <p>2000/2/5</p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Address:</span>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Country:</span>
-          <p>EG</p>
-        </div>
-        <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
-          <span className="text-primary">Language:</span>
-          <p>EG</p>
-        </div>
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <form onSubmit={formik.handleSubmit}>
+          <div className="flex flex-col md:flex-row items-center gap-6 bg-slate-100 py-6 px-4 rounded-md">
+            <div className="flex-shrink-0 bg-primary rounded-full h-[160px] w-[160px] flex items-center justify-center">
+              <Image
+                className="rounded-full mt-1 mx-auto"
+                src={previewImage || profile?.user.image || "/images/profile.png"}
+                alt="avatar"
+                width={150}
+                height={150}
+                priority
+              />
+            </div>
+            <input type="file" accept="image/*" onChange={handleImageChange} className="mt-2 text-sm" />
+          </div>
+          <div className="flex items-left justify-center flex-col gap-3 py-6 px-4 mt-4">
+            <h3 className="text-lg font-bold">Personal Information</h3>
+            <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
+              <span className="text-primary">Full Name :</span>
+              <CustomInput name="name" id="name" type="text" onChange={formik.handleChange} value={formik.values.name} />
+              {formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
+            </div>
+            <div className="flex items-center justify-start gap-2 border-solid border-[1px] rounded-sm px-4 py-2 ">
+              <span className="text-primary">Phone:</span>
+              <CustomInput name="phone" id="phone" type="text" onChange={formik.handleChange} value={formik.values.phone} />
+              {formik.errors.phone && <p className="text-red-500 text-sm">{formik.errors.phone}</p>}
+            </div>
+            <button type="submit" disabled={updating} className="bg-green text-white font-bold py-2 px-4 rounded hover:bg-green/75 disabled:bg-gray-400">
+              {updating ? "Updating..." : "Update Profile"}
+            </button>
+          </div>
+        </form>
+      )}
     </>
   );
 }
