@@ -1,38 +1,23 @@
+"use client";
 
-import { authEndPoints } from "@/app/auth/utils/authEndPoints";
+import { logout } from "@/app/rtk/slices/authSlice";
+import { useRouter } from "next/navigation";
 import { FaSignOutAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function LogoutBtn() {
-    const TOKEN = Cookies.get('TAZOUD_TOKEN');
-    const logout = async () => {
-        const loadingToastId = toast.loading('Loading...');
-        const fetchRes = await fetch(authEndPoints.logout, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${TOKEN}`,
-            },
-        });
-        const res = await fetchRes.json();
-        toast.update(loadingToastId, {
-            render: res?.data?.message || 'Logout Successfully!',
-            type: 'success',
-            isLoading: false,
-            autoClose: 1500,
-        });
-        Cookies.remove('TAZOUD_TOKEN');
-        redirect('/auth/login');
-    };
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-    return (
-        <button
-            onClick={logout}
-            type="button"
-            className={`
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/auth/login");
+  };
+  return (
+    <button
+      type="button"
+      onClick={handleLogout}
+      className={`
                 flex items-center gap-2 
                 px-4 py-2
                 outline-none 
@@ -44,10 +29,9 @@ export default function LogoutBtn() {
                 shadow-md
                 focus:outline-none 
             `}
-        >
-            <FaSignOutAlt size={18} />
-            Logout
-        </button>
-
-    );
-};
+    >
+      <FaSignOutAlt size={18} />
+      Logout
+    </button>
+  );
+}

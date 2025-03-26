@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { getProfile } from "@/app/rtk/slices/profileSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
+import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaUnlockKeyhole } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import ChangePassword from "./ChangePassword";
 import ProfileDetails from "./ProfileDetails";
 import ProfileMethods from "./ProfileMethods";
@@ -11,12 +14,30 @@ import ProfileMethods from "./ProfileMethods";
 export default function Profile() {
   const [tab, setTab] = useState("profile-info");
 
+  const dispatch = useDispatch<AppDispatch>();
+  const { profile, error, loading } = useSelector((state: RootState) => state.profile);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const result = await dispatch(getProfile()).unwrap();
+        console.log("Profile fetched:", result);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, [dispatch]);
+
+  if (error) return <p className="text-red-500">{error}</p>;
+
   const handleTabChange = (tab: string) => {
     setTab(tab);
   };
 
   return (
-    <div className="w-full flex flex-col lg:flex-row items-start justify-center mt-4 gap-6">
+    <div className="w-full flex flex-col md:flex-row items-start justify-center mt-4 gap-6">
       <div className="bg-slate-100 py-6 px-4 rounded-md w-full md:w-64">
         <ul className="flex flex-col gap-6">
           <li
@@ -49,8 +70,8 @@ export default function Profile() {
         </ul>
       </div>
 
-      <div className="flex-1 ">
-        {tab === "profile-info" ? <ProfileDetails /> : null}
+      <div className="flex-1 w-[100%] ">
+        {typeof window !== "undefined" && tab === "profile-info" ? <ProfileDetails profile={profile ?? undefined} loading={loading} /> : null}
         {tab === "payment-method" ? <ProfileMethods /> : null}
         {tab === "change-password" ? <ChangePassword /> : null}
       </div>

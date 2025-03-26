@@ -1,1 +1,1 @@
-export const baseUrl = ``;
+export const baseUrl = `https://tazawod.valureach.com/api`;
