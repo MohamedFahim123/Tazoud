@@ -1,10 +1,10 @@
 import React from "react";
+import { CgSpinner } from "react-icons/cg";
 
 const Loading = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      Loading............
-      {/* <Circles height="50" width="50" color="#6176FE" ariaLabel="circles-loading" wrapperStyle={{}} wrapperClass="" visible={true} />; */}
+      <CgSpinner className="animate-spin text-primary " size={50} />
     </div>
   );
 };
