@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "@/app/rtk/store";
 import { AxiosError } from "axios";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -35,6 +35,7 @@ export default function UpdateProfile() {
         await dispatch(updateProfile(values)).unwrap();
         await dispatch(getProfile());
         toast.success("Profile updated successfully");
+        window.location.reload();
       } catch (error) {
         toast.error((error as AxiosError<{ message: string }>).response?.data?.message || "Failed to update profile");
       }
@@ -48,6 +49,10 @@ export default function UpdateProfile() {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
 
   return (
     <>
