@@ -15,7 +15,16 @@ export default function ProfileDetails({ profile, loading }: { profile?: Profile
         <>
           <div className="flex flex-col md:flex-row items-center gap-6 bg-slate-100 py-6 px-4 rounded-md">
             <div className="flex-shrink-0 bg-primary rounded-full h-[160px] w-[160px] flex items-center justify-center">
-              <Image className="rounded-full mt-1 mx-auto" src={profile?.user?.image || "/images/profile.png"} alt="avatar" width={150} height={150} />
+              <Image
+                className="rounded-full mt-1 mx-auto"
+                src={profile?.user?.image || "/images/profile.png"}
+                alt="avatar"
+                width={150}
+                height={150}
+                priority
+                placeholder="blur"
+                blurDataURL="/images/profile.png"
+              />
             </div>
             <div className="flex items-center justify-between w-full">
               <div className="text-center md:text-left">
