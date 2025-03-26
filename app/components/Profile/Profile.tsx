@@ -18,7 +18,16 @@ export default function Profile() {
   const { profile, error, loading } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
-    dispatch(getProfile());
+    const fetchProfile = async () => {
+      try {
+        const result = await dispatch(getProfile()).unwrap();
+        console.log("Profile fetched:", result);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchProfile();
   }, [dispatch]);
 
   if (error) return <p className="text-red-500">{error}</p>;
@@ -62,7 +71,7 @@ export default function Profile() {
       </div>
 
       <div className="flex-1 w-[100%] ">
-        {tab === "profile-info" ? <ProfileDetails profile={profile ?? undefined} loading={loading} /> : null}
+        {typeof window !== "undefined" && tab === "profile-info" ? <ProfileDetails profile={profile ?? undefined} loading={loading} /> : null}
         {tab === "payment-method" ? <ProfileMethods /> : null}
         {tab === "change-password" ? <ChangePassword /> : null}
       </div>

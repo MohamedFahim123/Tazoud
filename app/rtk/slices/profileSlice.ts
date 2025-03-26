@@ -45,7 +45,7 @@ export const updateProfile = createAsyncThunk<ProfileTypes, { name: string; phon
       if (!token) throw new Error("No authentication token found");
 
       const formData = new FormData();
-      
+
       formData.append("name", profileData.name);
       formData.append("phone", profileData.phone);
       if (profileData.image) {

@@ -69,6 +69,8 @@ export default function UpdateProfile() {
                 width={150}
                 height={150}
                 priority
+                placeholder="blur"
+                blurDataURL="/images/profile.png"
               />
             </div>
             <input type="file" accept="image/*" onChange={handleImageChange} className="mt-2 text-sm" />
