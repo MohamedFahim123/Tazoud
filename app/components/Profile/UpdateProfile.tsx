@@ -35,7 +35,9 @@ export default function UpdateProfile() {
         await dispatch(updateProfile(values)).unwrap();
         await dispatch(getProfile());
         toast.success("Profile updated successfully");
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } catch (error) {
         toast.error((error as AxiosError<{ message: string }>).response?.data?.message || "Failed to update profile");
       }
