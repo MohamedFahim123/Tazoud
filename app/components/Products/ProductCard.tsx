@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 export interface ProductProps {
@@ -11,7 +12,7 @@ export default function ProductCard({ image, name, price, discountPrice }: Produ
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border">
       <div className="relative group">
-        <Image src={image} alt={name} width={200} height={200} className="mx-auto" />
+        <Image src={image} alt={name} width={200} height={200} className="mx-auto" priority placeholder="blur" blurDataURL="/images/profile.png" />
 
         {/* <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition">
           <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
