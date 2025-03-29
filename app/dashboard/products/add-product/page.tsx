@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description: "Add New Products",
 };
 export default function AddNewProductsPage() {
+  
   return (
     <div className="w-full bg-slate-100 p-4 rounded-lg border">
       <div className="flex items-start justify-center gap-2 flex-col lg:flex-row ">

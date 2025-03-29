@@ -26,7 +26,10 @@ export const getProfile = createAsyncThunk<ProfileTypes, void, { rejectValue: st
     const token = Cookies.get("TAZOUD_TOKEN");
     if (!token) throw new Error("No authentication token found");
 
-    const response = await axios.get<{ data: ProfileTypes }>(dashboardEndPoints.profile, {
+    if (!dashboardEndPoints?.profile?.showProfile) {
+      throw new Error("Invalid endpoint URL");
+    }
+    const response = await axios.get<{ data: ProfileTypes }>(dashboardEndPoints?.profile?.showProfile, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -52,7 +55,10 @@ export const updateProfile = createAsyncThunk<ProfileTypes, { name: string; phon
         formData.append("image", profileData.image);
       }
 
-      const response = await axios.post<{ data: ProfileTypes }>(dashboardEndPoints.updateProfile, formData, {
+      if (!dashboardEndPoints?.profile?.updateProfile) {
+        throw new Error("Invalid endpoint URL");
+      }
+      const response = await axios.post<{ data: ProfileTypes }>(dashboardEndPoints?.profile?.updateProfile, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
