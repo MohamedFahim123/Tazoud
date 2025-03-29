@@ -47,12 +47,12 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
           onBlur={onBlur}
           value={value}
           placeholder={placeHolder}
-          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none hover:outline-none focus-visible:outline-none focus-within:outline-none active:outline-none  border-gray  block w-full `}
+          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none border-primary block w-full `}
         />
       )}
 
       {type === "password" && (
-        <div className={`absolute right-3 top-10 text-[20px] cursor-pointer text-black`} onClick={handleToggleShowPassword}>
+        <div className={`absolute right-3 top-11 text-[20px] cursor-pointer text-black`} onClick={handleToggleShowPassword}>
           {viewPassword ? <FaEyeSlash className="text-primary" /> : <FaEye className=" text-primary" />}
         </div>
       )}

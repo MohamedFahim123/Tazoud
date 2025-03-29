@@ -15,7 +15,7 @@ export default function AddCategory() {
   // console.log(categories);
   // console.log(singleCategory);
   return (
-    <div className="max-h-[500px] p-6 border-[1px]  bg-white rounded-lg shadow-sm  border-gray-200 mb-3">
+    <div className="max-h-[500px] p-6 border-[1px]  bg-white rounded-lg shadow-sm  border-gray-200 mb-5">
       <h3 className="text-lg font-bold mb-3"> Organization</h3>
       <form action="" className="">
         <div className="flex items-center mb-3">
