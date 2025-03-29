@@ -21,12 +21,24 @@ const ProductDetailCard = () => {
                 alt="Product Thumbnail"
                 width={100}
                 height={100}
+                priority
+                placeholder="blur"
+                blurDataURL="/images/profile.png"
                 className={`w-25 h-20 border p-1 cursor-pointer ${selectedImage === img ? "border-primary" : "border-gray"}`}
                 onClick={() => setSelectedImage(img)}
               />
             ))}
           </div>
-          <Image src={selectedImage} alt="Product" width={100} height={100} className="w-80 max-h-96 object-cover" />
+          <Image
+            src={selectedImage}
+            alt="Product"
+            width={100}
+            height={100}
+            className="w-80 max-h-96 object-cover"
+            priority
+            placeholder="blur"
+            blurDataURL="/images/profile.png"
+          />
         </div>
 
         <div>
