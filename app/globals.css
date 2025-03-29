@@ -3,8 +3,20 @@
 @tailwind utilities;
 
 .ps-menu-button:hover {
-    background-color: inherit !important;
+  background-color: inherit !important;
 }
-.ps-submenu-content{
-    color: #333;
+.ps-submenu-content {
+  color: #333;
+}
+
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

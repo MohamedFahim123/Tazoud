@@ -120,22 +120,22 @@ export default function SellerCards() {
           <div className="flex flex-col items-center text-gray-600 space-y-2">
             <div className="flex items-center gap-2">
               <FaPhoneAlt className="text-blue-500" />
-              <span><a href="tel:+91 564-258-4781">
-                 {seller.phone1}
-                </a>
-                 </span>
+              <span>
+                <a href="tel:+91 564-258-4781">{seller.phone1}</a>
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <FaFax className="text-blue-500" />
-              <span> <a href="tel:+91 564-258-4781">
-                {seller.phone2}
-                </a>
-                </span>
+              <span>
+                {" "}
+                <a href="tel:+91 564-258-4781">{seller.phone2}</a>
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <FaEnvelope className="text-blue-500" />
               <span>
-              <a href="mailto:infoyour@gmail.com">{seller.email}</a></span>
+                <a href="mailto:infoyour@gmail.com">{seller.email}</a>
+              </span>
             </div>
           </div>
           <hr className="my-4" />
