@@ -29,7 +29,7 @@ function Table({ columns, data, summary }: TableProps) {
           <tr key={index} className="border-b border-gray-200">
             {row.productImage && (
               <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50">
-                <Image src={row.productImage} alt="product_image" width={50} height={50} />
+                <Image src={row.productImage} alt="product_image" width={50} height={50} priority placeholder="blur" blurDataURL="/images/profile.png" />
               </td>
             )}
 

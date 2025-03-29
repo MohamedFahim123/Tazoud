@@ -5,6 +5,7 @@ import profileReducer from "./slices/profileSlice";
 import categoriesReducer from "./slices/categoriesSlice";
 import brandsReducer from "./slices/brandsSlice";
 import unitsMeasuresReducer from "./slices/unitsMeasuresSlice";
+import productsReducer from "./slices/ProductSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     brands: brandsReducer,
     unitsMeasures: unitsMeasuresReducer,
+    products: productsReducer,
   },
 });
 

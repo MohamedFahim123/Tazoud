@@ -1,6 +1,24 @@
-import React from "react";
+"use client";
+
+import { getProducts } from "@/app/rtk/slices/ProductSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ProductInputsInfo() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, loading, error } = useSelector((state: RootState) => state.products);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  console.log(products);
+
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (products.length === 0) return <p>No products found</p>;
+
   return (
     <div className="max-w-full lg:max-w-[49%] max-h-[700px] p-6 border-[1px] bg-white rounded-lg shadow-sm  border-gray-200 ">
       <h3 className="text-lg font-bold mb-3">Basic Information</h3>
@@ -56,10 +74,7 @@ export default function ProductInputsInfo() {
               Category
             </label>
             <div className="relative mt-1">
-              <select
-                id="category"
-                className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-              >
+              <select id="category" className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500">
                 <option value="men">men</option>
                 <option value="women">Women</option>
               </select>
@@ -70,10 +85,7 @@ export default function ProductInputsInfo() {
               Brand
             </label>
             <div className="relative mt-1">
-              <select
-                id="brand"
-                className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-              >
+              <select id="brand" className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500">
                 <option value="men">Nogor Polli</option>
                 <option value="men">Nogor Polli</option>
                 <option value="men">Nogor Polli</option>

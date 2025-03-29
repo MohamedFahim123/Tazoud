@@ -12,7 +12,7 @@ export default function ProductsImages() {
           <FiEdit size={25} className="cursor-pointer hover:text-primary my-4 " />
           <MdOutlineCancel size={25} className="cursor-pointer hover:text-primary " />
         </div>
-        <Image src={"/images/product-img1.png"} alt="image" width={200} height={200} priority placeholder="blur" blurDataURL="/images/profile.png" />
+        <Image src={"/images/product-img1.png"} width={200} height={200} alt="image" priority placeholder="blur" blurDataURL="/images/profile.png" />
       </div>
 
       <div className="p-3 bg-slate-100  rounded-lg border relative">
@@ -20,7 +20,7 @@ export default function ProductsImages() {
           <FiEdit size={25} className="cursor-pointer hover:text-primary my-4 " />
           <MdOutlineCancel size={25} className="cursor-pointer hover:text-primary " />
         </div>
-        <Image src={"/images/product-img1.png"} alt="image" width={200} height={200} priority placeholder="blur" blurDataURL="/images/profile.png" />
+        <Image src={"/images/product-img1.png"} width={200} height={200} alt="image" priority placeholder="blur" blurDataURL="/images/profile.png" />
       </div>
 
       <div className="p-3 bg-slate-100  rounded-lg border relative">
@@ -28,7 +28,7 @@ export default function ProductsImages() {
           <FiEdit size={25} className="cursor-pointer hover:text-primary my-4 " />
           <MdOutlineCancel size={25} className="cursor-pointer hover:text-primary " />
         </div>
-        <Image src={"/images/product-img1.png"} alt="image" width={200} height={200} priority placeholder="blur" blurDataURL="/images/profile.png" />
+        <Image src={"/images/product-img1.png"} width={200} height={200} alt="image" priority placeholder="blur" blurDataURL="/images/profile.png" />
       </div>
 
       <div className="p-3 bg-slate-100  rounded-lg border relative">
@@ -36,7 +36,7 @@ export default function ProductsImages() {
           <FiEdit size={25} className="cursor-pointer hover:text-primary my-4 " />
           <MdOutlineCancel size={25} className="cursor-pointer hover:text-primary " />
         </div>
-        <Image src={"/images/product-img1.png"} alt="image" width={200} height={200} priority placeholder="blur" blurDataURL="/images/profile.png" />
+        <Image src={"/images/product-img1.png"} width={200} height={200} alt="image" priority placeholder="blur" blurDataURL="/images/profile.png" />
       </div>
 
       <div className="p-3 bg-slate-100  rounded-lg border">
