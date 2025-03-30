@@ -1,5 +1,7 @@
 "use client";
 
+import CustomInput from "../CustomInput/CustomInput";
+
 export default function AddCategory() {
   // const dispatch = useDispatch<AppDispatch>();
   // const { categories, singleCategory, loading, error } = useSelector((state: RootState) => state.categories);
@@ -20,63 +22,23 @@ export default function AddCategory() {
       <form action="" className="">
         <div className="flex items-center mb-3">
           <div className="w-[80%]">
-            <label htmlFor="add_category">Add Category</label>
-            <input
-              type="text"
-              name="add_category"
-              id="add_category"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+            <CustomInput type="text" id="add_category" label="Add Category" placeHolder="type" />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
         </div>
         <div className="flex items-center mb-3">
           <div className="w-[80%]">
-            <label htmlFor="add_brand">Add Brand</label>
-            <input
-              type="text"
-              name="add_brand"
-              id="add_brand"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+            <CustomInput type="text" id="add_brand" label="Add Brand" placeHolder="type" />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
         </div>
         <div className="flex items-center mb-3">
           <div className="w-[80%]">
-            <label htmlFor="add_color">Add Color</label>
-            <input
-              type="text"
-              name="add_color"
-              id="add_color"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+            <CustomInput type="text" id="add_color" label="Add Color" placeHolder="type" />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
         </div>
         <div className="flex items-center mb-3">
           <div className="w-[80%]">
-            <label htmlFor="add_size">Add Size</label>
-            <input
-              type="text"
-              name="add_size"
-              id="add_size"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+            <CustomInput type="text" id="add_size" label="Add Size" placeHolder="type" />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
         </div>
       </form>
     </div>

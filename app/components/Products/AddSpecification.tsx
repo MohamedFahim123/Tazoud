@@ -1,4 +1,5 @@
 import React from "react";
+import CustomInput from "../CustomInput/CustomInput";
 
 export default function AddSpecification() {
   return (
@@ -7,24 +8,18 @@ export default function AddSpecification() {
       <form action="" className="">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-[48%]">
-            <label htmlFor="stock">Stock</label>
-            <input
-              type="text"
-              name="stock"
-              id="stock"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+            <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
           </div>
           <div className="w-[48%]">
-            <label htmlFor="weight">Weight</label>
+            {/* <label htmlFor="weight">Weight</label>
             <input
               type="text"
               name="weight"
               id="weight"
               placeholder="type"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+            /> */}
+            <CustomInput type="text" id="weight" label="Weight" placeHolder="type" />
           </div>
         </div>
         <div className=" flex items-start justify-between flex-wrap">
