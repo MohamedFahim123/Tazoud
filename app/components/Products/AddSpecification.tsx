@@ -3,7 +3,7 @@ import CustomInput from "../CustomInput/CustomInput";
 
 export default function AddSpecification() {
   return (
-    <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm  border-gray-200">
+    <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
       <form action="" className="">
         <div className="flex items-center justify-between flex-wrap">
@@ -11,14 +11,6 @@ export default function AddSpecification() {
             <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
           </div>
           <div className="w-[48%]">
-            {/* <label htmlFor="weight">Weight</label>
-            <input
-              type="text"
-              name="weight"
-              id="weight"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            /> */}
             <CustomInput type="text" id="weight" label="Weight" placeHolder="type" />
           </div>
         </div>

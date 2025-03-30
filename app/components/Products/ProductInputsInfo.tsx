@@ -1,7 +1,7 @@
 "use client";
 
 import CustomInput from "../CustomInput/CustomInput";
-import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
+// import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
 
 export default function ProductInputsInfo() {
   // const dispatch = useDispatch<AppDispatch>();
@@ -16,20 +16,12 @@ export default function ProductInputsInfo() {
   // if (loading) return <p>Loading products...</p>;
   // if (error) return <p>Error: {error}</p>;
   // if (products.length === 0) return <p>No products found</p>;
-  const options = [
-    { value: "Me", label: "Men" },
-    { value: "Wo", label: "Women" },
-  ];
-
-  const handleSelectChange = (value: string) => {
-    console.log("Selected:", value);
-  };
 
   return (
     <div className="max-w-full max-h-[700px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark mb-5">
       <h3 className="text-lg font-bold mb-3">Basic Information</h3>
       <form action="">
-        <div className="product_title flex md:flex-row flex-col items-center justify-between">
+        <div className="product_title flex md:flex-row flex-col items-center justify-between mb-3">
           <div className="md:w-[48%] w-full">
             <CustomInput type="text" id="title_en" label="Product Title" placeHolder="Enter Product Title" />
           </div>
@@ -38,7 +30,7 @@ export default function ProductInputsInfo() {
           </div>
         </div>
 
-        <div className="product_description flex md:flex-row flex-col items-center justify-between">
+        <div className="product_description flex md:flex-row flex-col items-center justify-between mb-3">
           <div className="md:w-[48%] w-full">
             <label htmlFor="description_en" className="text-gray_dark block mb-2 text-sm font-medium">
               About Description
@@ -65,21 +57,17 @@ export default function ProductInputsInfo() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between flex-wrap">
+        <div className="flex items-center justify-between flex-wrap mb-3">
+          <div className="w-[48%]">{/* <CustomSelectOptions id="category" label="Category" options={options} onChange={handleSelectChange} /> */}</div>
+          <div className="w-[48%]">{/* <CustomSelectOptions id="sub_category" label="Subcategory" options={options} onChange={handleSelectChange} /> */}</div>
+        </div>
+
+        <div className="flex items-center justify-between flex-wrap mb-3">
           <div className="w-[48%]">
             <CustomInput type="text" id="regular_price" label="Regular Price" placeHolder="Enter Regular Price" />
           </div>
           <div className="w-[48%]">
             <CustomInput type="text" id="discount_price" label="Discount Price" placeHolder="Enter Discount Price" />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">
-            <CustomSelectOptions id="category" label="Category" options={options} onChange={handleSelectChange} />
-          </div>
-          <div className="w-[48%]">
-            <CustomSelectOptions id="brand" label="Brand" options={options} onChange={handleSelectChange} />
           </div>
         </div>
 

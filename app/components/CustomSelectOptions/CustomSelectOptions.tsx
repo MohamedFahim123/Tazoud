@@ -5,7 +5,7 @@ import { useState } from "react";
 interface CustomSelectOptionsProps {
   id?: string;
   label?: string;
-  options: { value: string; label: string }[];
+  options: { id: number; name: string }[];
   onChange?: (value: string) => void;
   value?: string;
   className?: string;
@@ -34,8 +34,8 @@ const CustomSelectOptions = ({ id, label, options, onChange, value, className }:
         className={`bg-white border border-primary text-gray_dark text-sm rounded-lg focus:border-primary outline-none block w-full p-2.5 ${className}`}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+          <option key={option.id} value={option.id}>
+            {option.name}
           </option>
         ))}
       </select>
