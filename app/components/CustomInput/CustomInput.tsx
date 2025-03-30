@@ -11,10 +11,11 @@ interface customInputTypes {
   id?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   value?: string;
 }
 
-const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, id }: customInputTypes) => {
+const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, label, id }: customInputTypes) => {
   const [viewPassword, setViewPassword] = useState(false);
   const handleToggleShowPassword = () => setViewPassword(!viewPassword);
 
@@ -25,6 +26,7 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
           id={id}
           name={name}
           type={type}
+          onClick={onClick}
           value=""
           className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary"
         />

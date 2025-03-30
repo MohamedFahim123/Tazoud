@@ -6,15 +6,23 @@ export default function AddSpecification() {
     <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
       <form action="" className="">
-        <div className="flex items-center justify-between flex-wrap">
-          <div className="w-[48%]">
-            <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="regular_price" label="Regular Price" placeHolder="Enter Regular Price" />
           </div>
-          <div className="w-[48%]">
-            <CustomInput type="text" id="weight" label="Weight" placeHolder="type" />
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="discount_price" label="Discount Price" placeHolder="Enter Discount Price" />
           </div>
         </div>
-        <div className=" flex items-start justify-between flex-wrap">
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
+          </div>
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="code" label="code" placeHolder="type" />
+          </div>
+        </div>
+        {/* <div className=" flex items-start justify-between flex-wrap">
           <div className="max-w-[48%] ">
             <h5>Size</h5>
             <div className="flex flex-wrap border-[1px] rounded-md p-4 gap-3 ">
@@ -80,7 +88,7 @@ export default function AddSpecification() {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );

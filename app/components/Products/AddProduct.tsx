@@ -1,15 +1,20 @@
+"use client";
+
+import { useState } from "react";
 import AddCategory from "./AddCategory";
 import AddSpecification from "./AddSpecification";
 import ProductInputsInfo from "./ProductInputsInfo";
 import ProductsImages from "./ProductsImages";
+import ProductVariation from "./ProductVariation";
 
 export default function AddProduct() {
+  const [hasVariation, setHasVariation] = useState<boolean>(false);
   return (
     <>
       <div className="w-full">
-        <ProductInputsInfo />
+        <ProductInputsInfo setHasVariation={setHasVariation} hasVariation={hasVariation} />
         <AddCategory />
-        <AddSpecification />
+        {hasVariation ? <ProductVariation /> : <AddSpecification />}
       </div>
       <ProductsImages />
 

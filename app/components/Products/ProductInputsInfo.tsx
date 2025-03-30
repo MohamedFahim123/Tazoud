@@ -1,9 +1,8 @@
 "use client";
 
 import CustomInput from "../CustomInput/CustomInput";
-// import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
 
-export default function ProductInputsInfo() {
+export default function ProductInputsInfo({ setHasVariation, hasVariation }: { setHasVariation: (hasVariation: boolean) => void; hasVariation: boolean }) {
   // const dispatch = useDispatch<AppDispatch>();
   // const { products, loading, error } = useSelector((state: RootState) => state.products);
 
@@ -57,27 +56,8 @@ export default function ProductInputsInfo() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">{/* <CustomSelectOptions id="category" label="Category" options={options} onChange={handleSelectChange} /> */}</div>
-          <div className="w-[48%]">{/* <CustomSelectOptions id="sub_category" label="Subcategory" options={options} onChange={handleSelectChange} /> */}</div>
-        </div>
-
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">
-            <CustomInput type="text" id="regular_price" label="Regular Price" placeHolder="Enter Regular Price" />
-          </div>
-          <div className="w-[48%]">
-            <CustomInput type="text" id="discount_price" label="Discount Price" placeHolder="Enter Discount Price" />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">
-            <CustomInput type="text" id="shipping_free" label="Shipping Free" placeHolder="Enter Shipping Free" />
-          </div>
-          <div className="w-[48%]">
-            <CustomInput type="text" id="tax_rate" label="Tax Rate" placeHolder="Enter Tax Rate" />
-          </div>
+        <div className="w-full">
+          <CustomInput type="checkbox" id="has_variation" label="Has Variation" onClick={() => setHasVariation(!hasVariation)} />
         </div>
       </form>
     </div>
