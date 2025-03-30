@@ -19,8 +19,8 @@ export const getBrands = createAsyncThunk<Brand[], void, { rejectValue: string }
       throw new Error("Invalid endpoint URL");
     }
 
-    const response = await axios.get<{ data: Brand[] }>(dashboardEndPoints?.brands?.allBrands);
-    return response.data.data;
+    const response = await axios.get<{ data: { brands: Brand[] } }>(dashboardEndPoints?.brands?.allBrands);
+    return response?.data?.data?.brands;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch brands");

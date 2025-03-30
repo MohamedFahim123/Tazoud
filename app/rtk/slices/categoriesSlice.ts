@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 export interface Category {
   id: number;
   name: string;
+  subcategories?: Category[];
 }
 
 interface CategoriesState {
@@ -21,8 +22,9 @@ export const getCategories = createAsyncThunk<Category[], void, { rejectValue: s
       throw new Error("Invalid endpoint URL");
     }
 
-    const response = await axios.get<{ data: Category[] }>(dashboardEndPoints?.categories?.allCategories);
-    return response.data.data;
+    const response = await axios.get<{ data: { categories: Category[] } }>(dashboardEndPoints?.categories?.allCategories);
+
+    return response?.data?.data?.categories;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch categories");
@@ -33,9 +35,9 @@ export const getCategories = createAsyncThunk<Category[], void, { rejectValue: s
 export const getSingleCategory = createAsyncThunk<Category, number, { rejectValue: string }>("categories/getSingleCategory", async (categoryId, { rejectWithValue }) => {
   try {
     const singleCategory = dashboardEndPoints?.categories?.singleCategory as (categoryId: string) => string;
-    const response = await axios.get<{ data: Category }>(singleCategory(categoryId.toString()));
+    const response = await axios.get<{ data: { category: Category; subcategories: Category[] } }>(singleCategory(categoryId.toString()));
 
-    return response.data.data;
+    return { ...response?.data?.data?.category, subcategories: response?.data?.data?.subcategories };
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch category");

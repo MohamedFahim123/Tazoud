@@ -14,8 +14,8 @@ interface UnitsState {
 
 export const getUnitsMeasures = createAsyncThunk<Unit[], void, { rejectValue: string }>("units/getUnitsMeasures", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get<{ data: Unit[] }>("https://tazawod.valureach.com/api/units-of-measure");
-    return response.data.data;
+    const response = await axios.get<{ data: { units: Unit[] } }>("https://tazawod.valureach.com/api/units-of-measure");
+    return response?.data?.data?.units;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch units");
