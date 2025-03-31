@@ -102,7 +102,8 @@ export default function AddProduct() {
           <AddSpecification formValues={formik.values} formChangeEvent={formik.handleChange} formBlurEvent={formik.handleBlur} formErrors={formik.errors} />
         )}
       </div>
-      <ProductsImages />
+
+      <ProductsImages formValues={formik.values} formSetValues={formik.setFieldValue} />
 
       <div className="flex items-center justify-end gap-4 mt-7">
         <button type="submit" className="px-8 py-3 text-white bg-primary cursor-pointer ">

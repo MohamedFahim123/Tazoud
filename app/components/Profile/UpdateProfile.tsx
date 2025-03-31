@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import CustomInput from "../CustomInput/CustomInput";
 import Loading from "../Loading/Loading";
+import { FaImage } from "react-icons/fa";
 
 export default function UpdateProfile() {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,7 +76,14 @@ export default function UpdateProfile() {
                 blurDataURL="/images/profile.png"
               />
             </div>
-            <input type="file" accept="image/*" onChange={handleImageChange} className="mt-2 text-sm" />
+
+            <div className="p-3 bg-slate-100 rounded-lg border">
+              <label className="flex sm:flex-col items-center justify-center w-[100px] h-[100px] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary hover:text-primary">
+                <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                <FaImage className="text-4xl mb-2" />
+                <span className="text-sm">Image Upload</span>
+              </label>
+            </div>
           </div>
           <div className="flex items-left justify-center flex-col gap-3 py-6 px-4 mt-4">
             <h3 className="text-lg font-bold">Personal Information</h3>
