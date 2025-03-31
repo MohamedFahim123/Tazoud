@@ -1,94 +1,84 @@
-import React from "react";
+import { FormikErrors, FormikHandlers, FormikValues } from "formik";
 import CustomInput from "../CustomInput/CustomInput";
+import { FormInputV } from "./AddProduct";
 
-export default function AddSpecification() {
+export default function AddSpecification({
+  formValues,
+  formChangeEvent,
+  formBlurEvent,
+  formErrors,
+}: {
+  formValues: FormikValues;
+  formChangeEvent: FormikHandlers["handleChange"];
+  formBlurEvent: FormikHandlers["handleBlur"];
+  formErrors: FormikErrors<FormInputV>;
+}) {
   return (
     <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
       <form action="" className="">
         <div className="flex md:flex-row flex-col items-center justify-between mb-3">
           <div className="md:w-[48%] w-full">
-            <CustomInput type="text" id="regular_price" label="Regular Price" placeHolder="Enter Regular Price" />
+            <CustomInput
+              type="text"
+              onChange={formChangeEvent}
+              value={formValues.price}
+              onBlur={formBlurEvent}
+              id="price"
+              label="Regular Price"
+              placeHolder="Enter Regular Price"
+            />
+            {formErrors.price && (
+              <div className="text-red-500">{formErrors.price}</div>
+            )}
           </div>
           <div className="md:w-[48%] w-full">
-            <CustomInput type="text" id="discount_price" label="Discount Price" placeHolder="Enter Discount Price" />
+            <CustomInput
+              type="text"
+              onChange={formChangeEvent}
+              value={formValues.price_after_discount}
+              onBlur={formBlurEvent}
+              id="price_after_discount"
+              label="Discount Price"
+              placeHolder="Enter Discount Price"
+            />
+            {formErrors.price_after_discount && (
+              <div className="text-red-500">
+                {formErrors.price_after_discount}
+              </div>
+            )}
           </div>
         </div>
         <div className="flex md:flex-row flex-col items-center justify-between mb-3">
           <div className="md:w-[48%] w-full">
-            <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
+            <CustomInput
+              type="text"
+              onChange={formChangeEvent}
+              value={formValues.stock}
+              onBlur={formBlurEvent}
+              id="stock"
+              label="Stock"
+              placeHolder="type"
+            />
+            {formErrors.stock && (
+              <div className="text-red-500">{formErrors.stock}</div>
+            )}
           </div>
           <div className="md:w-[48%] w-full">
-            <CustomInput type="text" id="code" label="code" placeHolder="type" />
+            <CustomInput
+              type="text"
+              onChange={formChangeEvent}
+              value={formValues.code}
+              onBlur={formBlurEvent}
+              id="code"
+              label="code"
+              placeHolder="type"
+            />
+            {formErrors.code && (
+              <div className="text-red-500">{formErrors.code}</div>
+            )}
           </div>
         </div>
-        {/* <div className=" flex items-start justify-between flex-wrap">
-          <div className="max-w-[48%] ">
-            <h5>Size</h5>
-            <div className="flex flex-wrap border-[1px] rounded-md p-4 gap-3 ">
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                MM
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                XL
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                M
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                X
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                L
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                2XL
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                3XL
-              </span>
-            </div>
-          </div>
-          <div className="max-w-[48%]">
-            <h5>Colors</h5>
-            <div className=" flex flex-wrap border-[1px] rounded-md p-4 gap-3 ">
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                White
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                Red
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                Green
-              </span>
-              <span
-                className={`py-2 px-4 rounded-md text-black text-sm font-light border-[1px] border-primary  active:border-none hover:bg-primary active:bg-primary active:text-white cursor-pointer`}
-              >
-                Black
-              </span>
-            </div>
-          </div>
-        </div> */}
       </form>
     </div>
   );

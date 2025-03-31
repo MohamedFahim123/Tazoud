@@ -1,38 +1,48 @@
-"use client";
-
-import { useState } from "react";
+import { FormikHandlers } from "formik";
 
 interface CustomSelectOptionsProps {
   id?: string;
   label?: string;
   options: { id: number; name: string }[];
-  onChange?: (value: string) => void;
+  onChange?: FormikHandlers["handleChange"];
   value?: string;
   className?: string;
 }
 
-const CustomSelectOptions = ({ id, label, options, onChange, value, className }: CustomSelectOptionsProps) => {
-  const [selectedValue, setSelectedValue] = useState(value || "");
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue = event.target.value;
-    setSelectedValue(newValue);
-    if (onChange) onChange(newValue);
-  };
-
+const CustomSelectOptions = ({
+  id,
+  label,
+  options,
+  onChange,
+  value,
+  className,
+}: CustomSelectOptionsProps) => {
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray_dark ">
+        <label
+          htmlFor={id}
+          className="block mb-2 text-sm font-medium text-gray_dark "
+        >
           {label}
         </label>
       )}
       <select
         id={id}
-        value={selectedValue}
-        onChange={handleChange}
+        name={id}
+        value={value}
+        onChange={onChange ? onChange : () => {}}
         className={`bg-white border border-primary text-gray_dark text-sm rounded-lg focus:border-primary outline-none block w-full p-2.5 ${className}`}
       >
+        {label === "Sub Category" ? (
+          <option value="">
+            Add {label}
+          </option>
+        ) : (
+          <option value="" disabled>
+            Add {label}
+          </option>
+        )}
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

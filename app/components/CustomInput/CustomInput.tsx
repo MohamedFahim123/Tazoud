@@ -27,6 +27,8 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           name={name}
           type={type}
           onClick={onClick}
+          onChange={onChange}
+          onBlur={onBlur}
           value=""
           className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary"
         />

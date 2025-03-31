@@ -1,5 +1,5 @@
 import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
@@ -18,36 +18,56 @@ interface ProductsState {
   error: string | null;
 }
 
-export const getProducts = createAsyncThunk<Product[], void, { rejectValue: string }>("products/getProducts", async (_, { rejectWithValue }) => {
+export const getProducts = createAsyncThunk<
+  Product[],
+  void,
+  { rejectValue: string }
+>("products/getProducts", async (_, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN");
 
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: Product[] }>(dashboardEndPoints?.products?.allProducts, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get<{ data: Product[] }>(
+      dashboardEndPoints?.products?.allProducts,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch products");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to fetch products"
+    );
   }
 });
 
-export const getSingleProduct = createAsyncThunk<Product, number, { rejectValue: string }>("products/getSingleProduct", async (id, { rejectWithValue }) => {
+export const getSingleProduct = createAsyncThunk<
+  Product,
+  number,
+  { rejectValue: string }
+>("products/getSingleProduct", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN");
 
-    const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
+    const singleProduct = dashboardEndPoints?.products?.singleProduct as (
+      id: string
+    ) => string;
 
-    const response = await axios.get<{ data: Product }>(singleProduct(id.toString()), {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get<{ data: Product }>(
+      singleProduct(id.toString()),
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch product");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to fetch product"
+    );
   }
 });
 
@@ -64,7 +84,7 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      //  products
+      //  get products
       .addCase(getProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
