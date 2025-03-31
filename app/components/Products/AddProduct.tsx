@@ -82,7 +82,7 @@ export default function AddProduct() {
     onSubmit: handleSubmit,
   });
 
-  console.log(formik.values)
+  console.log(formik.values);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -95,39 +95,20 @@ export default function AddProduct() {
           setHasVariation={setHasVariation}
           hasVariation={hasVariation}
         />
-        <AddCategory
-          formValues={formik.values}
-          formChangeEvent={formik.handleChange}
-          formErrors={formik.errors}
-        />
+        <AddCategory formValues={formik.values} formChangeEvent={formik.handleChange} formErrors={formik.errors} />
         {hasVariation ? (
-          <ProductVariation
-            formValues={formik.values}
-            formChangeEvent={formik.handleChange}
-            formSetValues={formik.setFieldValue}
-            formBlurEvent={formik.handleBlur}
-          />
+          <ProductVariation formValues={formik.values} formChangeEvent={formik.handleChange} formSetValues={formik.setFieldValue} formBlurEvent={formik.handleBlur} />
         ) : (
-          <AddSpecification
-            formValues={formik.values}
-            formChangeEvent={formik.handleChange}
-            formBlurEvent={formik.handleBlur}
-            formErrors={formik.errors}
-          />
+          <AddSpecification formValues={formik.values} formChangeEvent={formik.handleChange} formBlurEvent={formik.handleBlur} formErrors={formik.errors} />
         )}
       </div>
       <ProductsImages />
 
       <div className="flex items-center justify-end gap-4 mt-7">
-        <button
-          type="submit"
-          className="px-8 py-3 text-white bg-primary cursor-pointer "
-        >
+        <button type="submit" className="px-8 py-3 text-white bg-primary cursor-pointer ">
           Add Product
         </button>
-        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">
-          Cancel
-        </span>
+        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">Cancel</span>
       </div>
     </form>
   );
