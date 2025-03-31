@@ -1,82 +1,44 @@
 "use client";
 
+import { getBrands } from "@/app/rtk/slices/brandsSlice";
+import { getCategories } from "@/app/rtk/slices/categoriesSlice";
+import { getUnitsMeasures } from "@/app/rtk/slices/unitsMeasuresSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
+
 export default function AddCategory() {
-  // const dispatch = useDispatch<AppDispatch>();
-  // const { categories, singleCategory, loading, error } = useSelector((state: RootState) => state.categories);
+  const dispatch = useDispatch<AppDispatch>();
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { brands } = useSelector((state: RootState) => state.brands);
+  const { units } = useSelector((state: RootState) => state.unitsMeasures);
 
-  // useEffect(() => {
-  //   dispatch(getCategories());
-  //   dispatch(getSingleCategory(1));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getBrands());
+    dispatch(getUnitsMeasures());
+  }, [dispatch]);
 
-  // if (loading) return <p>Loading categories...</p>;
-  // if (error) return <p>Error: {error}</p>;
-
-  // console.log(categories);
-  // console.log(singleCategory);
   return (
-    <div className="max-h-[500px] p-6 border-[1px]  bg-white rounded-lg shadow-sm  border-gray-200 mb-3">
+    <div className="max-h-[500px] p-6 border-[1px]  bg-white rounded-lg shadow-sm  border-gray_dark mb-5">
       <h3 className="text-lg font-bold mb-3"> Organization</h3>
       <form action="" className="">
-        <div className="flex items-center mb-3">
-          <div className="w-[80%]">
-            <label htmlFor="add_category">Add Category</label>
-            <input
-              type="text"
-              name="add_category"
-              id="add_category"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomSelectOptions id="category_id" label="Category" options={categories} />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
+          <div className="md:w-[48%] w-full">
+            <CustomSelectOptions id="sub_category_id" label="Category" options={categories} />
+          </div>
         </div>
-        <div className="flex items-center mb-3">
-          <div className="w-[80%]">
-            <label htmlFor="add_brand">Add Brand</label>
-            <input
-              type="text"
-              name="add_brand"
-              id="add_brand"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomSelectOptions id="brand_id" label="Brands" options={brands} />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
-        </div>
-        <div className="flex items-center mb-3">
-          <div className="w-[80%]">
-            <label htmlFor="add_color">Add Color</label>
-            <input
-              type="text"
-              name="add_color"
-              id="add_color"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
+          <div className="md:w-[48%] w-full">
+            <CustomSelectOptions id="unit_of_measure_id" label="Units of Measure" options={units} />
           </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
-        </div>
-        <div className="flex items-center mb-3">
-          <div className="w-[80%]">
-            <label htmlFor="add_size">Add Size</label>
-            <input
-              type="text"
-              name="add_size"
-              id="add_size"
-              placeholder="type"
-              className="w-full px-4 py-2 border border-r-0 rounded-l-md  focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
-          </div>
-          <button type="button" className="px-12 py-2 mt-6 text-white bg-green rounded-r-md ">
-            Add
-          </button>
         </div>
       </form>
     </div>
