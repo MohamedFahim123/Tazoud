@@ -1,33 +1,28 @@
 import React from "react";
+import CustomInput from "../CustomInput/CustomInput";
 
 export default function AddSpecification() {
   return (
-    <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm  border-gray-200">
+    <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
       <form action="" className="">
-        <div className="flex items-center justify-between flex-wrap">
-          <div className="w-[48%]">
-            <label htmlFor="stock">Stock</label>
-            <input
-              type="text"
-              name="stock"
-              id="stock"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="regular_price" label="Regular Price" placeHolder="Enter Regular Price" />
           </div>
-          <div className="w-[48%]">
-            <label htmlFor="weight">Weight</label>
-            <input
-              type="text"
-              name="weight"
-              id="weight"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="discount_price" label="Discount Price" placeHolder="Enter Discount Price" />
           </div>
         </div>
-        <div className=" flex items-start justify-between flex-wrap">
+        <div className="flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="stock" label="Stock" placeHolder="type" />
+          </div>
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="code" label="code" placeHolder="type" />
+          </div>
+        </div>
+        {/* <div className=" flex items-start justify-between flex-wrap">
           <div className="max-w-[48%] ">
             <h5>Size</h5>
             <div className="flex flex-wrap border-[1px] rounded-md p-4 gap-3 ">
@@ -93,7 +88,7 @@ export default function AddSpecification() {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );

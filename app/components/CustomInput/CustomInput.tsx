@@ -11,10 +11,11 @@ interface customInputTypes {
   id?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   value?: string;
 }
 
-const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, id }: customInputTypes) => {
+const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, label, id }: customInputTypes) => {
   const [viewPassword, setViewPassword] = useState(false);
   const handleToggleShowPassword = () => setViewPassword(!viewPassword);
 
@@ -25,6 +26,7 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
           id={id}
           name={name}
           type={type}
+          onClick={onClick}
           value=""
           className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary"
         />
@@ -47,12 +49,12 @@ const CustomInput = ({ name, onChange, value, onBlur, placeHolder, type, label, 
           onBlur={onBlur}
           value={value}
           placeholder={placeHolder}
-          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none hover:outline-none focus-visible:outline-none focus-within:outline-none active:outline-none  border-gray  block w-full `}
+          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none border-primary block w-full `}
         />
       )}
 
       {type === "password" && (
-        <div className={`absolute right-3 top-10 text-[20px] cursor-pointer text-black`} onClick={handleToggleShowPassword}>
+        <div className={`absolute right-3 top-11 text-[20px] cursor-pointer text-black`} onClick={handleToggleShowPassword}>
           {viewPassword ? <FaEyeSlash className="text-primary" /> : <FaEye className=" text-primary" />}
         </div>
       )}

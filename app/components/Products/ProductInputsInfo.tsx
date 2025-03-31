@@ -1,131 +1,63 @@
 "use client";
 
-import { getProducts } from "@/app/rtk/slices/ProductSlice";
-import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import CustomInput from "../CustomInput/CustomInput";
 
-export default function ProductInputsInfo() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { products, loading, error } = useSelector((state: RootState) => state.products);
+export default function ProductInputsInfo({ setHasVariation, hasVariation }: { setHasVariation: (hasVariation: boolean) => void; hasVariation: boolean }) {
+  // const dispatch = useDispatch<AppDispatch>();
+  // const { products, loading, error } = useSelector((state: RootState) => state.products);
 
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getProducts());
+  // }, [dispatch]);
 
-  console.log(products);
+  // console.log(products);
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (products.length === 0) return <p>No products found</p>;
+  // if (loading) return <p>Loading products...</p>;
+  // if (error) return <p>Error: {error}</p>;
+  // if (products.length === 0) return <p>No products found</p>;
 
   return (
-    <div className="max-w-full lg:max-w-[49%] max-h-[700px] p-6 border-[1px] bg-white rounded-lg shadow-sm  border-gray-200 ">
+    <div className="max-w-full max-h-[700px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark mb-5">
       <h3 className="text-lg font-bold mb-3">Basic Information</h3>
       <form action="">
-        <div>
-          <label htmlFor="product_title">Product Title</label>
-          <input
-            type="text"
-            name="product_title"
-            id="product_title"
-            placeholder="type"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-          />
-        </div>
-
-        <div className="flex items-center justify-between flex-wrap">
-          <div className="w-[48%]">
-            <label htmlFor="regular_price">Regular Price</label>
-            <input
-              type="text"
-              name="regular_price"
-              id="regular_price"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+        <div className="product_title flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="title_en" label="Product Title" placeHolder="Enter Product Title" />
           </div>
-          <div className="w-[48%]">
-            <label htmlFor="discount_price">Discount Price</label>
-            <input
-              type="text"
-              name="discount_price"
-              id="discount_price"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-            />
+          <div className="md:w-[48%] w-full">
+            <CustomInput type="text" id="title_ar" label="اسم المنتج" placeHolder="ادخل اسم المنتج" />
           </div>
         </div>
 
-        <div>
-          <label htmlFor="about_description">About Description</label>
-          <textarea
-            name="about_description"
-            id="about_description"
-            rows={2}
-            cols={4}
-            className="w-full resize-none px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-          ></textarea>
-        </div>
-
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">
-            <label htmlFor="category" className=" text-sm font-medium ">
-              Category
+        <div className="product_description flex md:flex-row flex-col items-center justify-between mb-3">
+          <div className="md:w-[48%] w-full">
+            <label htmlFor="description_en" className="text-gray_dark block mb-2 text-sm font-medium">
+              About Description
             </label>
-            <div className="relative mt-1">
-              <select id="category" className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                <option value="men">men</option>
-                <option value="women">Women</option>
-              </select>
-            </div>
+            <textarea
+              name="description_en"
+              id="description_en"
+              rows={3}
+              cols={4}
+              className=" resize-none bg-white my-2 p-3 text-base border rounded focus:outline-none border-primary block w-full "
+            ></textarea>
           </div>
-          <div className="w-[48%]">
-            <label htmlFor="brand" className=" text-sm font-medium ">
-              Brand
+          <div className="md:w-[48%] w-full">
+            <label htmlFor="description_ar" className="text-gray_dark block mb-2 text-sm font-medium">
+              تفاصيل عن المنتج
             </label>
-            <div className="relative mt-1">
-              <select id="brand" className=" w-full appearance-non border text-gray-400 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                <option value="men">Nogor Polli</option>
-                <option value="men">Nogor Polli</option>
-                <option value="men">Nogor Polli</option>
-              </select>
-            </div>
+            <textarea
+              name="description_ar"
+              id="description_ar"
+              rows={3}
+              cols={4}
+              className=" resize-none bg-white my-2 p-3 text-base border rounded focus:outline-none border-primary block w-full "
+            ></textarea>
           </div>
         </div>
 
-        <div className="flex items-center justify-between flex-wrap mb-3">
-          <div className="w-[48%]">
-            <label htmlFor="shipping_free">Shipping Free</label>
-            <input
-              type="text"
-              name="shipping_free"
-              id="shipping_free"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
-          </div>
-          <div className="w-[48%]">
-            <label htmlFor="tax_rate">Tax Rate</label>
-            <input
-              type="text"
-              name="tax_rate"
-              id="tax_rate"
-              placeholder="type"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary "
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="tag">Tag</label>
-          <textarea
-            name="tag"
-            id="tag"
-            rows={2}
-            cols={4}
-            className="w-full resize-none px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary hover:border-primary mb-3"
-          ></textarea>
+        <div className="w-full">
+          <CustomInput type="checkbox" id="has_variation" label="Has Variation" onClick={() => setHasVariation(!hasVariation)} />
         </div>
       </form>
     </div>
