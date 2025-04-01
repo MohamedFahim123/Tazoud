@@ -129,7 +129,7 @@ export default function AddProduct() {
         <button type="submit" className="px-8 py-3 text-white bg-primary cursor-pointer ">
           Add Product
         </button>
-        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">Cancel</span>
+        {/* <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">Cancel</span> */}
       </div>
     </form>
   );
