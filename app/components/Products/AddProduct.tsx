@@ -100,6 +100,8 @@ export default function AddProduct() {
     onSubmit: handleSubmit,
   });
 
+  console.log(formik.values);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="w-full">
