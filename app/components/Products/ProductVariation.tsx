@@ -2,6 +2,8 @@ import { FormikHandlers, FormikHelpers, FormikValues } from "formik";
 import { Fragment } from "react";
 import CustomInput from "../CustomInput/CustomInput";
 import { ProductTypes, Variation } from "@/app/rtk/slices/ProductSlice";
+import Image from "next/image";
+import { FaImage } from "react-icons/fa";
 
 interface ProductVariationProps {
   formValues: FormikValues;
@@ -10,14 +12,16 @@ interface ProductVariationProps {
   formSetValues: FormikHelpers<ProductTypes>["setFieldValue"];
 }
 const ProductVariation = ({ formValues, formChangeEvent, formBlurEvent, formSetValues }: ProductVariationProps) => {
-  // const thumbnail = formValues.variations.thumbnail;
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
 
-  // const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     const imageUrl = URL.createObjectURL(e.target.files[0]);
-  //     formSetValues("thumbnail", imageUrl);
-  //   }
-  // };
+      const updatedVariations = [...formValues.variations];
+      updatedVariations[idx].thumbnail = file;
+
+      formSetValues("variations", updatedVariations);
+    }
+  };
 
   return (
     <div className="p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
@@ -115,29 +119,33 @@ const ProductVariation = ({ formValues, formChangeEvent, formBlurEvent, formSetV
               />
             </div>
           </div>
+          <div className="max-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+            {variation.thumbnail && (
+              <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark w-[200px]">
+                <div className="h-[200px] w-full overflow-hidden">
+                  <Image
+                    src={URL.createObjectURL(variation.thumbnail)}
+                    width={200}
+                    height={200}
+                    style={{ width: "auto", height: "auto" }}
+                    alt="product thumbnail"
+                    priority
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark">
+              <label className="flex sm:flex-col items-center justify-center w-full h-[200px] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary hover:text-primary">
+                <input type="file" className="hidden" accept="image/*" onChange={(e) => handleThumbnailChange(e, idx)} />
+                <FaImage className="text-4xl mb-2" />
+                <span className="text-sm">Upload Thumbnail</span>
+              </label>
+            </div>
+          </div>
         </Fragment>
       ))}
 
-      {/* <h5 className="text-lg font-bold max-w-full mb-4">Product Thumbnail</h5>
-
-      <div className="max-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-        {thumbnail && (
-          <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark w-[200px]">
-            <div className="h-[200px] w-full overflow-hidden">
-              <Image src={thumbnail} width={200} height={200} style={{ width: "auto", height: "auto" }} alt="product thumbnail" priority />
-            </div>
-          </div>
-        )}
-
-        <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark">
-          <label className="flex sm:flex-col items-center justify-center w-full h-[200px] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary hover:text-primary">
-            <input type="file" className="hidden" accept="image/*" onChange={handleThumbnailChange} />
-            <FaImage className="text-4xl mb-2" />
-            <span className="text-sm">Upload Thumbnail</span>
-          </label>
-        </div>
-      </div>
-       */}
       <button
         type="button"
         title="Add Variation"
