@@ -7,6 +7,7 @@ import ProductInputsInfo from "./ProductInputsInfo";
 import ProductsImages from "./ProductsImages";
 import ProductVariation from "./ProductVariation";
 import { useFormik } from "formik";
+import ProductThumbnail from "./ProductThumbnail";
 
 export interface Variation {
   id: number;
@@ -102,6 +103,8 @@ export default function AddProduct() {
           <AddSpecification formValues={formik.values} formChangeEvent={formik.handleChange} formBlurEvent={formik.handleBlur} formErrors={formik.errors} />
         )}
       </div>
+
+      <ProductThumbnail formValues={formik.values} formSetValues={formik.setFieldValue} />
 
       <ProductsImages formValues={formik.values} formSetValues={formik.setFieldValue} />
 
