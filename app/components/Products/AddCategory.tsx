@@ -8,17 +8,14 @@ import { AppDispatch, RootState } from "@/app/rtk/store";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
-import { FormInputV } from "./AddProduct";
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 
-export default function AddCategory({
-  formValues,
-  formChangeEvent,
-  formErrors,
-}: {
+interface AddCategoryProps {
   formValues: FormikValues;
   formChangeEvent: FormikHandlers["handleChange"];
-  formErrors: FormikErrors<FormInputV>;
-}) {
+  formErrors: FormikErrors<ProductTypes>;
+}
+export default function AddCategory({ formValues, formChangeEvent, formErrors }: AddCategoryProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { categories, singleCategory } = useSelector((state: RootState) => state.categories);
   const { brands } = useSelector((state: RootState) => state.brands);

@@ -1,18 +1,14 @@
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { FormikErrors, FormikHandlers, FormikValues } from "formik";
 import CustomInput from "../CustomInput/CustomInput";
-import { FormInputV } from "./AddProduct";
 
-export default function AddSpecification({
-  formValues,
-  formChangeEvent,
-  formBlurEvent,
-  formErrors,
-}: {
+interface AddSpecificationProps {
   formValues: FormikValues;
   formChangeEvent: FormikHandlers["handleChange"];
   formBlurEvent: FormikHandlers["handleBlur"];
-  formErrors: FormikErrors<FormInputV>;
-}) {
+  formErrors: FormikErrors<ProductTypes>;
+}
+export default function AddSpecification({ formValues, formChangeEvent, formBlurEvent, formErrors }: AddSpecificationProps) {
   return (
     <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>

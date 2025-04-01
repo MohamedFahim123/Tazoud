@@ -1,14 +1,18 @@
 "use client";
 
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { FormikHelpers, FormikValues } from "formik";
 import Image from "next/image";
 import React from "react";
 import { FaImage } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
-import { FormInputV } from "./AddProduct";
 
-export default function ProductsImages({ formValues, formSetValues }: { formValues: FormikValues; formSetValues: FormikHelpers<FormInputV>["setFieldValue"] }) {
+interface ProductThumbnailProps {
+  formValues: FormikValues;
+  formSetValues: FormikHelpers<ProductTypes>["setFieldValue"];
+}
+export default function ProductsImages({ formValues, formSetValues }: ProductThumbnailProps) {
   const images = formValues.images || [];
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

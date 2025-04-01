@@ -1,13 +1,13 @@
 import { FormikHandlers, FormikHelpers, FormikValues } from "formik";
 import { Fragment } from "react";
 import CustomInput from "../CustomInput/CustomInput";
-import { FormInputV, Variation } from "./AddProduct";
+import { ProductTypes, Variation } from "@/app/rtk/slices/ProductSlice";
 
 interface ProductVariationProps {
   formValues: FormikValues;
   formChangeEvent: FormikHandlers["handleChange"];
   formBlurEvent: FormikHandlers["handleBlur"];
-  formSetValues: FormikHelpers<FormInputV>["setFieldValue"];
+  formSetValues: FormikHelpers<ProductTypes>["setFieldValue"];
 }
 const ProductVariation = ({ formValues, formChangeEvent, formBlurEvent, formSetValues }: ProductVariationProps) => {
   // const thumbnail = formValues.variations.thumbnail;

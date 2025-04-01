@@ -1,13 +1,13 @@
 "use client";
 
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { FormikHelpers, FormikValues } from "formik";
 import Image from "next/image";
 import { FaImage } from "react-icons/fa";
-import { FormInputV } from "./AddProduct";
 
 interface ProductThumbnailProps {
   formValues: FormikValues;
-  formSetValues: FormikHelpers<FormInputV>["setFieldValue"];
+  formSetValues: FormikHelpers<ProductTypes>["setFieldValue"];
 }
 
 const ProductThumbnail = ({ formValues, formSetValues }: ProductThumbnailProps) => {
