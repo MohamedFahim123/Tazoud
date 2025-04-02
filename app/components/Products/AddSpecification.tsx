@@ -8,7 +8,12 @@ interface AddSpecificationProps {
   formBlurEvent: FormikHandlers["handleBlur"];
   formErrors: FormikErrors<ProductTypes>;
 }
-export default function AddSpecification({ formValues, formChangeEvent, formBlurEvent, formErrors }: AddSpecificationProps) {
+export default function AddSpecification({
+  formValues,
+  formChangeEvent,
+  formBlurEvent,
+  formErrors,
+}: AddSpecificationProps) {
   return (
     <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
@@ -19,33 +24,63 @@ export default function AddSpecification({ formValues, formChangeEvent, formBlur
             onChange={formChangeEvent}
             value={formValues.price}
             onBlur={formBlurEvent}
+            hasError={Boolean(formErrors.price)}
             id="price"
             label="Regular Price"
             placeHolder="Enter Regular Price"
           />
-          {formErrors.price && <div className="text-red-500">{formErrors.price}</div>}
+          {formErrors.price && (
+            <div className="text-red-500 text-sm">{formErrors.price}</div>
+          )}
         </div>
         <div className="md:w-[48%] w-full">
           <CustomInput
             type="text"
             onChange={formChangeEvent}
             value={formValues.price_after_discount}
+            hasError={Boolean(formErrors.price_after_discount)}
             onBlur={formBlurEvent}
             id="price_after_discount"
             label="Discount Price"
             placeHolder="Enter Discount Price"
           />
-          {formErrors.price_after_discount && <div className="text-red-500">{formErrors.price_after_discount}</div>}
+          {formErrors.price_after_discount && (
+            <div className="text-red-500 text-sm">
+              {formErrors.price_after_discount}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between mb-3">
         <div className="md:w-[48%] w-full">
-          <CustomInput type="text" onChange={formChangeEvent} value={formValues.stock} onBlur={formBlurEvent} id="stock" label="Stock" placeHolder="type" />
-          {formErrors.stock && <div className="text-red-500">{formErrors.stock}</div>}
+          <CustomInput
+            type="text"
+            onChange={formChangeEvent}
+            value={formValues.stock}
+            onBlur={formBlurEvent}
+            hasError={Boolean(formErrors.stock)}
+            id="stock"
+            label="Stock"
+            placeHolder="type"
+          />
+          {formErrors.stock && (
+            <div className="text-red-500 text-sm">{formErrors.stock}</div>
+          )}
         </div>
         <div className="md:w-[48%] w-full">
-          <CustomInput type="text" onChange={formChangeEvent} value={formValues.code} onBlur={formBlurEvent} id="code" label="code" placeHolder="type" />
-          {formErrors.code && <div className="text-red-500">{formErrors.code}</div>}
+          <CustomInput
+            type="text"
+            onChange={formChangeEvent}
+            value={formValues.code}
+            onBlur={formBlurEvent}
+            hasError={Boolean(formErrors.code)}
+            id="code"
+            label="code"
+            placeHolder="type"
+          />
+          {formErrors.code && (
+            <div className="text-red-500 text-sm">{formErrors.code}</div>
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ interface CustomSelectOptionsProps {
   options: { id: number; name: string }[];
   onChange?: FormikHandlers["handleChange"];
   value?: string;
+  hasError?: boolean;
   className?: string;
 }
 
@@ -15,6 +16,7 @@ const CustomSelectOptions = ({
   options,
   onChange,
   value,
+  hasError,
   className,
 }: CustomSelectOptionsProps) => {
   return (
@@ -32,12 +34,12 @@ const CustomSelectOptions = ({
         name={id}
         value={value}
         onChange={onChange ? onChange : () => {}}
-        className={`bg-white border border-primary text-gray_dark text-sm rounded-lg focus:border-primary outline-none block w-full p-2.5 ${className}`}
+        className={`bg-white border ${
+          hasError ? "border-red-500" : "border-primary focus:border-primary"
+        } text-gray_dark text-sm rounded-lg outline-none block w-full p-2.5 ${className}`}
       >
         {label === "Sub Category" ? (
-          <option value="">
-            Add {label}
-          </option>
+          <option value="">Add {label}</option>
         ) : (
           <option value="" disabled>
             Add {label}

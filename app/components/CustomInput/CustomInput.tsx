@@ -13,9 +13,10 @@ interface customInputTypes {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   value?: string;
+  hasError?: boolean;
 }
 
-const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, label, id }: customInputTypes) => {
+const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, label, id, hasError }: customInputTypes) => {
   const [viewPassword, setViewPassword] = useState(false);
   const handleToggleShowPassword = () => setViewPassword(!viewPassword);
 
@@ -30,7 +31,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           onChange={onChange}
           onBlur={onBlur}
           value=""
-          className="w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary"
+          className={`w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary`}
         />
       ) : (
         <label htmlFor={id} className={`text-gray_dark block mb-2 text-sm font-medium`}>
@@ -51,7 +52,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           onBlur={onBlur}
           value={value}
           placeholder={placeHolder}
-          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none border-primary block w-full `}
+          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none ${hasError ? "border-red-500" : "border-primary"} block w-full `}
         />
       )}
 
