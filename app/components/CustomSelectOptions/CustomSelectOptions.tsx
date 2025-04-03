@@ -10,22 +10,11 @@ interface CustomSelectOptionsProps {
   className?: string;
 }
 
-const CustomSelectOptions = ({
-  id,
-  label,
-  options,
-  onChange,
-  value,
-  hasError,
-  className,
-}: CustomSelectOptionsProps) => {
+const CustomSelectOptions = ({ id, label, options, onChange, value, hasError, className }: CustomSelectOptionsProps) => {
   return (
     <div>
       {label && (
-        <label
-          htmlFor={id}
-          className="block mb-2 text-sm font-medium text-gray_dark "
-        >
+        <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray_dark ">
           {label}
         </label>
       )}

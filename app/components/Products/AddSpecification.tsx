@@ -1,5 +1,7 @@
+"use client";
+
 import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
-import { FormikErrors, FormikHandlers, FormikValues } from "formik";
+import { FormikErrors, FormikHandlers, FormikTouched, FormikValues } from "formik";
 import CustomInput from "../CustomInput/CustomInput";
 
 interface AddSpecificationProps {
@@ -7,13 +9,9 @@ interface AddSpecificationProps {
   formChangeEvent: FormikHandlers["handleChange"];
   formBlurEvent: FormikHandlers["handleBlur"];
   formErrors: FormikErrors<ProductTypes>;
+  touched: FormikTouched<ProductTypes>;
 }
-export default function AddSpecification({
-  formValues,
-  formChangeEvent,
-  formBlurEvent,
-  formErrors,
-}: AddSpecificationProps) {
+export default function AddSpecification({ formValues, touched, formChangeEvent, formBlurEvent, formErrors }: AddSpecificationProps) {
   return (
     <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
@@ -22,33 +20,27 @@ export default function AddSpecification({
           <CustomInput
             type="text"
             onChange={formChangeEvent}
-            value={formValues.price}
             onBlur={formBlurEvent}
-            hasError={Boolean(formErrors.price)}
+            hasError={Boolean(formErrors.price && touched.price)}
+            value={formValues.price}
             id="price"
             label="Regular Price"
             placeHolder="Enter Regular Price"
           />
-          {formErrors.price && (
-            <div className="text-red-500 text-sm">{formErrors.price}</div>
-          )}
+          {touched.price && formErrors.price && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
         </div>
         <div className="md:w-[48%] w-full">
           <CustomInput
             type="text"
             onChange={formChangeEvent}
             value={formValues.price_after_discount}
-            hasError={Boolean(formErrors.price_after_discount)}
+            hasError={Boolean(formErrors.price_after_discount && touched.price_after_discount)}
             onBlur={formBlurEvent}
             id="price_after_discount"
             label="Discount Price"
             placeHolder="Enter Discount Price"
           />
-          {formErrors.price_after_discount && (
-            <div className="text-red-500 text-sm">
-              {formErrors.price_after_discount}
-            </div>
-          )}
+          {touched.price_after_discount && formErrors.price_after_discount && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
         </div>
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between mb-3">
@@ -58,14 +50,12 @@ export default function AddSpecification({
             onChange={formChangeEvent}
             value={formValues.stock}
             onBlur={formBlurEvent}
-            hasError={Boolean(formErrors.stock)}
+            hasError={Boolean(formErrors.stock && touched.stock)}
             id="stock"
             label="Stock"
             placeHolder="type"
           />
-          {formErrors.stock && (
-            <div className="text-red-500 text-sm">{formErrors.stock}</div>
-          )}
+          {touched.stock && formErrors.stock && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
         </div>
         <div className="md:w-[48%] w-full">
           <CustomInput
@@ -73,14 +63,12 @@ export default function AddSpecification({
             onChange={formChangeEvent}
             value={formValues.code}
             onBlur={formBlurEvent}
-            hasError={Boolean(formErrors.code)}
+            hasError={Boolean(formErrors.code && touched.code)}
             id="code"
             label="code"
             placeHolder="type"
           />
-          {formErrors.code && (
-            <div className="text-red-500 text-sm">{formErrors.code}</div>
-          )}
+          {touched.code && formErrors.code && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
         </div>
       </div>
     </div>

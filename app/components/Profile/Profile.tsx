@@ -26,6 +26,9 @@ export default function Profile() {
         await dispatch(getProfile()).unwrap();
       } catch (err) {
         console.error("Error fetching profile:", err);
+        // Set the error message
+        // setServerError(err?.message || "Something went wrong. Please try again.");
+        // toast.error(err?.message || "Failed to load profile.");
       }
     };
 
