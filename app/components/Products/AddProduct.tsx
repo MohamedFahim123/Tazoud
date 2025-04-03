@@ -98,9 +98,16 @@ export default function AddProduct() {
         const res = await dispatch(addProduct(formData)).unwrap();
         toast.success(res?.message ? res?.message : "Product added successfully");
       } catch (error) {
-        console.log(error);
-
-        toast.error(error ? error.toString() : "Error!!");
+        if (error && typeof error === "object" && !Array.isArray(error)) {
+          const errorObj = error as Record<string, string[]>; // Explicitly type it
+          Object.entries(errorObj).forEach(([, messages]) => {
+            if (Array.isArray(messages)) {
+              messages.forEach((message) => toast.error(message));
+            }
+          });
+        } else {
+          toast.error(typeof error === "string" ? error : "Something went wrong while adding the product.");
+        }
       }
     },
   });
