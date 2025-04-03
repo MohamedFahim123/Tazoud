@@ -127,7 +127,6 @@ export default function SellerCards() {
             <div className="flex items-center gap-2">
               <FaFax className="text-blue-500" />
               <span>
-                {" "}
                 <a href="tel:+91 564-258-4781">{seller.phone2}</a>
               </span>
             </div>
