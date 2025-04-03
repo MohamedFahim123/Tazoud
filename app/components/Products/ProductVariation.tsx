@@ -1,9 +1,6 @@
-import {
-  FormikErrors,
-  FormikHandlers,
-  FormikHelpers,
-  FormikValues,
-} from "formik";
+"use client";
+
+import { FormikErrors, FormikHandlers, FormikHelpers, FormikTouched, FormikValues } from "formik";
 import { Fragment } from "react";
 import CustomInput from "../CustomInput/CustomInput";
 import { ProductTypes, Variation } from "@/app/rtk/slices/ProductSlice";
@@ -15,19 +12,11 @@ interface ProductVariationProps {
   formChangeEvent: FormikHandlers["handleChange"];
   formBlurEvent: FormikHandlers["handleBlur"];
   formErrors: FormikErrors<ProductTypes>;
+  touched: FormikTouched<ProductTypes>;
   formSetValues: FormikHelpers<ProductTypes>["setFieldValue"];
 }
-const ProductVariation = ({
-  formErrors,
-  formValues,
-  formChangeEvent,
-  formBlurEvent,
-  formSetValues,
-}: ProductVariationProps) => {
-  const handleThumbnailChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
+const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, formBlurEvent, formSetValues }: ProductVariationProps) => {
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
@@ -52,21 +41,13 @@ const ProductVariation = ({
                   id={`variations[${idx}].name_en`}
                   label="Name En"
                   onChange={formChangeEvent}
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.name_en
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_en && touched.variations?.[idx]?.name_en)}
                   value={formValues.variations?.[idx]?.name_en || ""}
                   onBlur={formBlurEvent}
                   placeHolder="Name In English"
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.name_en as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.name_en && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.name_en}</div>
                 )}
               </div>
               <div className="md:w-[48%] w-full">
@@ -74,22 +55,14 @@ const ProductVariation = ({
                   type="text"
                   id={`variations[${idx}].name_ar`}
                   onChange={formChangeEvent}
-                  value={formValues.variations[idx]?.name_ar}
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.name_ar
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_ar && touched.variations?.[idx]?.name_ar)}
+                  value={formValues.variations[idx]?.name_ar || ""}
                   onBlur={formBlurEvent}
                   label="Name Ar"
                   placeHolder="ادخل الاسم بالعربية"
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.name_ar as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.name_ar && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.name_ar}</div>
                 )}
               </div>
             </div>
@@ -98,22 +71,14 @@ const ProductVariation = ({
                 <CustomInput
                   type="number"
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.price}`}
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.price
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.price && touched.variations?.[idx]?.price)}
+                  value={formValues.variations[idx]?.price || ""}
                   onBlur={formBlurEvent}
                   id={`variations[${idx}].price`}
                   label="Price"
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.price as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.price && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.price}</div>
                 )}
               </div>
               <div className="md:w-[48%] w-full">
@@ -121,21 +86,13 @@ const ProductVariation = ({
                   type="number"
                   id={`variations[${idx}].price_after_discount`}
                   label="Price After Discount"
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.price_after_discount
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.price_after_discount && touched.variations?.[idx]?.price_after_discount)}
+                  value={formValues.variations[idx]?.price_after_discount || ""}
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.price_after_discount}`}
                   onBlur={formBlurEvent}
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.price_after_discount as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.price_after_discount && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.price_after_discount}</div>
                 )}
               </div>
             </div>
@@ -144,22 +101,14 @@ const ProductVariation = ({
                 <CustomInput
                   type="text"
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.value_en}`}
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.value_en
-                  )}
-                  onBlur={formBlurEvent}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_en && touched.variations?.[idx]?.value_en)}
+                  value={formValues.variations[idx]?.value_en || ""}
                   id={`variations[${idx}].value_en`}
+                  onBlur={formBlurEvent}
                   label="Value En"
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.value_en as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.value_en && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.value_en}</div>
                 )}
               </div>
               <div className="md:w-[48%] w-full">
@@ -167,21 +116,13 @@ const ProductVariation = ({
                   type="text"
                   id={`variations[${idx}].value_ar`}
                   label="Value Ar"
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.value_ar
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_ar && touched.variations?.[idx]?.value_ar)}
+                  value={formValues.variations[idx]?.value_ar || ""}
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.value_ar}`}
                   onBlur={formBlurEvent}
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.value_ar as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.value_ar && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.value_ar}</div>
                 )}
               </div>
             </div>
@@ -190,22 +131,14 @@ const ProductVariation = ({
                 <CustomInput
                   type="text"
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.stock}`}
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.stock
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.stock && touched.variations?.[idx]?.stock)}
+                  value={formValues.variations[idx]?.stock || ""}
                   onBlur={formBlurEvent}
                   id={`variations[${idx}].stock`}
                   label="Stock"
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.stock as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.stock && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.stock}</div>
                 )}
               </div>
               <div className="md:w-[48%] w-full">
@@ -213,24 +146,17 @@ const ProductVariation = ({
                   type="text"
                   id={`variations[${idx}].code`}
                   label="Code"
-                  hasError={Boolean(
-                    (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                      ?.code
-                  )}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.code && touched.variations?.[idx]?.code)}
+                  value={formValues.variations[idx]?.code || ""}
                   onChange={formChangeEvent}
-                  value={`${formValues.variations[idx]?.code}`}
                   onBlur={formBlurEvent}
                 />
-                {(formErrors.variations?.[idx] as FormikErrors<Variation>) && (
-                  <div className="text-red-500 text-sm">
-                    {
-                      (formErrors.variations?.[idx] as FormikErrors<Variation>)
-                        ?.code as string
-                    }
-                  </div>
+                {touched.variations?.[idx]?.code && formErrors.variations?.[idx] && typeof formErrors.variations?.[idx] !== "string" && (
+                  <div className="text-red-500 text-sm">{formErrors.variations?.[idx]?.code}</div>
                 )}
               </div>
             </div>
+
             <div className="max-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
               {variation.thumbnail && (
                 <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark w-[200px]">
@@ -249,12 +175,7 @@ const ProductVariation = ({
 
               <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark">
                 <label className="flex sm:flex-col items-center justify-center w-full h-[200px] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary hover:text-primary">
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={(e) => handleThumbnailChange(e, idx)}
-                  />
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleThumbnailChange(e, idx)} />
                   <FaImage className="text-4xl mb-2" />
                   <span className="text-sm">Upload Thumbnail</span>
                 </label>

@@ -43,82 +43,60 @@ interface ProductsState {
   error: string | null;
 }
 
-export const getProducts = createAsyncThunk<
-  ProductTypes[],
-  void,
-  { rejectValue: string }
->("products/getProducts", async (_, { rejectWithValue }) => {
+export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue: string }>("products/getProducts", async (_, { rejectWithValue }) => {
   try {
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: ProductTypes[] }>(
-      dashboardEndPoints?.products?.allProducts,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to fetch products"
-    );
-  }
-});
-
-export const getSingleProduct = createAsyncThunk<
-  ProductTypes,
-  number,
-  { rejectValue: string }
->("products/getSingleProduct", async (id, { rejectWithValue }) => {
-  try {
-    const singleProduct = dashboardEndPoints?.products?.singleProduct as (
-      id: string
-    ) => string;
-
-    const response = await axios.get<{ data: ProductTypes }>(
-      singleProduct(id.toString()),
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to Add product"
-    );
-  }
-});
-
-export const addProduct = createAsyncThunk<
-  {
-    message: string;
-  },
-  FormData,
-  { rejectValue: string }
->("products/addProduct", async (formData, { rejectWithValue }) => {
-  try {
-    const endPoint: string = dashboardEndPoints?.products?.createProduct
-      ? dashboardEndPoints?.products?.createProduct
-      : "";
-
-    const response = await axios.post(endPoint, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
+    const response = await axios.get<{ data: ProductTypes[] }>(dashboardEndPoints?.products?.allProducts, {
+      headers: { Authorization: `Bearer ${token}` },
     });
-
-    return response.data;
+    return response.data.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to add product"
-    );
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch products");
   }
 });
+
+export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectValue: string }>("products/getSingleProduct", async (id, { rejectWithValue }) => {
+  try {
+    const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
+
+    const response = await axios.get<{ data: ProductTypes }>(singleProduct(id.toString()), {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to Add product");
+  }
+});
+
+export const addProduct = createAsyncThunk<{ message: string }, FormData, { rejectValue: Record<string, string[]> | string }>(
+  "products/addProduct",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const endPoint: string = dashboardEndPoints?.products?.createProduct ? dashboardEndPoints?.products?.createProduct : "";
+
+      const response = await axios.post(endPoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ errors: Record<string, string[]> }>;
+
+      if (error.response?.data?.errors) {
+        return rejectWithValue(error.response.data.errors);
+      }
+
+      return rejectWithValue("Failed to add product");
+    }
+  }
+);
 
 const initialState: ProductsState = {
   products: [],
@@ -171,7 +149,11 @@ const productsSlice = createSlice({
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to add product";
+        if (typeof action.payload === "object" && action.payload !== null) {
+          state.error = JSON.stringify(action.payload); // Store structured error as string
+        } else {
+          state.error = action.payload || "Failed to add product";
+        }
       });
   },
 });
