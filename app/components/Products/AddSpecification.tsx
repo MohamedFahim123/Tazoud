@@ -13,7 +13,7 @@ interface AddSpecificationProps {
 }
 export default function AddSpecification({ formValues, touched, formChangeEvent, formBlurEvent, formErrors }: AddSpecificationProps) {
   return (
-    <div className="max-h-[500px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
+    <div className=" p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark">
       <h3 className="text-lg font-bold mb-3">Specification</h3>
       <div className="flex md:flex-row flex-col items-center justify-between mb-3">
         <div className="md:w-[48%] w-full">
@@ -24,10 +24,10 @@ export default function AddSpecification({ formValues, touched, formChangeEvent,
             hasError={Boolean(formErrors.price && touched.price)}
             value={formValues.price}
             id="price"
-            label="Regular Price"
-            placeHolder="Enter Regular Price"
+            label="Price"
+            placeHolder="Enter Price"
           />
-          {touched.price && formErrors.price && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
+          {touched.price && formErrors.price && <div className="text-red-500 text-sm">{formErrors.price}</div>}
         </div>
         <div className="md:w-[48%] w-full">
           <CustomInput
@@ -40,7 +40,7 @@ export default function AddSpecification({ formValues, touched, formChangeEvent,
             label="Discount Price"
             placeHolder="Enter Discount Price"
           />
-          {touched.price_after_discount && formErrors.price_after_discount && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
+          {touched.price_after_discount && formErrors.price_after_discount && <div className="text-red-500 text-sm">{formErrors.price_after_discount}</div>}{" "}
         </div>
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between mb-3">
@@ -55,7 +55,7 @@ export default function AddSpecification({ formValues, touched, formChangeEvent,
             label="Stock"
             placeHolder="type"
           />
-          {touched.stock && formErrors.stock && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
+          {touched.stock && formErrors.stock && <div className="text-red-500 text-sm">{formErrors.stock}</div>}
         </div>
         <div className="md:w-[48%] w-full">
           <CustomInput
@@ -68,7 +68,7 @@ export default function AddSpecification({ formValues, touched, formChangeEvent,
             label="code"
             placeHolder="type"
           />
-          {touched.code && formErrors.code && <div className="text-red-500 text-sm">{formErrors.category_id}</div>}{" "}
+          {touched.code && formErrors.code && <div className="text-red-500 text-sm">{formErrors.code}</div>}
         </div>
       </div>
     </div>
