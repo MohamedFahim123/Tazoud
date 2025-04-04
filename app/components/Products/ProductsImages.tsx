@@ -7,6 +7,7 @@ import React from "react";
 import { FaImage } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import { toast } from "react-toastify";
 
 interface ProductThumbnailProps {
   formValues: FormikValues;
@@ -21,6 +22,10 @@ export default function ProductsImages({ formValues, touched, formErrors, formSe
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newImages = Array.from(e.target.files).map((file) => file);
+      const totalImages = newImages.length + images.length;
+
+      if (totalImages > 7) return toast.error("You can upload up to 7 images only");
+
       formSetValues("images", [...images, ...newImages]);
     }
   };
@@ -78,7 +83,7 @@ export default function ProductsImages({ formValues, touched, formErrors, formSe
 
         <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark">
           <label className="flex sm:flex-col items-center justify-center w-full h-[200px] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary hover:text-primary">
-            <input type="file" className="hidden" accept="image/*" multiple max={7} onChange={handleImageChange} />
+            <input type="file" className="hidden" accept="image/*" multiple onChange={handleImageChange} />
             <FaImage className="text-4xl mb-2" />
             <span className="text-sm">Image Upload</span>
           </label>

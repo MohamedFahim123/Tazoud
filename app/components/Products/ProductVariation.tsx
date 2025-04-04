@@ -1,11 +1,9 @@
-"use client";
-
-import { FormikErrors, FormikHandlers, FormikHelpers, FormikTouched, FormikValues } from "formik";
-import { Fragment } from "react";
-import CustomInput from "../CustomInput/CustomInput";
 import { ProductTypes, Variation } from "@/app/rtk/slices/ProductSlice";
+import { FormikErrors, FormikHandlers, FormikHelpers, FormikTouched, FormikValues } from "formik";
 import Image from "next/image";
+import { Fragment } from "react";
 import { FaImage } from "react-icons/fa";
+import CustomInput from "../CustomInput/CustomInput";
 
 interface ProductVariationProps {
   formValues: FormikValues;

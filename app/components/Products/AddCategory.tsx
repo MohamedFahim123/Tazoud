@@ -1,14 +1,12 @@
-"use client";
-
-import { FormikErrors, FormikHandlers, FormikTouched, FormikValues } from "formik";
 import { getBrands } from "@/app/rtk/slices/brandsSlice";
 import { getCategories, getSingleCategory } from "@/app/rtk/slices/categoriesSlice";
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { getUnitsMeasures } from "@/app/rtk/slices/unitsMeasuresSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
+import { FormikErrors, FormikHandlers, FormikTouched, FormikValues } from "formik";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
-import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 
 interface AddCategoryProps {
   formValues: FormikValues;
