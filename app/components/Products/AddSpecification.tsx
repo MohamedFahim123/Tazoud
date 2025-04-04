@@ -1,5 +1,3 @@
-"use client";
-
 import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { FormikErrors, FormikHandlers, FormikTouched, FormikValues } from "formik";
 import CustomInput from "../CustomInput/CustomInput";

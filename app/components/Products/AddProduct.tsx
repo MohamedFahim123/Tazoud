@@ -7,13 +7,13 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Loading from "../Loading/Loading";
 import AddCategory from "./AddCategory";
 import AddSpecification from "./AddSpecification";
 import ProductInputsInfo from "./ProductInputsInfo";
 import ProductsImages from "./ProductsImages";
 import ProductThumbnail from "./ProductThumbnail";
 import ProductVariation from "./ProductVariation";
-import Loading from "../Loading/Loading";
 
 export default function AddProduct() {
   const dispatch = useDispatch<AppDispatch>();

@@ -1,5 +1,3 @@
-"use client";
-
 import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import { FormikErrors, FormikHelpers, FormikTouched, FormikValues } from "formik";
 import Image from "next/image";
