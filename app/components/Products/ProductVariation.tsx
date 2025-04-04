@@ -39,7 +39,9 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                   id={`variations[${idx}].name_en`}
                   label="Name En"
                   onChange={formChangeEvent}
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_en && touched.variations?.[idx]?.name_en)}
+                  hasError={Boolean(
+                    (formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_en && (touched.variations?.[idx] as FormikErrors<Variation>)?.name_en
+                  )}
                   value={formValues.variations?.[idx]?.name_en || ""}
                   onBlur={formBlurEvent}
                   placeHolder="Name In English"
@@ -53,7 +55,9 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                   type="text"
                   id={`variations[${idx}].name_ar`}
                   onChange={formChangeEvent}
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_ar && touched.variations?.[idx]?.name_ar)}
+                  hasError={Boolean(
+                    (formErrors.variations?.[idx] as FormikErrors<Variation>)?.name_ar && (touched.variations?.[idx] as FormikErrors<Variation>)?.name_ar
+                  )}
                   value={formValues.variations[idx]?.name_ar || ""}
                   onBlur={formBlurEvent}
                   label="Name Ar"
@@ -69,7 +73,7 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                 <CustomInput
                   type="number"
                   onChange={formChangeEvent}
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.price && touched.variations?.[idx]?.price)}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.price && (touched.variations?.[idx] as FormikErrors<Variation>)?.price)}
                   value={formValues.variations[idx]?.price || ""}
                   onBlur={formBlurEvent}
                   id={`variations[${idx}].price`}
@@ -84,7 +88,10 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                   type="number"
                   id={`variations[${idx}].price_after_discount`}
                   label="Price After Discount"
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.price_after_discount && touched.variations?.[idx]?.price_after_discount)}
+                  hasError={Boolean(
+                    (formErrors.variations?.[idx] as FormikErrors<Variation>)?.price_after_discount &&
+                      (touched.variations?.[idx] as FormikErrors<Variation>)?.price_after_discount
+                  )}
                   value={formValues.variations[idx]?.price_after_discount || ""}
                   onChange={formChangeEvent}
                   onBlur={formBlurEvent}
@@ -99,7 +106,9 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                 <CustomInput
                   type="text"
                   onChange={formChangeEvent}
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_en && touched.variations?.[idx]?.value_en)}
+                  hasError={Boolean(
+                    (formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_en && (touched.variations?.[idx] as FormikErrors<Variation>)?.value_en
+                  )}
                   value={formValues.variations[idx]?.value_en || ""}
                   id={`variations[${idx}].value_en`}
                   onBlur={formBlurEvent}
@@ -114,7 +123,9 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                   type="text"
                   id={`variations[${idx}].value_ar`}
                   label="Value Ar"
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_ar && touched.variations?.[idx]?.value_ar)}
+                  hasError={Boolean(
+                    (formErrors.variations?.[idx] as FormikErrors<Variation>)?.value_ar && (touched.variations?.[idx] as FormikErrors<Variation>)?.value_ar
+                  )}
                   value={formValues.variations[idx]?.value_ar || ""}
                   onChange={formChangeEvent}
                   onBlur={formBlurEvent}
@@ -129,7 +140,7 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                 <CustomInput
                   type="text"
                   onChange={formChangeEvent}
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.stock && touched.variations?.[idx]?.stock)}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.stock && (touched.variations?.[idx] as FormikErrors<Variation>)?.stock)}
                   value={formValues.variations[idx]?.stock || ""}
                   onBlur={formBlurEvent}
                   id={`variations[${idx}].stock`}
@@ -144,7 +155,7 @@ const ProductVariation = ({ formErrors, touched, formValues, formChangeEvent, fo
                   type="text"
                   id={`variations[${idx}].code`}
                   label="Code"
-                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.code && touched.variations?.[idx]?.code)}
+                  hasError={Boolean((formErrors.variations?.[idx] as FormikErrors<Variation>)?.code && (touched.variations?.[idx] as FormikErrors<Variation>)?.code)}
                   value={formValues.variations[idx]?.code || ""}
                   onChange={formChangeEvent}
                   onBlur={formBlurEvent}
