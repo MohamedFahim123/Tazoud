@@ -23,14 +23,14 @@ export const productSchema = yup.object({
     })
     .of(
       yup.object({
-        name_ar: yup.string().required("Arabic variation name is required"),
-        name_en: yup.string().required("English variation name is required"),
-        price: yup.number().typeError("Price must be a number").required("Variation price is required"),
-        price_after_discount: yup.number().typeError("Price after discount must be a number").required("Variation price after discount is required"),
-        value_ar: yup.string().required("Arabic variation value is required"),
-        value_en: yup.string().required("English variation value is required"),
-        stock: yup.number().typeError("Stock must be a number").required("Variation stock is required"),
-        code: yup.string().required("Variation code is required"),
+        name_ar: yup.string().typeError("Arabic variation name is required"),
+        name_en: yup.string().typeError("English variation name is required"),
+        price: yup.number().typeError("Price must be a number").typeError("Variation price is required"),
+        price_after_discount: yup.number().typeError("Price after discount must be a number").typeError("Variation price after discount is required"),
+        value_ar: yup.string().typeError("Arabic variation value is required"),
+        value_en: yup.string().typeError("English variation value is required"),
+        stock: yup.number().typeError("Stock must be a number").typeError("Variation stock is required"),
+        code: yup.string().typeError("Variation code is required"),
         thumbnail: yup.mixed().nullable(),
       })
     ),
