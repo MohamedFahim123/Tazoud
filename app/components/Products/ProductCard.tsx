@@ -16,7 +16,7 @@ export default function ProductCard({
   has_variations,
   code,
 }: ProductTypes) {
-  const imageSrc: string = typeof thumbnail === "string" ? thumbnail : "/fallback-image.jpg"; // Fallback image if thumbnail is invalid
+  const imageSrc: string = typeof thumbnail === "string" ? thumbnail : "/images/profile.png";
 
   return (
     <div key={id} className="bg-white rounded-lg border border-gray shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
