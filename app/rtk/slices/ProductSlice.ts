@@ -5,35 +5,45 @@ import Cookies from "js-cookie";
 const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
 export interface Variation {
-  id: number;
-  name_ar: string;
-  name_en: string;
-  price: number | string;
-  price_after_discount: number | string;
-  value_ar: string;
-  value_en: string;
-  stock: number | string;
-  code: string;
-  thumbnail: File | null;
+  id?: number;
+  name_ar?: string;
+  name_en?: string;
+  price?: number | string;
+  price_after_discount?: number | string;
+  value_ar?: string;
+  value_en?: string;
+  stock?: number | string;
+  code?: string;
+  thumbnail?: File | null;
 }
 
 export interface ProductTypes {
-  title_ar: string;
-  title_en: string;
-  description_ar: string;
-  description_en: string;
-  category_id: string;
-  sub_category_id: string;
-  brand_id: string;
-  unit_of_measure_id: string;
-  images: File[] | [];
-  has_variation: boolean;
-  variations: Variation[];
-  price: number | string;
-  price_after_discount: number | string;
-  stock: number | string;
-  code: string;
-  thumbnail: File | null;
+  id?: number;
+  description?: string;
+  title?: string;
+  title_ar?: string;
+  title_en?: string;
+  description_ar?: string;
+  description_en?: string;
+  category?: string;
+  category_id?: string;
+  sub_category?: string;
+  sub_category_id?: string;
+  brand_id?: string;
+  unit_of_measure_id?: string;
+  images?: File[] | [];
+  has_variation?: boolean;
+  variations?: Variation[];
+  price?: number | string;
+  price_after_discount?: number | string;
+  stock?: number;
+  code?: string;
+  thumbnail?: File | null;
+  unit_of_measure?: string;
+  brand?: string;
+  status?: string;
+  status_translated?: string;
+  has_variations?: boolean;
 }
 
 interface ProductsState {
@@ -48,10 +58,10 @@ export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue:
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: ProductTypes[] }>(dashboardEndPoints?.products?.allProducts, {
+    const response = await axios.get<{ data: { products: ProductTypes[] } }>(dashboardEndPoints?.products?.allProducts, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data.data;
+    return response.data.data.products;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch products");
