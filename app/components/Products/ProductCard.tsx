@@ -26,7 +26,6 @@ export default function ProductCard({
             src={imageSrc}
             alt={title !== undefined ? title : ""}
             layout="fill"
-            objectFit="cover"
             priority
             placeholder="blur"
             blurDataURL="/images/profile.png"

@@ -72,10 +72,11 @@ export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectV
   try {
     const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
 
-    const response = await axios.get<{ data: ProductTypes }>(singleProduct(id.toString()), {
+    const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data.data;
+
+    return response.data.data.product;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to Add product");
