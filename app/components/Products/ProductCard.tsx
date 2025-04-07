@@ -49,7 +49,7 @@ export default function ProductCard({
           {/* <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{status_translated}</span> */}
         </div>
 
-        <p className="text-gray_dark text-sm mb-3 line-clamp-2 ">{description?.slice(0, 30)}.....</p>
+        <p className="text-gray_dark text-sm mb-3 line-clamp-2 ">{description?.slice(0, 35)}.....</p>
 
         <div className="flex flex-col justify-between gap-3">
           <div className="flex items-center">
