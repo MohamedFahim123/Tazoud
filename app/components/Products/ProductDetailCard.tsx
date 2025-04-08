@@ -17,8 +17,8 @@ const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
           <Image
             src={typeof selectedImage === "string" ? selectedImage : ""}
             alt="Product"
-            width={300}
-            height={300}
+            width={150}
+            height={150}
             className="w-full h-full object-cover"
             priority
             placeholder="blur"
