@@ -20,14 +20,15 @@ export default function ProductCard({
 
   return (
     <div key={id} className="w-[300px] bg-white rounded-lg border border-gray shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="relative h-48 w-full bg-primary/5 shadow-sm overflow-hidden">
+      <div className="relative h-[300px] w-full bg-primary/5 shadow-sm overflow-hidden">
         <Link href={`/dashboard/products/${id}`}>
           <Image
             src={imageSrc}
             alt={title !== undefined ? title : ""}
-            layout="fill"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            // layout="fill"
+            width={300}
+            height={300}
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
             placeholder="blur"
             blurDataURL="/images/profile.png"
@@ -64,7 +65,9 @@ export default function ProductCard({
             )}
           </div>
 
-          <div className={`text-sm text-center w-fit px-2 py-1 rounded-full ${(stock ?? 0) > 0 ? "bg-primary/10 text-primary" : " bg-red-100 text-red-500"}`}>
+          <div
+            className={`text-sm text-center w-fit px-2 py-1 rounded-full {typeof stock === "number" && stock > 0 ? "bg-primary/10 text-primary" : " bg-red-100 text-red-500"}`}
+          >
             Stock: {stock}
           </div>
         </div>
