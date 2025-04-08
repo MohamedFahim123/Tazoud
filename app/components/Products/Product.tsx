@@ -1,32 +1,21 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
-import ProductCard from "./ProductCard";
+import { getProducts } from "@/app/rtk/slices/ProductSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { useEffect } from "react";
-import { getProducts } from "@/app/rtk/slices/ProductSlice";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/Loading";
-import Cookies from "js-cookie";
-import { toast } from "react-toastify";
+import ProductCard from "./ProductCard";
 
 const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, error, loading } = useSelector((state: RootState) => state.products);
+  const { products, loading } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (error == "Unauthenticated") {
-      Cookies.remove("TAZOUD_TOKEN");
-      toast.error(" You are Unauthenticated to access this page.");
-      setTimeout(() => {
-        window.location.href = "/auth/login";
-      }, 1500);
-    }
-  }, [error]);
   return (
     <div className="bg-gray-50 py-6">
       {loading ? (
