@@ -38,6 +38,9 @@ const Product = () => {
             {products?.map((product, index) => (
               <ProductCard key={index} {...product} />
             ))}
+            {products?.map((product, index) => (
+              <ProductCard key={index} {...product} />
+            ))}
           </div>
         </div>
       )}

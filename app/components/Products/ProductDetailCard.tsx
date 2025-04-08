@@ -1,40 +1,25 @@
 "use client";
 
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import Image from "next/image";
 import { useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
-const ProductDetailCard = () => {
+const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
   const [quantity, setQuantity] = useState(1);
-  const images = ["/images/product-img1.png", "/images/p-update-img.png"];
+  const images = [product.thumbnail, ...(product.images || [])];
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex flex-row md:flex-col flex-wrap gap-2">
-            {images.map((img, index) => (
-              <Image
-                key={index}
-                src={img}
-                alt="Product Thumbnail"
-                width={100}
-                height={100}
-                priority
-                placeholder="blur"
-                blurDataURL="/images/profile.png"
-                className={`w-25 h-20 border p-1 cursor-pointer ${selectedImage === img ? "border-primary" : "border-gray"}`}
-                onClick={() => setSelectedImage(img)}
-              />
-            ))}
-          </div>
           <Image
-            src={selectedImage}
+            src={typeof selectedImage === "string" ? selectedImage : ""}
             alt="Product"
-            width={100}
-            height={100}
-            className="w-80 max-h-96 object-cover"
+            width={300}
+            height={300}
+            className="w-full h-full object-cover"
             priority
             placeholder="blur"
             blurDataURL="/images/profile.png"
@@ -42,15 +27,21 @@ const ProductDetailCard = () => {
         </div>
 
         <div>
-          <h1 className="text-2xl font-semibold">Atu Body Couture Bow Front Dress</h1>
-          <p className="text-gray-500">Sold 21 Products in last 10 Hours</p>
+          <div className="w-full space-y-2 flex items-center justify-between flex-wrap gap-3">
+            <h1 className="text-2xl font-semibold break-words">{product.title_en}</h1>
+            <h1 className="text-2xl font-semibold break-words">{product.title_ar}</h1>
+          </div>
+
           <div className="flex items-center gap-2 mt-2">
-            <span className="line-through text-gray-400">$155</span>
-            <span className="text-lg font-semibold text-primary">$135</span>
+            <span className="line-through text-gray-400">{product.price}</span>
+            <span className="text-lg font-semibold text-primary">{product.price_after_discount}</span>
             <span className="text-yellow">★★★★★ (33)</span>
           </div>
-          <p className="text-green mt-1">45 In stock</p>
-          <p className="text-black/60 mt-2">To achieve this, it would be necessary to have uniform grammar pronunciation...</p>
+          <p className="text-green mt-1">{product.stock} In stock</p>
+          <div className="flex flex-col gap-2 ">
+            <p className="text-black/50 mt-2 break-words">{product.description_en}</p>
+            <p className="text-black/50 mt-2 break-words">{product.description_ar}</p>
+          </div>
 
           <div className="flex items-center flex-wrap gap-4 mt-4">
             <div className="flex items-center border px-4 py-2 rounded-md">
@@ -68,14 +59,17 @@ const ProductDetailCard = () => {
           </div>
 
           <div className="mt-6">
-            <p>
-              <strong>SKU:</strong> KE-91039
+            <p className="mb-1">
+              <strong className=" me-2">SKU:</strong>
+              <span className="text-black/50">{product.code}</span>
             </p>
-            <p>
-              <strong>Category:</strong> Cloth
+            <p className="mb-1">
+              <strong className=" me-2">Category:</strong>
+              <span className="text-black/50">{product.category}</span>
             </p>
-            <p>
-              <strong>Tags:</strong> Grown Dress, Dress, Party Dress
+            <p className="mb-1">
+              <strong className=" me-2">Tags:</strong>
+              <span className="text-black/50">{product.sub_category}</span>
             </p>
           </div>
 
@@ -86,6 +80,22 @@ const ProductDetailCard = () => {
             <FaInstagram className="text-pink-500 cursor-pointer" />
           </div>
         </div>
+      </div>
+      <div className="flex mt-5 flex-row flex-wrap gap-2">
+        {images.map((img, index) => (
+          <Image
+            key={index}
+            src={typeof img === "string" ? img : ""}
+            alt="Product Thumbnail"
+            width={100}
+            height={100}
+            priority
+            placeholder="blur"
+            blurDataURL="/images/profile.png"
+            className={`w-25 h-20 border p-1 cursor-pointer ${selectedImage === img ? "border-primary" : "border-gray"}`}
+            onClick={() => setSelectedImage(img)}
+          />
+        ))}
       </div>
     </div>
   );
