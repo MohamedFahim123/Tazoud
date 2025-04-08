@@ -12,13 +12,10 @@ const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { product, loading } = useSelector((state: RootState) => state.products);
 
-  console.log(id);
-
   useEffect(() => {
     dispatch(getSingleProduct(Number(id)));
   }, [dispatch, id]);
 
-  console.log(product);
   return (
     <div className="w-full bg-slate-100 p-4 rounded-lg ">
       {loading ? (
