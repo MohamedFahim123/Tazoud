@@ -20,6 +20,8 @@ export default function AddProduct() {
   const [hasVariation, setHasVariation] = useState<boolean>(false);
   const { loading } = useSelector((state: RootState) => state.products);
 
+  const toggleHasVariation = () => setHasVariation((prev) => !prev);
+
   const formik = useFormik<ProductTypes>({
     initialValues: {
       title_ar: "",
@@ -124,8 +126,7 @@ export default function AddProduct() {
             formBlurEvent={formik.handleBlur}
             touched={formik.touched}
             formErrors={formik.errors}
-            setHasVariation={setHasVariation}
-            hasVariation={hasVariation}
+            toggleHasVariation={toggleHasVariation}
           />
           <AddCategory formValues={formik.values} formErrors={formik.errors} touched={formik.touched} formChangeEvent={formik.handleChange} />
           {hasVariation ? (
