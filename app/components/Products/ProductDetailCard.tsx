@@ -1,14 +1,23 @@
 "use client";
 
-import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
+import { deleteProduct, ProductTypes } from "@/app/rtk/slices/ProductSlice";
+import { AppDispatch } from "@/app/rtk/store";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 
 const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
   const [quantity, setQuantity] = useState(1);
   const images = [product.thumbnail, ...(product.images || [])];
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const handleDelete = (id: number) => {
+    dispatch(deleteProduct(id));
+    router.push("/dashboard/products");
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -55,6 +64,10 @@ const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
             </div>
             <button type="button" className="bg-primary  hover:bg-primary/80 text-white px-6 py-2 rounded-md">
               Add to Cart
+            </button>
+
+            <button type="button" onClick={() => handleDelete(product.id ?? 0)} className="bg-red-500  hover:bg-red-500/80 text-white px-6 py-2 rounded-md">
+              Delete Product
             </button>
           </div>
 

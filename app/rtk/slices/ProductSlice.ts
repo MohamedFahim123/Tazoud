@@ -2,7 +2,7 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+const token: string = typeof window !== "undefined" ? Cookies.get("TAZOUD_TOKEN") ?? "" : "";
 
 export interface Variation {
   id?: number;
@@ -36,7 +36,7 @@ export interface ProductTypes {
   variations?: Variation[];
   price?: number | string;
   price_after_discount?: number | string;
-  stock?: number;
+  stock?: string | number;
   code?: string;
   thumbnail?: File | null;
   unit_of_measure?: string;
@@ -109,6 +109,21 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
   }
 );
 
+export const deleteProduct = createAsyncThunk<number, number, { rejectValue: string }>("products/deleteProduct", async (id, { rejectWithValue }) => {
+  try {
+    const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
+
+    await axios.delete(deleteProduct(id.toString()), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return id;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to delete product");
+  }
+});
 const initialState: ProductsState = {
   products: [],
   product: null,
@@ -165,6 +180,14 @@ const productsSlice = createSlice({
         } else {
           state.error = action.payload || "Failed to add product";
         }
+      })
+
+      // delete product
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter((product) => product.id !== action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload || "Delete failed";
       });
   },
 });
