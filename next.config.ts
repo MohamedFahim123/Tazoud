@@ -3,7 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["tazawod.valureach.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "tazawod.valureach.com",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

@@ -66,28 +66,34 @@ const LoginForm = () => {
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5 bg-white">
       {/* Email Input */}
-      <CustomInput
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.email}
-        type="email"
-        id="email"
-        label="E-mail"
-        placeHolder="Enter Your Email"
-      />
-      {formik.touched.email && formik.errors.email && <p className="text-red-500 text-sm">{formik.errors.email}</p>}
+      <div className="flex flex-col gap-1">
+        <CustomInput
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+          hasError={Boolean(formik.errors.email && formik.touched.email)}
+          type="email"
+          id="email"
+          label="E-mail"
+          placeHolder="Enter Your Email"
+        />
+        {formik.touched.email && formik.errors.email && <div className="text-red-500 text-sm">{formik.errors.email}</div>}
+      </div>
 
       {/* Password Input */}
-      <CustomInput
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-        type="password"
-        id="password"
-        label="Password"
-        placeHolder="Enter Your Password"
-      />
-      {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm">{formik.errors.password}</p>}
+      <div className="flex flex-col gap-1">
+        <CustomInput
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+          hasError={Boolean(formik.errors.password && formik.touched.password)}
+          type="password"
+          id="password"
+          label="Password"
+          placeHolder="Enter Your Password"
+        />
+        {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm">{formik.errors.password}</p>}
+      </div>
 
       {/* Remember Me & Forgot Password */}
       <div className="flex justify-between items-start mb-5">

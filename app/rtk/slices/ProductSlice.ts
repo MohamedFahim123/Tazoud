@@ -2,38 +2,48 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+const token: string = typeof window !== "undefined" ? Cookies.get("TAZOUD_TOKEN") ?? "" : "";
 
 export interface Variation {
-  id: number;
-  name_ar: string;
-  name_en: string;
-  price: number | string;
-  price_after_discount: number | string;
-  value_ar: string;
-  value_en: string;
-  stock: number | string;
-  code: string;
-  thumbnail: File | null;
+  id?: number;
+  name_ar?: string;
+  name_en?: string;
+  price?: number | string;
+  price_after_discount?: number | string;
+  value_ar?: string;
+  value_en?: string;
+  stock?: number | string;
+  code?: string;
+  thumbnail?: File | null;
 }
 
 export interface ProductTypes {
-  title_ar: string;
-  title_en: string;
-  description_ar: string;
-  description_en: string;
-  category_id: string;
-  sub_category_id: string;
-  brand_id: string;
-  unit_of_measure_id: string;
-  images: File[] | [];
-  has_variation: boolean;
-  variations: Variation[];
-  price: number | string;
-  price_after_discount: number | string;
-  stock: number | string;
-  code: string;
-  thumbnail: File | null;
+  id?: number;
+  description?: string;
+  title?: string;
+  title_ar?: string;
+  title_en?: string;
+  description_ar?: string;
+  description_en?: string;
+  category?: string;
+  category_id?: string;
+  sub_category?: string;
+  sub_category_id?: string;
+  brand_id?: string;
+  unit_of_measure_id?: string;
+  images?: File[] | [];
+  has_variation?: boolean;
+  variations?: Variation[];
+  price?: number | string;
+  price_after_discount?: number | string;
+  stock?: string | number;
+  code?: string;
+  thumbnail?: File | null;
+  unit_of_measure?: string;
+  brand?: string;
+  status?: string;
+  status_translated?: string;
+  has_variations?: boolean;
 }
 
 interface ProductsState {
@@ -48,10 +58,10 @@ export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue:
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: ProductTypes[] }>(dashboardEndPoints?.products?.allProducts, {
+    const response = await axios.get<{ data: { products: ProductTypes[] } }>(dashboardEndPoints?.products?.allProducts, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data.data;
+    return response.data.data.products;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch products");
@@ -62,10 +72,11 @@ export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectV
   try {
     const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
 
-    const response = await axios.get<{ data: ProductTypes }>(singleProduct(id.toString()), {
+    const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data.data;
+
+    return response.data.data.product;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to Add product");
@@ -98,6 +109,21 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
   }
 );
 
+export const deleteProduct = createAsyncThunk<number, number, { rejectValue: string }>("products/deleteProduct", async (id, { rejectWithValue }) => {
+  try {
+    const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
+
+    await axios.delete(deleteProduct(id.toString()), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return id;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to delete product");
+  }
+});
 const initialState: ProductsState = {
   products: [],
   product: null,
@@ -154,6 +180,14 @@ const productsSlice = createSlice({
         } else {
           state.error = action.payload || "Failed to add product";
         }
+      })
+
+      // delete product
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter((product) => product.id !== action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload || "Delete failed";
       });
   },
 });

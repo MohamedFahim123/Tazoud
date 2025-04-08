@@ -44,22 +44,16 @@ const initialState: AuthState = {
   error: null,
 };
 
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (
-    credentials: { email: string; password: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.post(authEndPoints.login, credentials);
-      return response.data;
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
+export const loginUser = createAsyncThunk("auth/loginUser", async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(authEndPoints.login, credentials);
+    return response.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
 
-      return rejectWithValue(error.response?.data?.message || "Login failed");
-    }
+    return rejectWithValue(error.response?.data?.message || "Login failed");
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",

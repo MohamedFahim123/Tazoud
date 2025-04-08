@@ -1,39 +1,84 @@
-"use client";
+import { ProductTypes } from "@/app/rtk/slices/ProductSlice";
 import Image from "next/image";
+import Link from "next/link";
 
-export interface ProductProps {
-  image: string;
-  name: string;
-  price: number;
-  discountPrice?: number;
-}
+export default function ProductCard({
+  id,
+  category,
+  thumbnail,
+  title,
+  description,
+  status,
+  status_translated,
+  price,
+  price_after_discount,
+  stock,
+  has_variations,
+  code,
+}: ProductTypes) {
+  const imageSrc: string = typeof thumbnail === "string" ? thumbnail : "/images/profile.png";
 
-export default function ProductCard({ image, name, price, discountPrice }: ProductProps) {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border">
-      <div className="relative group">
-        <Image src={image} alt={name} width={200} height={200} className="mx-auto" priority placeholder="blur" blurDataURL="/images/profile.png" />
-
-        {/* <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition">
-          <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-            <FaHeart className="text-gray-600" />
-          </button>
-          <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-            <FaExpand className="text-gray-600" />
-          </button>
-          <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-            <FaSyncAlt className="text-gray-600" />
-          </button>
-        </div> */}
+    <div key={id} className="w-[300px] bg-white rounded-lg border border-gray shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className="relative h-[300px] w-full bg-primary/5 shadow-sm overflow-hidden">
+        <Link href={`/dashboard/products/${id}`}>
+          <Image
+            src={imageSrc}
+            alt={title !== undefined ? title : ""}
+            // layout="fill"
+            width={300}
+            height={300}
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            placeholder="blur"
+            blurDataURL="/images/profile.png"
+            className="object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+          />
+        </Link>
+        {status ? (
+          <div className="absolute top-2 right-2 bg-green text-white text-xs font-bold px-2 py-1 rounded-full">{status_translated}</div>
+        ) : (
+          <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">{status_translated}</div>
+        )}
       </div>
+      <h5 className="bg-primary text-white py-2 w-full text-center font-bold">{category}</h5>
 
-      <h3 className="mt-3 text-lg font-medium">{name}</h3>
-      <div className="flex items-center gap-2">
-        {discountPrice && <span className="text-gray-500 line-through">${price}</span>}
-        <span className="text-lg font-bold text-black">${discountPrice || price}</span>
+      <div className="p-4">
+        <div className="flex justify-between items-start">
+          <Link href={`/dashboard/products/${id}`}>
+            <h3 className="text-lg font-semibold text-gray-900 mb-1 cursor-pointer break-words">{title}</h3>
+          </Link>
+          {/* <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{status_translated}</span> */}
+        </div>
+
+        <p className="text-gray_dark text-sm line-clamp-2 break-words ">{description?.slice(0, 35)}.....</p>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center">
+            {Number(price_after_discount) && Number(price_after_discount) < Number(price) ? (
+              <>
+                <span className="text-gray_dark font-bold text-lg line-through">${parseFloat(String(price)).toFixed(2)}</span>
+                <span className="text-green font-semibold text-lg ms-2">${parseFloat(String(price_after_discount)).toFixed(2)}</span>
+              </>
+            ) : (
+              <span className="text-green font-semibold text-lg">${parseFloat(String(price)).toFixed(2)}</span>
+            )}
+          </div>
+
+          <div
+            className={`text-sm text-center w-fit px-2 py-1 rounded-full {typeof stock === "number" && stock > 0 ? "bg-primary/10 text-primary" : " bg-red-100 text-red-500"}`}
+          >
+            Stock: {stock}
+          </div>
+        </div>
+
+        <div className="mt-4 flex justify-between items-center">
+          {code && <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">code: {code}</span>}
+          {has_variations && <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Variations</span>}
+        </div>
+
+        {/* <button className="mt-4 w-full bg-primary hover:bg-primary/75 text-white py-2 px-4 rounded-md transition-colors duration-300">Add to Cart</button> */}
       </div>
-
-      <button className="w-full mt-3 py-2 border rounded-md text-center hover:bg-gray-100">Add to Cart</button>
     </div>
   );
 }

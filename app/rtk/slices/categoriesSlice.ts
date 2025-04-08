@@ -16,26 +16,18 @@ interface CategoriesState {
 }
 
 // Fetch all categories
-export const getCategories = createAsyncThunk<
-  Category[],
-  void,
-  { rejectValue: string }
->("categories/getCategories", async (_, { rejectWithValue }) => {
+export const getCategories = createAsyncThunk<Category[], void, { rejectValue: string }>("categories/getCategories", async (_, { rejectWithValue }) => {
   try {
     if (!dashboardEndPoints?.categories?.allCategories) {
       throw new Error("Invalid endpoint URL");
     }
 
-    const response = await axios.get<{ data: { categories: Category[] } }>(
-      dashboardEndPoints?.categories?.allCategories
-    );
+    const response = await axios.get<{ data: { categories: Category[] } }>(dashboardEndPoints?.categories?.allCategories);
 
     return response?.data?.data?.categories;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to fetch categories"
-    );
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch categories");
   }
 });
 
@@ -44,18 +36,10 @@ interface SingleCat {
 }
 
 // Fetch a single category by ID
-export const getSingleCategory = createAsyncThunk<
-  Category,
-  number,
-  { rejectValue: string }
->("categories/getSingleCategory", async (categoryId, { rejectWithValue }) => {
+export const getSingleCategory = createAsyncThunk<Category, number, { rejectValue: string }>("categories/getSingleCategory", async (categoryId, { rejectWithValue }) => {
   try {
-    const singleCategory = dashboardEndPoints?.categories?.singleCategory as (
-      categoryId: string
-    ) => string;
-    const response = await axios.get<SingleCat>(
-      singleCategory(categoryId.toString())
-    );
+    const singleCategory = dashboardEndPoints?.categories?.singleCategory as (categoryId: string) => string;
+    const response = await axios.get<SingleCat>(singleCategory(categoryId.toString()));
 
     return {
       ...response?.data?.data?.category,
@@ -63,9 +47,7 @@ export const getSingleCategory = createAsyncThunk<
     };
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to fetch category"
-    );
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch category");
   }
 });
 
