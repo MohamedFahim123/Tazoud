@@ -14,9 +14,10 @@ interface customInputTypes {
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   value?: string;
   hasError?: boolean;
+  checked?: boolean;
 }
 
-const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, label, id, hasError }: customInputTypes) => {
+const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, checked, label, id, hasError }: customInputTypes) => {
   const [viewPassword, setViewPassword] = useState(false);
   const handleToggleShowPassword = () => setViewPassword(!viewPassword);
 
@@ -30,6 +31,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           onClick={onClick}
           onChange={onChange}
           onBlur={onBlur}
+          {...(type === "checkbox" ? { checked: checked } : { value: value })}
           value=""
           className={`w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary`}
         />

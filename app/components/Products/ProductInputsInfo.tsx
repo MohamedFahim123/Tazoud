@@ -8,11 +8,10 @@ interface ProductInputsInfoProps {
   formBlurEvent: FormikHandlers["handleBlur"];
   formErrors: FormikErrors<ProductTypes>;
   touched: FormikTouched<ProductTypes>;
-  setHasVariation: (hasVariation: boolean) => void;
-  hasVariation: boolean;
+  toggleHasVariation?: () => void;
 }
 
-export default function ProductInputsInfo({ formValues, formChangeEvent, formBlurEvent, formErrors, touched, setHasVariation, hasVariation }: ProductInputsInfoProps) {
+export default function ProductInputsInfo({ formValues, formChangeEvent, formBlurEvent, formErrors, touched, toggleHasVariation }: ProductInputsInfoProps) {
   return (
     <div className="max-w-full max-h-[700px] p-6 border-[1px] bg-white rounded-lg shadow-sm border-gray_dark mb-5">
       <h3 className="text-lg font-bold mb-3">Basic Information</h3>
@@ -81,7 +80,7 @@ export default function ProductInputsInfo({ formValues, formChangeEvent, formBlu
               touched.description_ar && formErrors.description_ar ? "border-red-500" : "border-primary"
             } block w-full`}
           ></textarea>
-          {touched.description_ar && formErrors.description_ar && <div className="text-red-500 text-sm">{formErrors.description_ar}</div>}{" "}
+          {touched.description_ar && formErrors.description_ar && <div className="text-red-500 text-sm">{formErrors.description_ar}</div>}
         </div>
       </div>
 
@@ -89,10 +88,10 @@ export default function ProductInputsInfo({ formValues, formChangeEvent, formBlu
         <CustomInput
           type="checkbox"
           onChange={formChangeEvent}
-          value={formValues.has_variation}
+          checked={Boolean(formValues.has_variation)}
           id="has_variation"
           label="Has Variation"
-          onClick={() => setHasVariation(!hasVariation)}
+          onClick={toggleHasVariation}
         />
       </div>
     </div>

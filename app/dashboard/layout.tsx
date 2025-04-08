@@ -35,7 +35,7 @@ export default function Layout({ children }: LayoutInterface) {
               <LogoutBtn />
             </div>
           </header>
-          <main className="flex-1 px-4 md:px-6">
+          <main className="flex-1 container ">
             <div className={`bg-white ${styles.contentRadius}`}>{children}</div>
           </main>
         </div>
