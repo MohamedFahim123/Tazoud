@@ -85,7 +85,14 @@ export default function ProductInputsInfo({ formValues, formChangeEvent, formBlu
       </div>
 
       <div className="w-full">
-        <CustomInput type="checkbox" onChange={formChangeEvent} value={formValues.has_variation} id="has_variation" label="Has Variation"  onClick={toggleHasVariation} />
+        <CustomInput
+          type="checkbox"
+          onChange={formChangeEvent}
+          checked={Boolean(formValues.has_variation)}
+          id="has_variation"
+          label="Has Variation"
+          onClick={toggleHasVariation}
+        />
       </div>
     </div>
   );
