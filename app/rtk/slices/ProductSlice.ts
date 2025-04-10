@@ -46,6 +46,16 @@ export interface ProductTypes {
   has_variations?: boolean;
 }
 
+interface FilterParams {
+  code?: string;
+  title?: string;
+  category?: string;
+  sub_category?: string;
+  brand?: string;
+  unit_of_measure?: string;
+  status?: string;
+}
+
 interface ProductsState {
   products: ProductTypes[];
   product: ProductTypes | null;
@@ -124,6 +134,45 @@ export const deleteProduct = createAsyncThunk<number, number, { rejectValue: str
     return rejectWithValue(error.response?.data?.message || "Failed to delete product");
   }
 });
+
+export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { rejectValue: string }>("products/filterProducts", async (filters, { rejectWithValue }) => {
+  try {
+    // Create a clean filters object with only non-empty values
+    const cleanFilters: Record<string, string> = {};
+    const mapToApi: Record<string, string> = {
+      code: "code",
+      title: "title",
+      status: "status",
+      unit_of_measure: "unit_of_measure",
+      brand: "brand",
+      category: "category_id",
+      sub_category: "sub_category_id",
+    };
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value?.trim()) {
+        const apiKey = mapToApi[key] || key;
+        cleanFilters[apiKey] = value.trim();
+      }
+    });
+
+    // Only make API call if there are actual filters
+    if (Object.keys(cleanFilters).length > 0) {
+      const query = new URLSearchParams(cleanFilters).toString();
+      const res = await axios.get<{ data: { products: ProductTypes[] } }>(`${dashboardEndPoints?.products?.filterProducts}?${query}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data.data.products;
+    } else {
+      // If no filters are applied, return empty array or fetch all products (depending on your needs)
+      return [];
+    }
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to filter products");
+  }
+});
+
 const initialState: ProductsState = {
   products: [],
   product: null,
@@ -188,6 +237,20 @@ const productsSlice = createSlice({
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.error = action.payload || "Delete failed";
+      })
+
+      // filter products
+      .addCase(filterProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(filterProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+        state.error = null;
+      })
+      .addCase(filterProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Unknown error";
       });
   },
 });
