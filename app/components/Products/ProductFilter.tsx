@@ -111,7 +111,7 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
       <select name="status" value={filters.status} onChange={handleInputChange} className="border px-2 py-1 rounded">
         <option value="">All Status</option>
         <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
+        <option value="deactive">Deactive</option>
       </select>
 
       <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
