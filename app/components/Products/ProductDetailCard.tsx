@@ -84,6 +84,14 @@ const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
               <strong className=" me-2">Tags:</strong>
               <span className="text-black/50">{product.sub_category}</span>
             </p>
+            <p className="mb-1">
+              <strong className=" me-2">brand:</strong>
+              <span className="text-black/50">{product.brand}</span>
+            </p>
+            <p className="mb-1">
+              <strong className=" me-2">unit:</strong>
+              <span className="text-black/50">{product.unit_of_measure}</span>
+            </p>
           </div>
 
           <div className="flex gap-4 mt-4">

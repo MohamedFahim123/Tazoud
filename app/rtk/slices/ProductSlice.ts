@@ -137,8 +137,7 @@ export const deleteProduct = createAsyncThunk<number, number, { rejectValue: str
 
 export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { rejectValue: string }>("products/filterProducts", async (filters, { rejectWithValue }) => {
   try {
-    // Create a clean filters object with only non-empty values
-    const cleanFilters: Record<string, string> = {};
+    const cleanedFilters: Record<string, string> = {};
     const mapToApi: Record<string, string> = {
       code: "code",
       title: "title",
@@ -152,13 +151,12 @@ export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { r
     Object.entries(filters).forEach(([key, value]) => {
       if (value?.trim()) {
         const apiKey = mapToApi[key] || key;
-        cleanFilters[apiKey] = value.trim();
+        cleanedFilters[apiKey] = value.trim();
       }
     });
 
-    // Only make API call if there are actual filters
-    if (Object.keys(cleanFilters).length > 0) {
-      const query = new URLSearchParams(cleanFilters).toString();
+    if (Object.keys(cleanedFilters).length > 0) {
+      const query = new URLSearchParams(cleanedFilters).toString();
       const res = await axios.get<{ data: { products: ProductTypes[] } }>(`${dashboardEndPoints?.products?.filterProducts}?${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
