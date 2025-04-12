@@ -24,7 +24,7 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     allProducts: `${baseUrl}/staff/products?t=${new Date().getTime()}`,
     singleProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
     createProduct: `${baseUrl}/staff/products?t=${new Date().getTime()}`,
-    filterProducts: `${baseUrl}/staff/filter-products?t=${new Date().getTime()}`,
+    filterProducts: `${baseUrl}/staff/filter-products`,
     updateProduct: (id?: string) => `${baseUrl}/staff/update-product-status/${id}?t=${new Date().getTime()}`,
     deleteProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
   },
