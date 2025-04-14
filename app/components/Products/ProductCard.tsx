@@ -25,10 +25,8 @@ export default function ProductCard({
           <Image
             src={imageSrc}
             alt={title !== undefined ? title : ""}
-            // layout="fill"
             width={300}
             height={300}
-            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
             placeholder="blur"
             blurDataURL="/images/profile.png"
@@ -66,7 +64,9 @@ export default function ProductCard({
           </div>
 
           <div
-            className={`text-sm text-center w-fit px-2 py-1 rounded-full {typeof stock === "number" && stock > 0 ? "bg-primary/10 text-primary" : " bg-red-100 text-red-500"}`}
+            className={`text-sm text-center w-fit px-2 py-1 rounded-full ${
+              typeof stock === "number" && stock > 0 ? "bg-primary/10 text-primary" : " bg-red-100 text-red-500"
+            }`}
           >
             Stock: {stock}
           </div>
