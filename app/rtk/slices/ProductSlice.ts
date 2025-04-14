@@ -2,7 +2,7 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = typeof window !== "undefined" ? Cookies.get("TAZOUD_TOKEN") ?? "" : "";
+const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
 export interface Variation {
   id?: number;
@@ -63,65 +63,94 @@ interface ProductsState {
   error: string | null;
 }
 
-export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue: string }>("products/getProducts", async (_, { rejectWithValue }) => {
+export const getProducts = createAsyncThunk<
+  ProductTypes[],
+  void,
+  { rejectValue: string }
+>("products/getProducts", async (_, { rejectWithValue }) => {
   try {
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: { products: ProductTypes[] } }>(dashboardEndPoints?.products?.allProducts, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get<{ data: { products: ProductTypes[] } }>(
+      dashboardEndPoints?.products?.allProducts,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data.data.products;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch products");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to fetch products"
+    );
   }
 });
 
-export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectValue: string }>("products/getSingleProduct", async (id, { rejectWithValue }) => {
+export const getSingleProduct = createAsyncThunk<
+  ProductTypes,
+  number,
+  { rejectValue: string }
+>("products/getSingleProduct", async (id, { rejectWithValue }) => {
   try {
-    const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
+    const singleProduct = dashboardEndPoints?.products?.singleProduct as (
+      id: string
+    ) => string;
 
-    const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get<{ data: { product: ProductTypes } }>(
+      singleProduct(id.toString()),
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     return response.data.data.product;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to Add product");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to Add product"
+    );
   }
 });
 
-export const addProduct = createAsyncThunk<{ message: string }, FormData, { rejectValue: Record<string, string[]> | string }>(
-  "products/addProduct",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const endPoint: string = dashboardEndPoints?.products?.createProduct ? dashboardEndPoints?.products?.createProduct : "";
-
-      const response = await axios.post(endPoint, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.data;
-    } catch (err) {
-      const error = err as AxiosError<{ errors: Record<string, string[]> }>;
-
-      if (error.response?.data?.errors) {
-        return rejectWithValue(error.response.data.errors);
-      }
-
-      return rejectWithValue("Failed to add product");
-    }
-  }
-);
-
-export const deleteProduct = createAsyncThunk<number, number, { rejectValue: string }>("products/deleteProduct", async (id, { rejectWithValue }) => {
+export const addProduct = createAsyncThunk<
+  { message: string },
+  FormData,
+  { rejectValue: Record<string, string[]> | string }
+>("products/addProduct", async (formData, { rejectWithValue }) => {
   try {
-    const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
+    const endPoint: string = dashboardEndPoints?.products?.createProduct
+      ? dashboardEndPoints?.products?.createProduct
+      : "";
+
+    const response = await axios.post(endPoint, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (err) {
+    const error = err as AxiosError<{ errors: Record<string, string[]> }>;
+
+    if (error.response?.data?.errors) {
+      return rejectWithValue(error.response.data.errors);
+    }
+
+    return rejectWithValue("Failed to add product");
+  }
+});
+
+export const deleteProduct = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>("products/deleteProduct", async (id, { rejectWithValue }) => {
+  try {
+    const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (
+      id: string
+    ) => string;
 
     await axios.delete(deleteProduct(id.toString()), {
       headers: {
@@ -131,21 +160,28 @@ export const deleteProduct = createAsyncThunk<number, number, { rejectValue: str
     return id;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to delete product");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to delete product"
+    );
   }
 });
 
-export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { rejectValue: string }>("products/filterProducts", async (filters, { rejectWithValue }) => {
+export const filterProducts = createAsyncThunk<
+  ProductTypes[],
+  FilterParams,
+  { rejectValue: string }
+>("products/filterProducts", async (filters, { rejectWithValue }) => {
   try {
     const cleanedFilters: Record<string, string> = {};
+    const currTime: string = new Date().toLocaleString();
     const mapToApi: Record<string, string> = {
       code: "code",
       title: "title",
       status: "status",
       unit_of_measure: "unit_of_measure",
       brand: "brand",
-      category: "category_id",
-      sub_category: "sub_category_id",
+      category: "category",
+      sub_category: "sub_category",
     };
 
     Object.entries(filters).forEach(([key, value]) => {
@@ -157,17 +193,21 @@ export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { r
 
     if (Object.keys(cleanedFilters).length > 0) {
       const query = new URLSearchParams(cleanedFilters).toString();
-      const res = await axios.get<{ data: { products: ProductTypes[] } }>(`${dashboardEndPoints?.products?.filterProducts}?${query}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get<{ data: { products: ProductTypes[] } }>(
+        `${dashboardEndPoints?.products?.filterProducts}?${query}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return res.data.data.products;
     } else {
-      // If no filters are applied, return empty array or fetch all products (depending on your needs)
       return [];
     }
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to filter products");
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to filter products"
+    );
   }
 });
 
@@ -231,7 +271,9 @@ const productsSlice = createSlice({
 
       // delete product
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.products = state.products.filter((product) => product.id !== action.payload);
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload
+        );
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.error = action.payload || "Delete failed";

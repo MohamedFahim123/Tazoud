@@ -99,6 +99,7 @@ export default function AddProduct() {
 
         const res = await dispatch(addProduct(formData)).unwrap();
         toast.success(res?.message ? res?.message : "Product added successfully");
+        
       } catch (error) {
         if (error && typeof error === "object" && !Array.isArray(error)) {
           const errorObj = error as Record<string, string[]>; // Explicitly type it
@@ -153,10 +154,9 @@ export default function AddProduct() {
       )}
 
       <div className="flex items-center justify-end gap-4 mt-7">
-        <button type="submit" className="px-8 py-3 text-white bg-primary cursor-pointer ">
+        <button type="submit" className="px-12 py-4 text-white bg-primary cursor-pointer mb-4 font-semibold text-xl">
           Add Product
         </button>
-        <span className="px-8 py-3 text-white bg-red-500 cursor-pointer ">Cancel</span>
       </div>
     </form>
   );
