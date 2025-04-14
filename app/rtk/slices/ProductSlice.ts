@@ -173,7 +173,6 @@ export const filterProducts = createAsyncThunk<
 >("products/filterProducts", async (filters, { rejectWithValue }) => {
   try {
     const cleanedFilters: Record<string, string> = {};
-    const currTime: string = new Date().toLocaleString();
     const mapToApi: Record<string, string> = {
       code: "code",
       title: "title",
