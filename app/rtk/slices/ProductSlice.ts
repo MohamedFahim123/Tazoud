@@ -144,8 +144,8 @@ export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { r
       status: "status",
       unit_of_measure: "unit_of_measure",
       brand: "brand",
-      category: "category_id",
-      sub_category: "sub_category_id",
+      category: "category",
+      sub_category: "sub_category",
     };
 
     Object.entries(filters).forEach(([key, value]) => {
