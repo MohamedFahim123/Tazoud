@@ -1,28 +1,21 @@
 "use client";
 
+import { Order } from "@/app/rtk/slices/orderSlice";
 import { useState } from "react";
 
 type OrderTableProps = {
   columns: string[];
-  data: {
-    id: string;
-    customerName: string;
-    date: string;
-    paymentStatus: string;
-    total: string;
-    paymentMethod: string;
-    orderStatus: string;
-  }[];
+  orders: Order[];
 };
 
-function OrderTable({ columns, data }: OrderTableProps) {
+function OrderTable({ columns, orders }: OrderTableProps) {
   const [checked, setChecked] = useState<boolean>(false);
-  const [rowChecked, setRowChecked] = useState<boolean[]>(new Array(data.length).fill(false));
+  const [rowChecked, setRowChecked] = useState<boolean[]>(new Array(orders.length).fill(false));
 
   const handleMasterCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setChecked(isChecked);
-    setRowChecked(new Array(data.length).fill(isChecked));
+    setRowChecked(new Array(orders.length).fill(isChecked));
   };
 
   const handleRowCheck = (index: number) => {
@@ -46,33 +39,37 @@ function OrderTable({ columns, data }: OrderTableProps) {
         </tr>
       </thead>
       <tbody className="text-center ">
-        {data.map((row, index) => (
+        {orders.map((row, index) => (
           <tr key={index} className="border-b border-gray-200">
             <td className="px-6 py-4">
               <input type="checkbox" className="w-4 h-4 cursor-pointer" checked={rowChecked[index]} onChange={() => handleRowCheck(index)} />
             </td>
-            <td className="px-6 py-4 text-primary">{row.id}</td>
-            <td className="px-6 py-4">{row.customerName}</td>
-            <td className="px-2 py-4">{row.date}</td>
+            <td className="px-6 py-4 text-primary">{row.code}</td>
+            <td className="px-6 py-4">{row.latitude}</td>
+            <td className="px-2 py-4">{row.longitude}</td>
             <td className="px-6 py-4">
               <div
                 className={`  ${
-                  row.paymentStatus === "Refund" ? "bg-indigo-100 text-primary" : `${row.paymentStatus === "Paid" ? "bg-red-100 text-red-600" : "bg-amber-100 text-yellow"}`
+                  row.payment_status === "Refund"
+                    ? "bg-indigo-100 text-primary"
+                    : `${row.payment_status === "Paid" ? "bg-red-100 text-red-600" : "bg-amber-100 text-yellow"}`
                 } px-2 py-1 rounded-md`}
               >
-                {row.paymentStatus}
+                {row.payment_status}
               </div>
             </td>
-            <td className="px-6 py-4">{row.total}</td>
-            <td className="px-6 py-4">{row.paymentMethod}</td>
+            <td className="px-6 py-4">{row.price}</td>
+            <td className="px-6 py-4">{row.payment_method}</td>
             <td className="px-6 py-4">
               <div
                 className={`
                     ${
-                      row.orderStatus === "Processing" ? "bg-emerald-100 text-green" : `${row.orderStatus === "Delivered" ? "bg-amber-100 text-yellow" : "bg-red-100 text-red-600"}`
+                      row.order_status === "Processing"
+                        ? "bg-emerald-100 text-green"
+                        : `${row.order_status === "Delivered" ? "bg-amber-100 text-yellow" : "bg-red-100 text-red-600"}`
                     } px-2 py-1 rounded-md`}
               >
-                {row.orderStatus}
+                {row.order_status}
               </div>
             </td>
             <td className="px-6 py-4 mt-1 flex items-center  gap-2">
