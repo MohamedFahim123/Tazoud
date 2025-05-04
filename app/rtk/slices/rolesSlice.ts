@@ -1,199 +1,193 @@
 import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
-const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+interface Role {
+  id: number;
+  name: string;
+  permissions?: string[];
+}
 
-export const getRoles = createAsyncThunk("roles/getRoles", async (_, { rejectWithValue }) => {
+interface RolesState {
+  roles: Role[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: RolesState = {
+  roles: [],
+  loading: false,
+  error: null,
+};
+
+export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getRoles", async (_, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`${dashboardEndPoints?.rolesAndPermissions?.allRoles}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+    const res = await axios.get(dashboardEndPoints.rolesAndPermissions.allRoles, {
+      headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch permissions");
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch roles");
   }
 });
 
-export const singleRole = createAsyncThunk("roles/fetchSingle", async (id: string | number, { rejectWithValue }) => {
+export const singleRole = createAsyncThunk<Role, number, { rejectValue: string }>("roles/singleRole", async (id, { rejectWithValue }) => {
   try {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
     const res = await axios.get(`${dashboardEndPoints?.rolesAndPermissions?.oneRole}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data || error.message);
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch role");
   }
 });
 
-export const filterRoles = createAsyncThunk("roles/filter", async (query: { name: string }, { rejectWithValue }) => {
+export const filterRoles = createAsyncThunk<Role[], { name: string }, { rejectValue: string }>("roles/filterRoles", async (query, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`${dashboardEndPoints?.rolesAndPermissions?.filterRoles}`, {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
+    if (!dashboardEndPoints?.rolesAndPermissions?.filterRoles) {
+      throw new Error("filterRoles endpoint is not defined");
+    }
+
+    const filterRoles = dashboardEndPoints.rolesAndPermissions.filterRoles;
+
+    const res = await axios.get(filterRoles, {
       params: query,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data || error.message);
+    return rejectWithValue(error.response?.data?.message || "Failed to filter roles");
   }
 });
 
-export const createRole = createAsyncThunk("roles/create", async (data: { name: string; permission_id: number[] }, { rejectWithValue }) => {
-  try {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    data.permission_id.forEach((id) => {
-      formData.append("permission_id[]", id.toString());
-    });
+export const createRole = createAsyncThunk<Role, { name: string; permission_id: number[] }, { rejectValue: string }>(
+  "roles/createRole",
+  async ({ name, permission_id }, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+      const formData = new FormData();
+      formData.append("name", name);
+      permission_id.forEach((id) => formData.append("permission_id[]", id.toString()));
 
-    const response = await axios.post(`${dashboardEndPoints?.rolesAndPermissions?.createRole}`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data || error.message);
+      if (!dashboardEndPoints?.rolesAndPermissions?.createRole) {
+        throw new Error("createRole endpoint is not defined");
+      }
+
+      const res = await axios.post(dashboardEndPoints.rolesAndPermissions.createRole, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || "Failed to create role");
+    }
   }
-});
+);
 
-export const updateRole = createAsyncThunk("roles/update", async (payload: { id: number; name: string; permission_id: number[] }, { rejectWithValue }) => {
-  try {
-    const formData = new FormData();
-    formData.append("name", payload.name);
-    payload.permission_id.forEach((id) => {
-      formData.append("permission_id[]", id.toString());
-    });
+export const updateRole = createAsyncThunk<Role, { id: number; name: string; permission_id: number[] }, { rejectValue: string }>(
+  "roles/updateRole",
+  async ({ id, name, permission_id }, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+      const formData = new FormData();
+      formData.append("name", name);
+      permission_id.forEach((pid) => formData.append("permission_id[]", pid.toString()));
 
-    const response = await axios.post(`${dashboardEndPoints?.rolesAndPermissions?.updateRole}/${payload.id}`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      const res = await axios.post(`${dashboardEndPoints?.rolesAndPermissions?.updateRole}/${id}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    return response.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data || error.message);
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || "Failed to update role");
+    }
   }
-});
+);
 
-export const deleteRole = createAsyncThunk("roles/delete", async (id: number, { rejectWithValue }) => {
+export const deleteRole = createAsyncThunk<number, number, { rejectValue: string }>("roles/deleteRole", async (id, { rejectWithValue }) => {
   try {
-    const response = await axios.delete(`${dashboardEndPoints?.rolesAndPermissions?.deleteRole}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+    await axios.delete(`${dashboardEndPoints?.rolesAndPermissions?.deleteRole}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data;
+    return id;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data || error.message);
+    return rejectWithValue(error.response?.data?.message || "Failed to delete role");
   }
 });
 
 const rolesSlice = createSlice({
   name: "roles",
-  initialState: {
-    data: [],
-    loading: false,
-    error: null as string | null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getRoles.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getRoles.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.roles = action.payload;
       })
       .addCase(getRoles.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload || "Unknown error";
       })
 
-      // single role
-      .addCase(singleRole.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(singleRole.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(singleRole.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        const index = state.roles.findIndex((r) => r.id === action.payload.id);
+        if (index !== -1) state.roles[index] = action.payload;
+        else state.roles.push(action.payload);
       })
 
-      // filter roles
-      .addCase(filterRoles.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(filterRoles.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(filterRoles.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.roles = action.payload;
       })
 
-      // create role
-      .addCase(createRole.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(createRole.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(createRole.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.roles.push(action.payload);
       })
 
-      // update role
-      .addCase(updateRole.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(updateRole.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(updateRole.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        const index = state.roles.findIndex((r) => r.id === action.payload.id);
+        if (index !== -1) state.roles[index] = action.payload;
       })
 
-      // delete role
-      .addCase(deleteRole.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(deleteRole.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.roles = state.roles.filter((role) => role.id !== action.payload);
       })
-      .addCase(deleteRole.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
+
+      .addMatcher(
+        (action) => action.type.endsWith("/pending"),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith("/rejected"),
+        (state, action) => {
+          state.loading = false;
+          state.error = (action as PayloadAction<string>).payload;
+        }
+      );
   },
 });
 

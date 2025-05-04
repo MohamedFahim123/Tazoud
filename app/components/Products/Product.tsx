@@ -2,16 +2,20 @@
 
 import { filterProducts, getProducts } from "@/app/rtk/slices/ProductSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/Loading";
 import ProductCard from "./ProductCard";
 import ProductFilter from "./ProductFilter";
+import { getPermissions } from "@/app/rtk/slices/permissionsSlice";
+import { getRoles } from "@/app/rtk/slices/rolesSlice";
 
 const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading } = useSelector((state: RootState) => state.products);
   const [hasFilters, setHasFilters] = useState(false);
+  const { permission } = useSelector((state: RootState) => state.permissions);
+  const { roles } = useSelector((state: RootState) => state.roles);
 
   const handleFilter = (filters: Record<string, string>) => {
     const hasActiveFilters = Object.values(filters).some((value) => value.trim() !== "");
@@ -25,6 +29,10 @@ const Product = () => {
       dispatch(getProducts());
     }
   }, [dispatch, hasFilters]);
+
+  useEffect(() => {
+    dispatch(getRoles());
+  }, [dispatch]);
 
   return (
     <div className="bg-gray-50 py-6">
