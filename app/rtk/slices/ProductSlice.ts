@@ -2,7 +2,7 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = typeof window !== "undefined" ? Cookies.get("TAZOUD_TOKEN") ?? "" : "";
+const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
 export interface Variation {
   id?: number;
@@ -162,7 +162,6 @@ export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { r
       });
       return res.data.data.products;
     } else {
-      // If no filters are applied, return empty array or fetch all products (depending on your needs)
       return [];
     }
   } catch (err) {

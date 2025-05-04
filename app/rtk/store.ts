@@ -6,6 +6,8 @@ import categoriesReducer from "./slices/categoriesSlice";
 import brandsReducer from "./slices/brandsSlice";
 import unitsMeasuresReducer from "./slices/unitsMeasuresSlice";
 import productsReducer from "./slices/ProductSlice";
+import permissionsReducer from "./slices/permissionsSlice";
+import rolesReducer from "./slices/rolesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     brands: brandsReducer,
     unitsMeasures: unitsMeasuresReducer,
     products: productsReducer,
+    permissions: permissionsReducer,
+    roles: rolesReducer,
   },
 });
 
