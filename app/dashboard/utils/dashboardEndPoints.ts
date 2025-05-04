@@ -28,4 +28,13 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     updateProduct: (id?: string) => `${baseUrl}/staff/update-product-status/${id}?t=${new Date().getTime()}`,
     deleteProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
   },
+  rolesAndPermissions: {
+    allowedPermissions: `${baseUrl}/staff/permissions?t=${new Date().getTime()}`,
+    allRoles: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
+    filterRoles: `${baseUrl}/staff/filter-roles`,
+    createRole: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
+    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+  },
 };

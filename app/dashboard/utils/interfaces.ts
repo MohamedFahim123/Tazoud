@@ -25,6 +25,15 @@ interface dashboardEndPointsInterface {
     updateProduct?: (id?: string) => string;
     deleteProduct?: (id?: string) => string;
   };
+  rolesAndPermissions?: {
+    allowedPermissions?: string;
+    allRoles?: string;
+    filterRoles?: string;
+    createRole?: string;
+    oneRole?: (id?: string) => string;
+    updateRole?: (id?: string) => string;
+    deleteRole?: (id?: string) => string;
+  };
 }
 
 export default dashboardEndPointsInterface;
