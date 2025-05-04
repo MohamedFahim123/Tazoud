@@ -24,7 +24,11 @@ const initialState: RolesState = {
 export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getRoles", async (_, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
-    const res = await axios.get(dashboardEndPoints.rolesAndPermissions.allRoles, {
+
+    if (!dashboardEndPoints?.rolesAndPermissions?.allRoles) {
+      throw new Error("Invalid endpoint URL");
+    }
+    const res = await axios.get(dashboardEndPoints?.rolesAndPermissions?.allRoles, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return res.data;
@@ -55,9 +59,7 @@ export const filterRoles = createAsyncThunk<Role[], { name: string }, { rejectVa
       throw new Error("filterRoles endpoint is not defined");
     }
 
-    const filterRoles = dashboardEndPoints.rolesAndPermissions.filterRoles;
-
-    const res = await axios.get(filterRoles, {
+    const res = await axios.get(dashboardEndPoints.rolesAndPermissions.filterRoles, {
       params: query,
       headers: { Authorization: `Bearer ${token}` },
     });

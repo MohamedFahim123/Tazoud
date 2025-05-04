@@ -14,8 +14,8 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     allBrands: `${baseUrl}/brands?t=${new Date().getTime()}`,
   },
   orders: {
-    allOrders: `${baseUrl}/orders?t=${new Date().getTime()}`,
-    singleOrder: (id?: string) => `${baseUrl}/orders/${id}?t=${new Date().getTime()}`,
+    allOrders: `${baseUrl}/staff/orders?t=${new Date().getTime()}`,
+    singleOrder: (id?: string) => `${baseUrl}/staff/orders/${id}?t=${new Date().getTime()}`,
   },
   unitsMeasures: {
     allUnitsMeasures: `${baseUrl}/units-of-measure?t=${new Date().getTime()}`,
