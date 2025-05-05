@@ -34,7 +34,7 @@ interface dashboardEndPointsInterface {
     updateRole?: (id?: string) => string;
     deleteRole?: (id?: string) => string;
   };
-  stuff?: {
+  staff?: {
     allStaff?: string;
     filterStaff?: string;
     allowedRoles?: string;
