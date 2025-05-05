@@ -37,4 +37,13 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
     deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
   },
+  stuff: {
+    allStaff: `${baseUrl}/staff/staff?t=${new Date().getTime()}`,
+    filterStaff: `${baseUrl}/staff/filter-staffs`,
+    allowedRoles: `${baseUrl}/staff/allowed-roles?t=${new Date().getTime()}`,
+    createStaff: `${baseUrl}/staff/staff?t=${new Date().getTime()}`,
+    updateStaff: (id?: string) => `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
+    updateStaffStatus: (id?: string) => `${baseUrl}/staff/update-staff-status/${id}?t=${new Date().getTime()}`,
+    deleteStaff: (id?: string) => `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
+  },
 };
