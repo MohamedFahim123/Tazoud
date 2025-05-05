@@ -2,16 +2,15 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { AiFillProduct, AiOutlineUnorderedList } from "react-icons/ai";
+import { AiFillProduct } from "react-icons/ai";
 import { BsBoxFill } from "react-icons/bs";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBell, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
+import { CgShoppingBag } from "react-icons/cg";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBell, FaUser, FaUserEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import styles from "./sideBar.module.css";
-import { TbListDetails } from "react-icons/tb";
-import { CgShoppingBag } from "react-icons/cg";
 
 interface SideBarProps {
   collapsed: boolean;
@@ -70,34 +69,18 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
           <MenuItem icon={<IoMdAdd />} onClick={() => router.push("/dashboard/products/add-product")}>
             Add Product
           </MenuItem>
-          <MenuItem icon={<TbListDetails />} onClick={() => router.push("/dashboard/products/product-details")}>
-            Product Details
-          </MenuItem>
-        </SubMenu>
-
-        <SubMenu className={isActive("/dashboard/orders") ? `${styles.activeMenuItem}` : ""} label="Orders" icon={<CgShoppingBag />}>
-          <MenuItem icon={<AiOutlineUnorderedList />} onClick={() => router.push("/dashboard/orders/order-list")}>
-            Order List
-          </MenuItem>
-          <MenuItem icon={<TbListDetails />} onClick={() => router.push("/dashboard/orders/order-details")}>
-            Order Details
-          </MenuItem>
         </SubMenu>
 
         <MenuItem
-          icon={<FaBell />}
-          onClick={() => router.push("/dashboard/notifications")}
-          className={isActive("/dashboard/notifications") ? `${styles.activeMenuItem}` : ""}
+          className={isActive("/dashboard/orders") ? `${styles.activeMenuItem}` : ""}
+          icon={<CgShoppingBag />}
+          onClick={() => router.push("/dashboard/orders/order-list")}
         >
-          Notifications
+          Order List
         </MenuItem>
 
-        <MenuItem
-          icon={<FaSignOutAlt />}
-          onClick={() => router.push("/dashboard/requests")}
-          className={isActive("/dashboard/requests") ? `${styles.activeMenuItem}` : ""}
-        >
-          Requests
+        <MenuItem icon={<FaBell />} onClick={() => router.push("/dashboard/staff")} className={isActive("/dashboard/staff") ? `${styles.activeMenuItem}` : ""}>
+          Staff
         </MenuItem>
       </Menu>
     </Sidebar>
