@@ -40,13 +40,13 @@ function OrderTable({ columns, orders }: OrderTableProps) {
       </thead>
       <tbody className="text-center ">
         {orders.map((row, index) => (
-          <tr key={index} className="border-b border-gray-200">
+          <tr key={index} className="border-b border-gray text-black/75">
             <td className="px-6 py-4">
               <input type="checkbox" className="w-4 h-4 cursor-pointer" checked={rowChecked[index]} onChange={() => handleRowCheck(index)} />
             </td>
             <td className="px-6 py-4 text-primary">{row.code}</td>
             <td className="px-6 py-4">{row.latitude}</td>
-            <td className="px-2 py-4">{row.longitude}</td>
+            <td className="px-2 py-4">{row.latitude}</td>
             <td className="px-6 py-4">
               <div
                 className={`  ${
