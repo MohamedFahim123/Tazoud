@@ -14,8 +14,8 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     allBrands: `${baseUrl}/brands?t=${new Date().getTime()}`,
   },
   orders: {
-    allOrders: `${baseUrl}/orders?t=${new Date().getTime()}`,
-    singleOrder: (id?: string) => `${baseUrl}/orders/${id}?t=${new Date().getTime()}`,
+    allOrders: `${baseUrl}/staff/orders?t=${new Date().getTime()}`,
+    singleOrder: (id?: string) => `${baseUrl}/staff/orders/${id}?t=${new Date().getTime()}`,
   },
   unitsMeasures: {
     allUnitsMeasures: `${baseUrl}/units-of-measure?t=${new Date().getTime()}`,
@@ -27,5 +27,14 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     filterProducts: `${baseUrl}/staff/filter-products`,
     updateProduct: (id?: string) => `${baseUrl}/staff/update-product-status/${id}?t=${new Date().getTime()}`,
     deleteProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
+  },
+  rolesAndPermissions: {
+    allowedPermissions: `${baseUrl}/staff/permissions?t=${new Date().getTime()}`,
+    allRoles: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
+    filterRoles: `${baseUrl}/staff/filter-roles`,
+    createRole: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
+    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
   },
 };
