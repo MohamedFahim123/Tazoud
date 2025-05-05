@@ -1,6 +1,7 @@
 "use client";
 
 import { Order } from "@/app/rtk/slices/orderSlice";
+import Link from "next/link";
 import { useState } from "react";
 
 type OrderTableProps = {
@@ -40,13 +41,15 @@ function OrderTable({ columns, orders }: OrderTableProps) {
       </thead>
       <tbody className="text-center ">
         {orders.map((row, index) => (
-          <tr key={index} className="border-b border-gray-200">
+          <tr key={index} className="border-b border-gray text-black/75">
             <td className="px-6 py-4">
               <input type="checkbox" className="w-4 h-4 cursor-pointer" checked={rowChecked[index]} onChange={() => handleRowCheck(index)} />
             </td>
-            <td className="px-6 py-4 text-primary">{row.code}</td>
+            <td className="px-6 py-4 text-primary">
+              <Link href={`/dashboard/orders/${row.code}`}>{row.code}</Link>
+            </td>
             <td className="px-6 py-4">{row.latitude}</td>
-            <td className="px-2 py-4">{row.longitude}</td>
+            <td className="px-2 py-4">{row.latitude}</td>
             <td className="px-6 py-4">
               <div
                 className={`  ${

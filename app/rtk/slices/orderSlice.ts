@@ -1,5 +1,5 @@
 import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
@@ -7,6 +7,17 @@ interface Buyer {
   name: string;
   email: string;
   phone: string;
+}
+interface OrderDetails {
+  product_id?: number;
+  product_title?: string;
+  product_slug?: string;
+  product_variation_id?: number | null;
+  product_variation_name?: string | null;
+  product_variation_value?: string | null;
+  unit_price?: number;
+  quantity?: number;
+  total_price?: number;
 }
 
 export interface Order {
@@ -19,6 +30,7 @@ export interface Order {
   order_status: string;
   buyer: Buyer;
   date: string;
+  order_details?: OrderDetails[];
 }
 
 interface OrdersState {
@@ -56,6 +68,25 @@ export const getAllOrders = createAsyncThunk<Order[], ordersParams, { rejectValu
   }
 });
 
+export const getSingleOrder = createAsyncThunk<Order, string, { rejectValue: string }>("orders/fetchOrderByCode", async (id, { rejectWithValue }) => {
+  try {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
+    const response = await axios.get(`https://tazawod.valureach.com/api/staff/orders/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return response.data.data.order;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch order");
+  }
+});
+
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -68,15 +99,24 @@ const ordersSlice = createSlice({
       })
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.loading = false;
-        if (Array.isArray(action.payload)) {
-          state.orders = action.payload;
-          state.singleOrder = null;
-        } else {
-          state.singleOrder = action.payload;
-          state.orders = [];
-        }
+        state.orders = action.payload;
+        state.singleOrder = null;
       })
       .addCase(getAllOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // single order
+      .addCase(getSingleOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSingleOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleOrder = action.payload;
+      })
+      .addCase(getSingleOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
