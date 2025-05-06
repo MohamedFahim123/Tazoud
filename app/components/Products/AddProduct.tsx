@@ -101,7 +101,7 @@ export default function AddProduct() {
         toast.success(res?.message ? res?.message : "Product added successfully");
       } catch (error) {
         if (error && typeof error === "object" && !Array.isArray(error)) {
-          const errorObj = error as Record<string, string[]>; // Explicitly type it
+          const errorObj = error as Record<string, string[]>;
           Object.entries(errorObj).forEach(([, messages]) => {
             if (Array.isArray(messages)) {
               messages.forEach((message) => toast.error(message));

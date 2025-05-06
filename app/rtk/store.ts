@@ -8,6 +8,7 @@ import productsReducer from "./slices/ProductSlice";
 import permissionsReducer from "./slices/permissionsSlice";
 import rolesReducer from "./slices/rolesSlice";
 import ordersReducer from "./slices/orderSlice";
+import staffReducer from "./slices/staffSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     permissions: permissionsReducer,
     roles: rolesReducer,
     orders: ordersReducer,
+    staff: staffReducer,
   },
 });
 
