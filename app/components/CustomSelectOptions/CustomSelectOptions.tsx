@@ -25,7 +25,7 @@ const CustomSelectOptions = ({ id, label, options, onChange, value, hasError, cl
         onChange={onChange ? onChange : () => {}}
         className={`bg-white border ${
           hasError ? "border-red-500" : "border-primary focus:border-primary"
-        } text-gray_dark text-sm rounded-lg outline-none block w-full p-2.5 ${className}`}
+        } text-gray_dark text-sm rounded-lg outline-none block w-full  p-3 ${className}`}
       >
         {label === "Sub Category" ? (
           <option value="">Add {label}</option>
