@@ -7,7 +7,7 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
       <div className="p-4">
         <div className="flex items-center space-x-4">
           <Image
-            src={staff?.image || "/images/profile.png"}
+            src={staff?.image instanceof File ? URL.createObjectURL(staff.image) : staff?.image || "/images/profile.png"}
             alt={staff.name || "Unknown Staff"}
             className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
             width={200}
