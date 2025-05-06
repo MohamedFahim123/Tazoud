@@ -68,8 +68,9 @@ export const addStaff = createAsyncThunk<{ message: string }, FormData, { reject
 
 export const deleteStaff = createAsyncThunk<number, number, { rejectValue: string }>("staff/deleteStaff", async (id, { rejectWithValue }) => {
   try {
-    const deleteStaff = dashboardEndPoints?.staff?.deleteStaff as (id: string) => string;
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
 
+    const deleteStaff = dashboardEndPoints?.staff?.deleteStaff as (id: string) => string;
     await axios.delete(deleteStaff(id.toString()), {
       headers: {
         Authorization: `Bearer ${token}`,
