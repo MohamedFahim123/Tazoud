@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { useEffect } from "react";
 import Loading from "../Loading/Loading";
+import Link from "next/link";
 
 const Staff = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { staff, loading } = useSelector((state: RootState) => state.staff);
-  console.log(staff);
 
   useEffect(() => {
     dispatch(getStaff());
@@ -23,7 +23,9 @@ const Staff = () => {
         <div className=" mb-8">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-black/75">Our Team</h1>
-            <p className="text-md bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-opacity-85">Add New</p>
+            <Link href="/dashboard/staff/add-staff">
+              <p className="text-md bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-opacity-85">Add New</p>
+            </Link>
           </div>
           <p className="mt-2 text-lg text-gray_dark">Meet the people who make it all happen</p>
         </div>

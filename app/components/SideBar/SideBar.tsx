@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { AiFillProduct } from "react-icons/ai";
 import { BsBoxFill } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBell, FaUser, FaUserEdit } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaUser, FaUserEdit } from "react-icons/fa";
+import { HiUsers } from "react-icons/hi";
 import { IoMdAdd } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
@@ -79,7 +80,7 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
           Order List
         </MenuItem>
 
-        <MenuItem icon={<FaBell />} onClick={() => router.push("/dashboard/staff")} className={isActive("/dashboard/staff") ? `${styles.activeMenuItem}` : ""}>
+        <MenuItem icon={<HiUsers />} onClick={() => router.push("/dashboard/staff")} className={isActive("/dashboard/staff") ? `${styles.activeMenuItem}` : ""}>
           Staff
         </MenuItem>
       </Menu>

@@ -2,30 +2,16 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
-
-// export interface Variation {
-//   id?: number;
-//   name_ar?: string;
-//   name_en?: string;
-//   price?: number | string;
-//   price_after_discount?: number | string;
-//   value_ar?: string;
-//   value_en?: string;
-//   stock?: number | string;
-//   code?: string;
-//   thumbnail?: File | null;
-// }
 
 export interface StaffTypes {
   id?: number;
   name?: string;
   email?: string;
+  password?: string;
   phone?: string;
-  image?: string;
+  image?: File | string;
   status: "Active" | "Inactive";
   role?: string;
-  //   variations?: Variation[];
 }
 
 interface staffState {
@@ -36,6 +22,8 @@ interface staffState {
 
 export const getStaff = createAsyncThunk<StaffTypes[], void, { rejectValue: string }>("staff/getStaff", async (_, { rejectWithValue }) => {
   try {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
     if (!dashboardEndPoints?.staff?.allStaff) {
       throw new Error("Invalid endpoint URL");
     }
@@ -54,6 +42,8 @@ export const addStaff = createAsyncThunk<{ message: string }, FormData, { reject
   "staff/addStaff",
   async (formData, { rejectWithValue }) => {
     try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
       const endPoint: string = dashboardEndPoints?.staff?.createStaff ? dashboardEndPoints?.staff?.createStaff : "";
 
       const response = await axios.post(endPoint, formData, {

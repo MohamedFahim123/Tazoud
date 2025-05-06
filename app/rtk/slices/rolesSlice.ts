@@ -1,5 +1,5 @@
 import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
@@ -31,7 +31,7 @@ export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>(
     const res = await axios.get(dashboardEndPoints?.rolesAndPermissions?.allRoles, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data;
+    return res.data.data.roles;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch roles");
