@@ -42,7 +42,7 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     filterStaff: `${baseUrl}/staff/filter-staffs`,
     allowedRoles: `${baseUrl}/staff/allowed-roles?t=${new Date().getTime()}`,
     createStaff: `${baseUrl}/staff/staff?t=${new Date().getTime()}`,
-    updateStaff: (id?: string) => `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
+    updateStaff: (id?: string) => `${baseUrl}/staff/staff/${id}`,
     updateStaffStatus: (id?: string) => `${baseUrl}/staff/update-staff-status/${id}?t=${new Date().getTime()}`,
     deleteStaff: (id?: string) => `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
   },
