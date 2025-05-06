@@ -1,32 +1,10 @@
 import { Order } from "@/app/rtk/slices/orderSlice";
 
-const TablesDetails = ({ order }: { order: Order[] }) => {
-  const columns = ["Code", "Date", "latitude", "longitude", "Price", "Payment Method", "Payment Status", "Order Status"];
-  const buyerColumns = ["Buyer Name", "Buyer Email", "Buyer Phone"];
-  const productColumns = ["Product Title", "Product Slug", "variation Name", "variation Value", "Unit Price", "Product Quantity", "Total Price"];
-  // const data = [
-  //   {
-  //     productImage: "/images/product-img1.png",
-  //     name: "Polka Dots Woman Dress Color: Black",
-  //     price: "$135 x 2",
-  //     total: "$270",
-  //   },
-  //   {
-  //     productImage: "/images/product-img1.png",
-  //     name: "Polka Dots Woman Dress Color: Black",
-  //     price: "$135 x 2",
-  //     total: "$270",
-  //   },
-  // ];
-  // const summary = [
-  //   { label: "Subtotal", value: "$790" },
-  //   { label: "Store Credit", value: "$-20" },
-  //   { label: "Delivery Charges", value: "$30" },
-  //   { label: "Shipping", value: "$25" },
-  //   { label: "Vat Tax", value: "$35" },
-  //   { label: "Total", value: "$860" },
-  // ];
+const columns = ["Code", "Date", "latitude", "longitude", "Price", "Payment Method", "Payment Status", "Order Status"];
+const buyerColumns = ["Buyer Name", "Buyer Email", "Buyer Phone"];
+const productColumns = ["Product Title", "Product Slug", "variation Name", "variation Value", "Unit Price", "Product Quantity", "Total Price"];
 
+const TablesDetails = ({ order }: { order: Order[] }) => {
   return (
     <>
       <div className="mt-5 w-full">

@@ -13,8 +13,6 @@ const OrderDetails = ({ id }: { id: string }) => {
 
   const { singleOrder, loading } = useSelector((state: RootState) => state.orders);
 
-  console.log(id);
-
   useEffect(() => {
     if (id) dispatch(getSingleOrder(id));
   }, [dispatch, id]);

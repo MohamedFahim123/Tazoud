@@ -34,6 +34,15 @@ interface dashboardEndPointsInterface {
     updateRole?: (id?: string) => string;
     deleteRole?: (id?: string) => string;
   };
+  staff?: {
+    allStaff?: string;
+    filterStaff?: string;
+    allowedRoles?: string;
+    createStaff?: string;
+    updateStaff?: (id?: string) => string;
+    updateStaffStatus?: (id?: string) => string;
+    deleteStaff?: (id?: string) => string;
+  };
 }
 
 export default dashboardEndPointsInterface;

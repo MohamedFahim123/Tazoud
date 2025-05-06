@@ -2,13 +2,6 @@ import { Order } from "@/app/rtk/slices/orderSlice";
 
 type TableProps = {
   columns: string[];
-  // data?: {
-  //   productImage?: string;
-  //   name: string;
-  //   date?: string;
-  //   price?: string;
-  //   total: string;
-  // }[];
   summary?: { label: string; value: string }[];
   order?: Order[];
 };
