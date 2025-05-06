@@ -23,14 +23,14 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await dispatch(deleteStaff(String(id))).unwrap();
-      toast.success("Staff deleted");
-    } catch (error) {
-      toast.error(typeof error === "string" ? error : "Failed to delete");
-    }
-  };
+  // const handleDelete = async (id: string) => {
+  //   try {
+  //     await dispatch(deleteStaff(String(id))).unwrap();
+  //     toast.success("Staff deleted");
+  //   } catch (error) {
+  //     toast.error(typeof error === "string" ? error : "Failed to delete");
+  //   }
+  // };
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <div className="p-4">
