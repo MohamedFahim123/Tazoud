@@ -10,7 +10,7 @@ export interface StaffTypes {
   password?: string;
   phone?: string;
   image?: File | string;
-  status: "Active" | "Inactive";
+  status: "Active" | "Deactive";
   role?: string;
 }
 
@@ -93,7 +93,32 @@ export const updateStaff = createAsyncThunk<{ message: string }, { id: string; f
   }
 );
 
-export const deleteStaff = createAsyncThunk<number, number, { rejectValue: string }>("staff/deleteStaff", async (id, { rejectWithValue }) => {
+export const updateStaffStatus = createAsyncThunk<{ message: string }, { id: string }, { rejectValue: string }>(
+  "staff/updateStaffStatus",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+      const url = `https://tazawod.valureach.com/api/staff/update-staff-status/${id}`;
+
+      const res = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || "Failed to update staff status");
+    }
+  }
+);
+
+export const deleteStaff = createAsyncThunk<string, string, { rejectValue: string }>("staff/deleteStaff", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
 
@@ -169,10 +194,22 @@ const staffSlice = createSlice({
           state.error = action.payload || "Failed to update staff";
         }
       })
+      .addCase(updateStaffStatus.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateStaffStatus.fulfilled, (state, action) => {
+        const staff = state.staff.find((item) => item.id === Number(action.meta.arg.id));
+        if (staff) {
+          staff.status = staff.status === "Active" ? "Deactive" : "Active";
+        }
+      })
+      .addCase(updateStaffStatus.rejected, (state) => {
+        state.loading = false;
+      })
 
       // delete staff
       .addCase(deleteStaff.fulfilled, (state, action) => {
-        state.staff = state.staff.filter((staff) => staff.id !== action.payload);
+        state.staff = state.staff.filter((staff) => staff.id?.toString() !== action.payload);
       })
       .addCase(deleteStaff.rejected, (state, action) => {
         state.error = action.payload || "Delete failed";

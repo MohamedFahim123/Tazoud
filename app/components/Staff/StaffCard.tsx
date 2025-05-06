@@ -1,9 +1,36 @@
-import { StaffTypes } from "@/app/rtk/slices/staffSlice";
+"use client";
+
+import { deleteStaff, getStaff, StaffTypes, updateStaffStatus } from "@/app/rtk/slices/staffSlice";
+import { AppDispatch } from "@/app/rtk/store";
 import Image from "next/image";
 import Link from "next/link";
 import { BiEdit } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const StaffCard = ({ staff }: { staff: StaffTypes }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleStatusUpdate = async (id: string) => {
+    try {
+      await dispatch(updateStaffStatus({ id })).unwrap();
+      await dispatch(getStaff());
+      window.location.reload();
+      toast.success("Staff status updated");
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : "Something went wrong");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await dispatch(deleteStaff(String(id))).unwrap();
+      toast.success("Staff deleted");
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : "Failed to delete");
+    }
+  };
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <div className="p-4">
@@ -52,8 +79,16 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
           </div>
         </div>
 
-        <div className="mt-3">
-          <span className={`px-3 py-2 text-xs rounded-full ${staff.status === "Active" ? "bg-green text-white" : "bg-red-500 text-white"}`}>{staff.status}</span>
+        <div className="mt-3 flex items-center justify-between flex-wrap gap-4">
+          <span
+            onClick={() => handleStatusUpdate(String(staff.id))}
+            className={`px-3 py-2 text-xs rounded-full cursor-pointer ${staff.status === "Active" ? "bg-green text-white" : "bg-red-500 text-white"}`}
+          >
+            {staff.status}
+          </span>
+          <span onClick={() => handleDelete(String(staff.id))} className="px-3 py-2 text-xs rounded-full bg-red-500 text-white cursor-pointer">
+            <MdDelete size={15} />
+          </span>
         </div>
       </div>
     </div>
