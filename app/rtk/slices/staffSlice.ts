@@ -23,7 +23,7 @@ export interface StaffTypes {
   email?: string;
   phone?: string;
   image?: string;
-  status?: string;
+  status: "Active" | "Inactive";
   role?: string;
   //   variations?: Variation[];
 }
@@ -39,10 +39,11 @@ export const getStaff = createAsyncThunk<StaffTypes[], void, { rejectValue: stri
     if (!dashboardEndPoints?.staff?.allStaff) {
       throw new Error("Invalid endpoint URL");
     }
-    const response = await axios.get<{ data: { staff: StaffTypes[] } }>(dashboardEndPoints?.staff?.allStaff, {
+    const response = await axios.get<{ data: { users: StaffTypes[] } }>(dashboardEndPoints?.staff?.allStaff, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data.data.staff;
+
+    return response.data.data.users;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch staff");
