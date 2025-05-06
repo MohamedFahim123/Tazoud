@@ -1,7 +1,7 @@
 "use client";
 
 import { getRoles } from "@/app/rtk/slices/rolesSlice";
-import { StaffTypes } from "@/app/rtk/slices/staffSlice";
+import { updateStaff } from "@/app/rtk/slices/staffSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { StaffValidationSchema } from "@/app/validation/StaffSchema";
 import { useFormik } from "formik";
@@ -9,14 +9,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import CustomInput from "../CustomInput/CustomInput";
 import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
 import Loading from "../Loading/Loading";
 
-interface AddStaffFormProps {
-  onSubmit: (values: Omit<StaffTypes, "id" | "status">) => void;
-}
-const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
+const UpdateStaff = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { roles } = useSelector((state: RootState) => state.roles);
   const { loading } = useSelector((state: RootState) => state.staff);
@@ -33,8 +31,32 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
       role: "",
     },
     validationSchema: StaffValidationSchema,
-    onSubmit: (values) => {
-      onSubmit(values);
+    onSubmit: async (values) => {
+      try {
+        if (!selectedImage) return;
+
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("phone", values.phone);
+        formData.append("role_id", values.role);
+        formData.append("password", values.password);
+        formData.append("image", selectedImage);
+
+        const res = await dispatch(updateStaff({ id, formData })).unwrap();
+        toast.success(res.message || "Staff updated successfully");
+      } catch (error) {
+        if (error && typeof error === "object" && !Array.isArray(error)) {
+          const errorObj = error as Record<string, string[]>;
+          Object.entries(errorObj).forEach(([, messages]) => {
+            if (Array.isArray(messages)) {
+              messages.forEach((message) => toast.error(message));
+            }
+          });
+        } else {
+          toast.error(typeof error === "string" ? error : "Something went wrong while adding the staff.");
+        }
+      }
     },
   });
 
@@ -168,4 +190,4 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
   );
 };
 
-export default AddStaff;
+export default UpdateStaff;

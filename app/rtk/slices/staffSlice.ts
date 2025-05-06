@@ -66,6 +66,33 @@ export const addStaff = createAsyncThunk<{ message: string }, FormData, { reject
   }
 );
 
+export const updateStaff = createAsyncThunk<{ message: string }, { id: string; formData: FormData }, { rejectValue: string | Record<string, string[]> }>(
+  "staff/updateStaff",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+      const updateStaff = dashboardEndPoints?.staff?.updateStaff as (id: string) => string;
+
+      const res = await axios.post(updateStaff(id), formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ errors: Record<string, string[]> }>;
+
+      if (error.response?.data?.errors) {
+        return rejectWithValue(error.response.data.errors);
+      }
+
+      return rejectWithValue("Failed to update staff");
+    }
+  }
+);
+
 export const deleteStaff = createAsyncThunk<number, number, { rejectValue: string }>("staff/deleteStaff", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
@@ -123,6 +150,23 @@ const staffSlice = createSlice({
           state.error = JSON.stringify(action.payload); // Store structured error as string
         } else {
           state.error = action.payload || "Failed to add staff";
+        }
+      })
+
+      // update staff
+      .addCase(updateStaff.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateStaff.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateStaff.rejected, (state, action) => {
+        state.loading = false;
+        if (typeof action.payload === "object" && action.payload !== null) {
+          state.error = JSON.stringify(action.payload);
+        } else {
+          state.error = action.payload || "Failed to update staff";
         }
       })
 

@@ -12,5 +12,4 @@ async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> })
   return <OrderDetails id={id} />;
 }
 
-
 export default OrderDetailsPage;
