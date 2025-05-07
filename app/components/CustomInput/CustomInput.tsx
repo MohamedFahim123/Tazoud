@@ -8,6 +8,7 @@ interface customInputTypes {
   placeHolder?: string;
   type?: string;
   label?: string;
+  className?: string;
   id?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -17,7 +18,7 @@ interface customInputTypes {
   checked?: boolean;
 }
 
-const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type, checked, label, id, hasError }: customInputTypes) => {
+const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, className, type, checked, label, id, hasError }: customInputTypes) => {
   const [viewPassword, setViewPassword] = useState(false);
   const handleToggleShowPassword = () => setViewPassword(!viewPassword);
 
@@ -33,7 +34,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           onBlur={onBlur}
           {...(type === "checkbox" ? { checked: checked } : { value: value })}
           value=""
-          className={`w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary`}
+          className={`w-4 h-4 relative top-[2px] border border-gray-300 rounded bg-gray_dark focus:ring-3 focus:ring-primary ${className}`}
         />
       ) : (
         <label htmlFor={id} className={`text-gray_dark block mb-2 text-sm font-medium`}>
@@ -54,7 +55,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, type
           onBlur={onBlur}
           value={value}
           placeholder={placeHolder}
-          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none ${hasError ? "border-red-500" : "border-primary"} block w-full `}
+          className={` bg-white my-2 p-3 text-base border rounded focus:outline-none ${hasError ? "border-red-500" : "border-primary"} block w-full ${className} `}
         />
       )}
 

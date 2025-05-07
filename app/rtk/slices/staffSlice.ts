@@ -118,6 +118,33 @@ export const updateStaffStatus = createAsyncThunk<{ message: string }, { id: str
   }
 );
 
+export const filterStaff = createAsyncThunk<StaffTypes[], { name?: string; phone?: string; email?: string; status?: string }, { rejectValue: string }>(
+  "staff/filterStaff",
+  async (filters, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
+      const params = new URLSearchParams();
+
+      if (filters.name) params.append("name", filters.name);
+      if (filters.phone) params.append("phone", filters.phone);
+      if (filters.email) params.append("email", filters.email);
+      if (filters.status) params.append("status", filters.status);
+
+      const url = `${dashboardEndPoints?.staff?.filterStaff}?${params.toString()}`;
+
+      const res = await axios.get<{ data: { users: StaffTypes[] } }>(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return res.data.data.users;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error.response?.data?.message || "Filter failed");
+    }
+  }
+);
+
 export const deleteStaff = createAsyncThunk<string, string, { rejectValue: string }>("staff/deleteStaff", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
@@ -205,6 +232,20 @@ const staffSlice = createSlice({
       })
       .addCase(updateStaffStatus.rejected, (state) => {
         state.loading = false;
+      })
+
+      // filter staff
+      .addCase(filterStaff.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(filterStaff.fulfilled, (state, action) => {
+        state.staff = action.payload;
+        state.loading = false;
+      })
+      .addCase(filterStaff.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Filter failed";
       })
 
       // delete staff
