@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from "@/app/rtk/store";
 import { StaffValidationSchema } from "@/app/validation/StaffSchema";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -21,22 +21,9 @@ const UpdateStaff = ({ id }: { id: string }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const currentStaff = staff.find((item) => item.id?.toString() === id);
-
-  useEffect(() => {
-    if (!currentStaff) {
-      dispatch(getStaff());
-    }
-  }, [currentStaff, dispatch]);
-
-  useEffect(() => {
-    if (selectedImage) {
-      const previewURL = URL.createObjectURL(selectedImage);
-      setImagePreview(previewURL);
-
-      return () => URL.revokeObjectURL(previewURL);
-    }
-  }, [selectedImage]);
+  const currentStaff = useMemo(() => {
+    return staff.find((item) => item.id?.toString() === id);
+  }, [staff, id]);
 
   const renderedImage = imagePreview || currentStaff?.image || "";
 
@@ -81,6 +68,21 @@ const UpdateStaff = ({ id }: { id: string }) => {
       formik.setFieldValue("image", file);
     }
   };
+
+  useEffect(() => {
+    if (!currentStaff) {
+      dispatch(getStaff());
+    }
+  }, [currentStaff, dispatch]);
+
+  useEffect(() => {
+    if (selectedImage) {
+      const previewURL = URL.createObjectURL(selectedImage);
+      setImagePreview(previewURL);
+
+      return () => URL.revokeObjectURL(previewURL);
+    }
+  }, [selectedImage]);
 
   useEffect(() => {
     dispatch(getRoles());

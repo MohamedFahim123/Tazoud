@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteStaff, getStaff, StaffTypes, updateStaffStatus } from "@/app/rtk/slices/staffSlice";
+import { deleteStaff, StaffTypes, updateStaffStatus } from "@/app/rtk/slices/staffSlice";
 import { AppDispatch } from "@/app/rtk/store";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,14 +9,15 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-const StaffCard = ({ staff }: { staff: StaffTypes }) => {
+const StaffCard = ({ staff, refetchStaff }: { staff: StaffTypes; refetchStaff: () => void }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleStatusUpdate = async (id: string) => {
     try {
       await dispatch(updateStaffStatus({ id })).unwrap();
-      await dispatch(getStaff()).unwrap();
+      refetchStaff();
       window.location.reload();
+      toast.success("Status updated");
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Something went wrong");
     }
@@ -25,6 +26,7 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
   const handleDelete = async (id: string) => {
     try {
       await dispatch(deleteStaff(String(id))).unwrap();
+      refetchStaff();
       toast.success("Staff deleted");
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Failed to delete");

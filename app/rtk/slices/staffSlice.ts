@@ -153,8 +153,8 @@ const staffSlice = createSlice({
         state.error = null;
       })
       .addCase(getStaff.fulfilled, (state, action) => {
-        state.loading = false;
         state.staff = action.payload;
+        state.loading = false;
       })
       .addCase(getStaff.rejected, (state, action) => {
         state.loading = false;
