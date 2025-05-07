@@ -18,29 +18,31 @@ const Staff = () => {
   const { staff, loading } = useSelector((state: RootState) => state.staff);
 
   useEffect(() => {
-    dispatch(getStaff());
-  }, [dispatch]);
+    const hasFilters = query || status !== "0";
 
-  useEffect(() => {
     const timeout = setTimeout(() => {
-      const filters: {
-        name?: string;
-        phone?: string;
-        email?: string;
-        status?: string;
-      } = {};
+      if (hasFilters) {
+        const filters: {
+          name?: string;
+          phone?: string;
+          email?: string;
+          status?: string;
+        } = {};
 
-      if (query) {
-        if (/^\d+$/.test(query)) filters.phone = query;
-        else if (query.includes("@")) filters.email = query;
-        else filters.name = query;
+        if (query) {
+          if (/^\d+$/.test(query)) filters.phone = query;
+          else if (query.includes("@")) filters.email = query;
+          else filters.name = query;
+        }
+
+        if (status === "1") filters.status = "active";
+        if (status === "2") filters.status = "deactive";
+
+        dispatch(filterStaff(filters));
+      } else {
+        dispatch(getStaff());
       }
-
-      if (status === "1") filters.status = "active";
-      if (status === "2") filters.status = "deactive";
-
-      dispatch(filterStaff(filters));
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(timeout);
   }, [query, status, dispatch]);
