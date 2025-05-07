@@ -1,11 +1,14 @@
-"use client";
-import React from "react";
-import styles from "../authStyles.module.css";
+import ResetPasswordForm from "@/app/components/ResetPassword/ResetPasswprdForm";
 
+export const metadata = {
+  title: "Reset Password",
+  description: "Reset Password",
+};
 export default function ResetPasswordPage() {
   return (
     <>
-      <h1 className={`${styles.heading} text-center mb-3 text-4xl font-bol`}>Reset Password</h1>
+      <h1 className={`text-primary text-center mb-3 text-3xl font-bold`}>Reset Password</h1>
+      <ResetPasswordForm />
     </>
   );
 }
