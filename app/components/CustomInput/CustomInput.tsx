@@ -51,6 +51,7 @@ const CustomInput = ({ name, onChange, onClick, onBlur, value, placeHolder, clas
           type={type === "password" ? (viewPassword ? "text" : type) : type}
           id={id}
           name={name}
+          maxLength={type === "text" && name === "otp" ? 6 : undefined}
           onChange={onChange}
           onBlur={onBlur}
           value={value}

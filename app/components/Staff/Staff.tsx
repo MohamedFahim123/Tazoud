@@ -56,7 +56,7 @@ const Staff = () => {
             </Link>
           </div>
           <p className="mt-2 text-lg text-gray_dark">Meet the people who make it all happen</p>
-          <div className="flex items-center gap-4 mt-4">
+          <div className="flex items-center gap-4 flex-wrap mt-4">
             <CustomInput
               type="text"
               value={query}
