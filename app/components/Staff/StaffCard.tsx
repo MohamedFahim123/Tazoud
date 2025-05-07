@@ -17,6 +17,7 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
       await dispatch(updateStaffStatus({ id })).unwrap();
       await dispatch(getStaff()).unwrap();
       window.location.reload();
+      toast.success("Staff status updated");
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Something went wrong");
     }
@@ -25,6 +26,8 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
   const handleDelete = async (id: string) => {
     try {
       await dispatch(deleteStaff(String(id))).unwrap();
+      await dispatch(getStaff()).unwrap();
+      window.location.reload();
       toast.success("Staff deleted");
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Failed to delete");

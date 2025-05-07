@@ -31,7 +31,7 @@ const CustomSelectOptions = ({ id, label, options, onChange, value, hasError, cl
           <option value="">Add {label}</option>
         ) : (
           <option value="" disabled>
-            Add {label}
+            {label}
           </option>
         )}
         {options.map((option) => (

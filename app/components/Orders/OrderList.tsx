@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { getAllOrders } from "@/app/rtk/slices/orderSlice";
 import Loading from "../Loading/Loading";
+import CustomInput from "../CustomInput/CustomInput";
 
 const columns = ["Code", "latitude", "latitude", "Payment Status", "Price", "Payment Method", "Order Status", "Action"];
 const OrderList = () => {
@@ -23,9 +24,9 @@ const OrderList = () => {
 
   return (
     <>
-      <input
+      <CustomInput
         type="text"
-        placeholder="Search by order code"
+        placeHolder="Search by order code"
         value={searchCode}
         onChange={(e) => setSearchCode(e.target.value)}
         className="border border-gray_dark outline-none text-black/75  px-3 py-2 w-2/5 rounded mb-4"
