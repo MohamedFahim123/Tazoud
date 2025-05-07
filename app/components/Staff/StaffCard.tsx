@@ -15,9 +15,8 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
   const handleStatusUpdate = async (id: string) => {
     try {
       await dispatch(updateStaffStatus({ id })).unwrap();
-      await dispatch(getStaff());
+      await dispatch(getStaff()).unwrap();
       window.location.reload();
-      toast.success("Staff status updated");
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Something went wrong");
     }
@@ -34,8 +33,8 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <div className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-between w-full ">
+          <div className="flex items-center space-x-4 ">
             <Image
               src={staff?.image instanceof File ? URL.createObjectURL(staff.image) : staff?.image || "/images/profile.png"}
               alt={staff.name || "Unknown Staff"}
@@ -43,14 +42,16 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
               width={200}
               height={200}
             />
-            <div>
+            <div className="flex flex-col items-center space-x-2">
               <h3 className="font-semibold text-lg text-primary">{staff.name}</h3>
-              <p className="text-gray-600 text-sm text-black/75">{staff.role}</p>
+              <div className="flex items-center space-x-2 w-full mt-2">
+                <p className="text-gray-600 text-sm text-black/75">{staff.role}</p>
+                <Link href={`/dashboard/staff/update-staff/${staff.id}`}>
+                  <BiEdit className="text-2xl text-primary cursor-pointer" />
+                </Link>
+              </div>
             </div>
           </div>
-          <Link href={`/dashboard/staff/update-staff/${staff.id}`}>
-            <BiEdit className="text-2xl text-primary cursor-pointer" />
-          </Link>
         </div>
 
         <div className="mt-4 space-y-2">
