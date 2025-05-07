@@ -54,6 +54,7 @@ const UpdateStaff = ({ id }: { id: string }) => {
 
         const res = await dispatch(updateStaff({ id, formData })).unwrap();
         await dispatch(getStaff()).unwrap();
+        window.location.reload();
         toast.success(res.message || "Staff updated successfully");
       } catch (error) {
         toast.error(typeof error === "string" ? error : "Something went wrong.");
