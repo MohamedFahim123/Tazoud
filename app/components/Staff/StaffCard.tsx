@@ -45,7 +45,7 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
               width={200}
               height={200}
             />
-            <div className="flex flex-col items-center space-x-2">
+            <div className="flex flex-col space-x-2">
               <h3 className="font-semibold text-lg text-primary">{staff.name}</h3>
               <div className="flex items-center space-x-2 w-full mt-2">
                 <p className="text-gray-600 text-sm text-black/75">{staff.role}</p>
