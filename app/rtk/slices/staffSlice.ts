@@ -71,23 +71,18 @@ export const updateStaff = createAsyncThunk<{ message: string }, { id: string; f
   async ({ id, formData }, { rejectWithValue }) => {
     try {
       const token = Cookies.get("TAZOUD_TOKEN") ?? "";
-      const updateStaff = dashboardEndPoints?.staff?.updateStaff as (id: string) => string;
+      const endpoint = dashboardEndPoints?.staff?.updateStaff?.(id) ?? "";
 
-      const res = await axios.post(updateStaff(id), formData, {
+      const response = await axios.post(endpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-
-      return res.data;
+      return response.data;
     } catch (err) {
       const error = err as AxiosError<{ errors: Record<string, string[]> }>;
-
-      if (error.response?.data?.errors) {
-        return rejectWithValue(error.response.data.errors);
-      }
-
+      if (error.response?.data?.errors) return rejectWithValue(error.response.data.errors);
       return rejectWithValue("Failed to update staff");
     }
   }

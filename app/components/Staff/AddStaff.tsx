@@ -1,6 +1,6 @@
 "use client";
 
-import { getRoles } from "@/app/rtk/slices/rolesSlice";
+import { getAllowedRoles } from "@/app/rtk/slices/rolesSlice";
 import { StaffTypes } from "@/app/rtk/slices/staffSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { StaffValidationSchema } from "@/app/validation/StaffSchema";
@@ -18,8 +18,8 @@ interface AddStaffFormProps {
 }
 const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { roles } = useSelector((state: RootState) => state.roles);
   const { loading } = useSelector((state: RootState) => state.staff);
+  const { allowedRoles } = useSelector((state: RootState) => state.roles);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const renderedImage = selectedImage ? URL.createObjectURL(selectedImage) : "";
 
@@ -47,7 +47,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
   };
 
   useEffect(() => {
-    dispatch(getRoles());
+    dispatch(getAllowedRoles());
   }, [dispatch]);
 
   return (
@@ -125,7 +125,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   value={formik.values.role}
                   onChange={formik.handleChange}
                   hasError={!!formik.errors.role && !!formik.touched.role}
-                  options={roles}
+                  options={allowedRoles}
                 />
                 {formik.touched.role && formik.errors.role && <div className="text-red-500 text-xs mt-1">{formik.errors.role}</div>}
               </div>

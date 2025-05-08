@@ -1,6 +1,6 @@
 "use client";
 
-import { getRoles } from "@/app/rtk/slices/rolesSlice";
+import { getAllowedRoles } from "@/app/rtk/slices/rolesSlice";
 import { getStaff, updateStaff } from "@/app/rtk/slices/staffSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { StaffValidationSchema } from "@/app/validation/StaffSchema";
@@ -16,7 +16,7 @@ import Loading from "../Loading/Loading";
 
 const UpdateStaff = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { roles } = useSelector((state: RootState) => state.roles);
+  const { allowedRoles } = useSelector((state: RootState) => state.roles);
   const { staff, loading } = useSelector((state: RootState) => state.staff);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -34,7 +34,7 @@ const UpdateStaff = ({ id }: { id: string }) => {
       email: currentStaff?.email || "",
       password: "",
       phone: currentStaff?.phone || "",
-      role: "",
+      role: allowedRoles.find((r) => r.name === currentStaff?.role)?.id || "",
     },
     validationSchema: StaffValidationSchema,
     onSubmit: async (values) => {
@@ -43,13 +43,10 @@ const UpdateStaff = ({ id }: { id: string }) => {
         formData.append("name", values.name);
         formData.append("email", values.email);
         formData.append("phone", values.phone);
-        formData.append("role_id", values.role);
+        formData.append("role_id", String(values.role));
         formData.append("password", values.password);
-
         if (selectedImage) {
           formData.append("image", selectedImage);
-        } else if (currentStaff?.image) {
-          formData.append("image", currentStaff.image);
         }
 
         const res = await dispatch(updateStaff({ id, formData })).unwrap();
@@ -71,12 +68,6 @@ const UpdateStaff = ({ id }: { id: string }) => {
   };
 
   useEffect(() => {
-    if (!currentStaff) {
-      dispatch(getStaff());
-    }
-  }, [currentStaff, dispatch]);
-
-  useEffect(() => {
     if (selectedImage) {
       const previewURL = URL.createObjectURL(selectedImage);
       setImagePreview(previewURL);
@@ -86,7 +77,8 @@ const UpdateStaff = ({ id }: { id: string }) => {
   }, [selectedImage]);
 
   useEffect(() => {
-    dispatch(getRoles());
+    dispatch(getAllowedRoles());
+    dispatch(getStaff());
   }, [dispatch]);
 
   return (
@@ -161,10 +153,10 @@ const UpdateStaff = ({ id }: { id: string }) => {
                 <CustomSelectOptions
                   id="role"
                   label="role"
-                  value={formik.values.role || ""}
+                  value={formik.values.role?.toString() || ""}
                   onChange={formik.handleChange}
                   hasError={!!formik.errors.role && !!formik.touched.role}
-                  options={roles}
+                  options={allowedRoles}
                 />
                 {formik.touched.role && formik.errors.role && <div className="text-red-500 text-xs mt-1">{formik.errors.role}</div>}
               </div>
@@ -175,7 +167,7 @@ const UpdateStaff = ({ id }: { id: string }) => {
                   {renderedImage && (
                     <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark w-[200px]">
                       <div className="h-[200px] w-full overflow-hidden">
-                        <Image src={renderedImage as string} alt="staff image" width={200} height={200} style={{ width: "auto", height: "auto" }} />
+                        <Image src={renderedImage as string} alt="staff image" width={200} height={200} style={{ width: "auto", height: "auto" }} priority />
                       </div>
                     </div>
                   )}
@@ -196,8 +188,8 @@ const UpdateStaff = ({ id }: { id: string }) => {
             </div>
 
             <div className="flex justify-end mt-6">
-              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-85 focus:outline-none disabled:opacity-50">
-                Update Staff Member
+              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-85 focus:outline-none disabled:opacity-50" disabled={loading}>
+                {loading ? "Updating..." : "Update Staff Member"}
               </button>
             </div>
           </>
