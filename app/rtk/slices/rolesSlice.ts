@@ -11,17 +11,19 @@ interface Role {
 
 interface RolesState {
   roles: Role[];
+  allowedRoles: Role[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: RolesState = {
   roles: [],
+  allowedRoles: [],
   loading: false,
   error: null,
 };
 
-export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getRoles", async (_, { rejectWithValue }) => {
+export const getAllRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getAllRoles", async (_, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
 
@@ -35,6 +37,25 @@ export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>(
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch roles");
+  }
+});
+
+export const getAllowedRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/allowedRoles", async (_, { rejectWithValue }) => {
+  try {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
+    if (!dashboardEndPoints?.staff?.allowedRoles) {
+      throw new Error("Invalid endpoint URL");
+    }
+
+    const res = await axios.get(dashboardEndPoints?.staff?.allowedRoles, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return res.data.data.roles;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch allowed roles");
   }
 });
 
@@ -135,19 +156,36 @@ const rolesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getRoles.pending, (state) => {
+
+      //   get roles
+      .addCase(getAllRoles.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getRoles.fulfilled, (state, action) => {
+      .addCase(getAllRoles.fulfilled, (state, action) => {
         state.loading = false;
         state.roles = action.payload;
       })
-      .addCase(getRoles.rejected, (state, action) => {
+      .addCase(getAllRoles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Unknown error";
       })
 
+      //   get allowed roles
+      .addCase(getAllowedRoles.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllowedRoles.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allowedRoles = action.payload;
+      })
+      .addCase(getAllowedRoles.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Unknown error";
+      })
+
+      // single role
       .addCase(singleRole.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.roles.findIndex((r) => r.id === action.payload.id);
@@ -155,22 +193,26 @@ const rolesSlice = createSlice({
         else state.roles.push(action.payload);
       })
 
+      // filter roles
       .addCase(filterRoles.fulfilled, (state, action) => {
         state.loading = false;
         state.roles = action.payload;
       })
 
+      // create role
       .addCase(createRole.fulfilled, (state, action) => {
         state.loading = false;
         state.roles.push(action.payload);
       })
 
+      // update role
       .addCase(updateRole.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.roles.findIndex((r) => r.id === action.payload.id);
         if (index !== -1) state.roles[index] = action.payload;
       })
 
+      // delete role
       .addCase(deleteRole.fulfilled, (state, action) => {
         state.loading = false;
         state.roles = state.roles.filter((role) => role.id !== action.payload);
