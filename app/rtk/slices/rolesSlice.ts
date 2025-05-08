@@ -23,7 +23,7 @@ const initialState: RolesState = {
   error: null,
 };
 
-export const getRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getRoles", async (_, { rejectWithValue }) => {
+export const getAllRoles = createAsyncThunk<Role[], void, { rejectValue: string }>("roles/getAllRoles", async (_, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
 
@@ -158,15 +158,15 @@ const rolesSlice = createSlice({
     builder
 
       //   get roles
-      .addCase(getRoles.pending, (state) => {
+      .addCase(getAllRoles.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getRoles.fulfilled, (state, action) => {
+      .addCase(getAllRoles.fulfilled, (state, action) => {
         state.loading = false;
         state.roles = action.payload;
       })
-      .addCase(getRoles.rejected, (state, action) => {
+      .addCase(getAllRoles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Unknown error";
       })
