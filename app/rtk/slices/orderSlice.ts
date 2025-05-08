@@ -72,7 +72,9 @@ export const getSingleOrder = createAsyncThunk<Order, string, { rejectValue: str
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
 
-    const response = await axios.get(`https://tazawod.valureach.com/api/staff/orders/${id}`, {
+    const singleOrder = dashboardEndPoints?.orders?.singleOrder as (id: string) => string;
+
+    const response = await axios.get(singleOrder(id), {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

@@ -1,40 +1,64 @@
 "use client";
 
 import { getRoles } from "@/app/rtk/slices/rolesSlice";
-import { StaffTypes } from "@/app/rtk/slices/staffSlice";
+import { getStaff, updateStaff } from "@/app/rtk/slices/staffSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { StaffValidationSchema } from "@/app/validation/StaffSchema";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import CustomInput from "../CustomInput/CustomInput";
 import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
 import Loading from "../Loading/Loading";
 
-interface AddStaffFormProps {
-  onSubmit: (values: Omit<StaffTypes, "id" | "status">) => void;
-}
-const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
+const UpdateStaff = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { roles } = useSelector((state: RootState) => state.roles);
-  const { loading } = useSelector((state: RootState) => state.staff);
+  const { staff, loading } = useSelector((state: RootState) => state.staff);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const renderedImage = selectedImage ? URL.createObjectURL(selectedImage) : "";
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const currentStaff = useMemo(() => {
+    return staff.find((item) => item.id?.toString() === id);
+  }, [staff, id]);
+
+  const renderedImage = imagePreview || currentStaff?.image || "";
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      email: "",
+      name: currentStaff?.name || "",
+      email: currentStaff?.email || "",
       password: "",
-      phone: "",
-      image: "",
+      phone: currentStaff?.phone || "",
       role: "",
     },
     validationSchema: StaffValidationSchema,
-    onSubmit: (values) => {
-      onSubmit(values);
+    onSubmit: async (values) => {
+      try {
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("phone", values.phone);
+        formData.append("role_id", values.role);
+        formData.append("password", values.password);
+
+        if (selectedImage) {
+          formData.append("image", selectedImage);
+        } else if (currentStaff?.image) {
+          formData.append("image", currentStaff.image);
+        }
+
+        const res = await dispatch(updateStaff({ id, formData })).unwrap();
+        await dispatch(getStaff()).unwrap();
+        window.location.reload();
+        toast.success(res.message || "Staff updated successfully");
+      } catch (error) {
+        toast.error(typeof error === "string" ? error : "Something went wrong.");
+      }
     },
   });
 
@@ -47,12 +71,27 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
   };
 
   useEffect(() => {
+    if (!currentStaff) {
+      dispatch(getStaff());
+    }
+  }, [currentStaff, dispatch]);
+
+  useEffect(() => {
+    if (selectedImage) {
+      const previewURL = URL.createObjectURL(selectedImage);
+      setImagePreview(previewURL);
+
+      return () => URL.revokeObjectURL(previewURL);
+    }
+  }, [selectedImage]);
+
+  useEffect(() => {
     dispatch(getRoles());
   }, [dispatch]);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold ">Add New Staff Member</h2>
+      <h2 className="text-xl font-semibold">Update Staff Member</h2>
       <form onSubmit={formik.handleSubmit}>
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -68,7 +107,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   id="name"
                   label="name"
                   placeHolder="Enter Name"
-                  value={formik.values.name}
+                  value={formik.values.name || ""}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -82,7 +121,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   id="email"
                   label="email"
                   placeHolder="Enter Email"
-                  value={formik.values.email}
+                  value={formik.values.email || ""}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -96,7 +135,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   id="password"
                   label="Password"
                   placeHolder="Enter Password"
-                  value={formik.values.password}
+                  value={formik.values.password || ""}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -110,7 +149,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   id="phone"
                   label="phone"
                   placeHolder="Enter Phone"
-                  value={formik.values.phone}
+                  value={formik.values.phone || ""}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -122,7 +161,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                 <CustomSelectOptions
                   id="role"
                   label="role"
-                  value={formik.values.role}
+                  value={formik.values.role || ""}
                   onChange={formik.handleChange}
                   hasError={!!formik.errors.role && !!formik.touched.role}
                   options={roles}
@@ -136,7 +175,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
                   {renderedImage && (
                     <div className="p-3 bg-slate-100 rounded-lg border border-gray_dark w-[200px]">
                       <div className="h-[200px] w-full overflow-hidden">
-                        <Image src={renderedImage} alt="staff image" width={200} height={200} style={{ width: "auto", height: "auto" }} />
+                        <Image src={renderedImage as string} alt="staff image" width={200} height={200} style={{ width: "auto", height: "auto" }} />
                       </div>
                     </div>
                   )}
@@ -158,7 +197,7 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
 
             <div className="flex justify-end mt-6">
               <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-85 focus:outline-none disabled:opacity-50">
-                Add Staff Member
+                Update Staff Member
               </button>
             </div>
           </>
@@ -168,4 +207,4 @@ const AddStaff = ({ onSubmit }: AddStaffFormProps) => {
   );
 };
 
-export default AddStaff;
+export default UpdateStaff;

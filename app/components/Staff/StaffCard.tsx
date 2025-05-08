@@ -1,21 +1,59 @@
-import { StaffTypes } from "@/app/rtk/slices/staffSlice";
+"use client";
+
+import { deleteStaff, getStaff, StaffTypes, updateStaffStatus } from "@/app/rtk/slices/staffSlice";
+import { AppDispatch } from "@/app/rtk/store";
 import Image from "next/image";
+import Link from "next/link";
+import { BiEdit } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const StaffCard = ({ staff }: { staff: StaffTypes }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleStatusUpdate = async (id: string) => {
+    try {
+      await dispatch(updateStaffStatus({ id })).unwrap();
+      await dispatch(getStaff()).unwrap();
+      window.location.reload();
+      toast.success("Staff status updated");
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : "Something went wrong");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await dispatch(deleteStaff(String(id))).unwrap();
+      await dispatch(getStaff()).unwrap();
+      window.location.reload();
+      toast.success("Staff deleted");
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : "Failed to delete");
+    }
+  };
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <div className="p-4">
-        <div className="flex items-center space-x-4">
-          <Image
-            src={staff?.image instanceof File ? URL.createObjectURL(staff.image) : staff?.image || "/images/profile.png"}
-            alt={staff.name || "Unknown Staff"}
-            className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-            width={200}
-            height={200}
-          />
-          <div>
-            <h3 className="font-semibold text-lg text-primary">{staff.name}</h3>
-            <p className="text-gray-600 text-sm text-black/75">{staff.role}</p>
+        <div className="flex items-center justify-between w-full ">
+          <div className="flex items-center space-x-4 ">
+            <Image
+              src={staff?.image instanceof File ? URL.createObjectURL(staff.image) : staff?.image || "/images/profile.png"}
+              alt={staff.name || "Unknown Staff"}
+              className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+              width={200}
+              height={200}
+            />
+            <div className="flex flex-col space-x-2">
+              <h3 className="font-semibold text-lg text-primary">{staff.name}</h3>
+              <div className="flex items-center space-x-2 w-full mt-2">
+                <p className="text-gray-600 text-sm text-black/75">{staff.role}</p>
+                <Link href={`/dashboard/staff/update-staff/${staff.id}`}>
+                  <BiEdit className="text-2xl text-primary cursor-pointer" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -45,8 +83,16 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
           </div>
         </div>
 
-        <div className="mt-3">
-          <span className={`px-3 py-2 text-xs rounded-full ${staff.status === "Active" ? "bg-green text-white" : "bg-red-500 text-white"}`}>{staff.status}</span>
+        <div className="mt-3 flex items-center justify-between flex-wrap gap-4">
+          <span
+            onClick={() => handleStatusUpdate(String(staff.id))}
+            className={`px-3 py-2 text-xs rounded-full cursor-pointer ${staff.status === "Active" ? "bg-green text-white" : "bg-red-500 text-white"}`}
+          >
+            {staff.status}
+          </span>
+          <span onClick={() => handleDelete(String(staff.id))} className="px-3 py-2 text-xs rounded-full bg-red-500 text-white cursor-pointer">
+            <MdDelete size={15} />
+          </span>
         </div>
       </div>
     </div>

@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import CustomInput from "../CustomInput/CustomInput";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import { AppDispatch, RootState } from "@/app/rtk/store";
 import { loginUser } from "@/app/rtk/slices/authSlice";
+import { AppDispatch, RootState } from "@/app/rtk/store";
+import { loginValidationSchema } from "@/app/validation/AuthSchema";
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
-import { FaSpinner } from "react-icons/fa";
+import { useFormik } from "formik";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import CustomInput from "../CustomInput/CustomInput";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,17 +43,12 @@ const LoginForm = () => {
     }
   }
 
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid Email").required("Email Is Required"),
-    password: Yup.string().min(6, "Password Must Be At Least 6 Characters").required("Password Is Required"),
-  });
-
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema,
+    validationSchema: loginValidationSchema,
     onSubmit: loginSubmit,
   });
 
