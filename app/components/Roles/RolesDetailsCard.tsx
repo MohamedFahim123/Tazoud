@@ -30,7 +30,7 @@ const RolesDetailsCard = ({ roleId }: { roleId: number }) => {
               singleRole.permissions.map((perm, idx) => (
                 <div key={idx} className="flex items-center justify-between w-full h-10">
                   <span>{idx + 1}</span>
-                  <p className="text-black/75 text-sm">{perm.name}</p>
+                  <p className="text-black/75 text-md">{perm.name}</p>
                   <label className="items-center cursor-pointer">
                     <input type="checkbox" checked={perm.enable} readOnly className="sr-only peer" />
                     <div className="relative w-9 h-5 ring-2 ring-primary rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray_dark after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
