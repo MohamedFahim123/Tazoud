@@ -33,7 +33,7 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     allRoles: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
     filterRoles: `${baseUrl}/staff/filter-roles`,
     createRole: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
-    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}`,
     updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
     deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
   },
