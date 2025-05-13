@@ -12,6 +12,7 @@ import { MdDashboard } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import styles from "./sideBar.module.css";
+import { GoPasskeyFill } from "react-icons/go";
 
 interface SideBarProps {
   collapsed: boolean;
@@ -82,6 +83,10 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
 
         <MenuItem icon={<HiUsers />} onClick={() => router.push("/dashboard/staff")} className={isActive("/dashboard/staff") ? `${styles.activeMenuItem}` : ""}>
           Staff
+        </MenuItem>
+
+        <MenuItem icon={<GoPasskeyFill />} onClick={() => router.push("/dashboard/roles")} className={isActive("/dashboard/roles") ? `${styles.activeMenuItem}` : ""}>
+          Roles
         </MenuItem>
       </Menu>
     </Sidebar>
