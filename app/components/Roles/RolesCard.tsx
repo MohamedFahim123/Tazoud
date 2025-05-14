@@ -49,14 +49,15 @@ const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: 
       </div>
       <hr className="w-full border-gray" />
 
-      <div className=" p-4 w-full  flex flex-wrap gap-2 bg ">
-        {permissions.slice(0, 5).map((perm, idx) => (
+      <div className=" p-4 w-full flex flex-wrap gap-2 bg ">
+        <p className="text-black/50 text-sm uppercase w-full mb-1">Enabled permissions</p>
+        {permissions.slice(0, 6).map((perm, idx) => (
           <span key={idx} className="bg-primary/20 text-primary/90 text-xs font-medium px-2.5 py-0.5 rounded h-6 ">
             {perm.name}
           </span>
         ))}
 
-        {permissions.length > 3 && <span className="bg-primary/20 text-primary/90 text-xs font-medium px-2.5 py-0.5 rounded">+{permissions.length - 5} more</span>}
+        {permissions.length > 3 && <span className="bg-primary/20 text-primary/90 text-xs font-medium px-2.5 py-0.5 rounded">+{permissions.length - 6} more</span>}
       </div>
 
       <AnimatePresence>
