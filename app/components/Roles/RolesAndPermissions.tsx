@@ -1,29 +1,38 @@
 "use client";
 
-import { getAllRoles } from "@/app/rtk/slices/rolesSlice";
+import { filterRoles, getAllRoles } from "@/app/rtk/slices/rolesSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import RolesCard from "./RolesCard";
-import { CgSearch } from "react-icons/cg";
-import AddRole from "./AddRole";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { CgSearch } from "react-icons/cg";
+import { useDispatch, useSelector } from "react-redux";
+import AddRole from "./AddRole";
+import RolesCard from "./RolesCard";
 
 const RolesAndPermissions = () => {
-  //   const [tab, setTab] = useState("all-roles");
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [filterText, setFilterText] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
   const { roles } = useSelector((state: RootState) => state.roles);
 
-  //   const handleTabChange = (tab: string) => {
-  //     setTab(tab);
-  //   };
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      if (filterText) {
+        dispatch(filterRoles({ name: filterText }));
+      }
+    }, 400);
+
+    return () => clearTimeout(delay);
+  }, [filterText, dispatch]);
 
   useEffect(() => {
+    if (filterText) return;
     dispatch(getAllRoles());
-  }, [dispatch]);
+  }, [dispatch, filterText]);
+
+  const filteredRoles = Array.isArray(roles) && roles.filter((role) => role.name.toLowerCase().includes(filterText.toLowerCase()));
 
   return (
     <div className="container relative py-8 px-6 min-h-screen">
@@ -35,36 +44,39 @@ const RolesAndPermissions = () => {
       </div>
 
       <div className="bg-slate-100 py-6 px-4 rounded-md flex items-center justify-between w-full">
-        {/* <ul className="flex gap-3">
-          {["all-roles", "default-roles", "custom-roles"].map((item) => (
-            <li
-              key={item}
-              onClick={() => handleTabChange(item)}
-              className={`${
-                tab === item ? "text-white bg-primary border-primary" : ""
-              } flex items-center justify-start gap-2 border border-gray_dark text-black/75 font-bold hover:border-primary hover:text-white hover:bg-primary active:text-white active:bg-primary rounded-md px-6 py-2 cursor-pointer`}
-            >
-              <span>{item === "all-roles" ? "All" : item === "default-roles" ? "Default" : "Custom"}</span>
-            </li>
-          ))}
-        </ul> */}
-
-        <span className="w-[300px] bg-white flex items-center  rounded-md ">
+        <span className="w-[300px] bg-white flex items-center rounded-md">
           <CgSearch className="text-gray w-1/6" size={25} />
-          <input className="w-full py-2 border-0 outline-none" type="search" name="filter" id="filter" placeholder="Search" />
+          <input
+            className="w-full py-2 border-0 outline-none"
+            type="text"
+            name="filter"
+            id="filter"
+            placeholder="Search"
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                dispatch(filterRoles({ name: filterText }));
+              }
+            }}
+          />
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
-        {roles.map((role) => (
-          <RolesCard
-            key={role.id}
-            role={role}
-            isOpen={selectedRoleId === role.id}
-            openRole={() => setSelectedRoleId(role.id)}
-            closeRole={() => setSelectedRoleId(null)}
-          />
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        {filteredRoles && filteredRoles.length > 0 ? (
+          filteredRoles.map((role) => (
+            <RolesCard
+              key={role.id}
+              role={role}
+              isOpen={selectedRoleId === role.id}
+              openRole={() => setSelectedRoleId(role.id)}
+              closeRole={() => setSelectedRoleId(null)}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500">Not Found</div>
+        )}
       </div>
 
       <AnimatePresence>
@@ -80,7 +92,7 @@ const RolesAndPermissions = () => {
 
             <motion.div
               key="modal"
-              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[600px] overflow-hidden overflow-y-scroll "
+              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[600px] overflow-hidden overflow-y-scroll"
               initial={{ opacity: 0, scale: 0.9, y: "-50%", x: "-50%" }}
               animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
               exit={{ opacity: 0, scale: 0.9 }}

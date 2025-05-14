@@ -3,12 +3,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
-interface singleRole {
+interface SingleRole {
   id: number;
   name: string;
 }
 
-interface permission {
+export interface Permission {
   id: number;
   name: string;
   enable: boolean;
@@ -16,8 +16,8 @@ interface permission {
 export interface Role {
   id: number;
   name: string;
-  role?: singleRole;
-  permissions?: permission[];
+  role?: SingleRole;
+  permissions?: Permission[];
 }
 
 interface RolesState {
@@ -99,7 +99,7 @@ export const filterRoles = createAsyncThunk<Role[], { name: string }, { rejectVa
       params: query,
       headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data;
+    return res.data.data.roles;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to filter roles");
