@@ -10,14 +10,14 @@ interface Permission {
   name: string;
 }
 
-export const getPermissions = createAsyncThunk<Permission[], void, { rejectValue: string }>("permissions/get", async (_, { rejectWithValue }) => {
+export const getAllowedPermissions = createAsyncThunk<Permission[], void, { rejectValue: string }>("permissions/get", async (_, { rejectWithValue }) => {
   try {
     const res = await axios.get(`${dashboardEndPoints?.rolesAndPermissions?.allowedPermissions}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res.data.data.permissions;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch permissions");
@@ -34,15 +34,15 @@ const permissionsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getPermissions.pending, (state) => {
+      .addCase(getAllowedPermissions.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getPermissions.fulfilled, (state, action) => {
+      .addCase(getAllowedPermissions.fulfilled, (state, action) => {
         state.loading = false;
         state.permission = action.payload;
       })
-      .addCase(getPermissions.rejected, (state, action) => {
+      .addCase(getAllowedPermissions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

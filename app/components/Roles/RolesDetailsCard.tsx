@@ -26,20 +26,22 @@ const RolesDetailsCard = ({ roleId }: { roleId: number }) => {
           </h3>
           <hr className="my-4 text-gray" />
           <div className="h-[80%] overflow-y-scroll flex flex-col px-5 text-black/75">
-            {singleRole?.permissions ? (
-              singleRole.permissions.map((perm, idx) => (
-                <div key={idx} className="flex items-center justify-between w-full h-10">
-                  <span>{idx + 1}</span>
-                  <p className="text-black/75 text-md">{perm.name}</p>
-                  <label className="items-center cursor-pointer">
-                    <input type="checkbox" checked={perm.enable} readOnly className="sr-only peer" />
-                    <div className="relative w-9 h-5 ring-2 ring-primary rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray_dark after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-              ))
+            {singleRole?.permissions && singleRole.permissions.filter((p) => p.enable).length > 0 ? (
+              singleRole.permissions
+                .filter((perm) => perm.enable)
+                .map((perm, idx) => (
+                  <div key={idx} className="flex items-center justify-between w-full h-10">
+                    <span>{idx + 1}</span>
+                    <p className="text-black/75 text-md">{perm.name}</p>
+                    <label className="items-center cursor-not-allowed">
+                      <input type="checkbox" checked={true} disabled readOnly className="sr-only peer" />
+                      <div className="relative w-9 h-5 rounded-full ring-2 ring-gray_dark bg-gray-300 peer-checked:bg-gray_dark after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray_dark after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
+                    </label>
+                  </div>
+                ))
             ) : (
               <div className="flex items-center justify-center h-full">
-                <p className="text-black/75 text-sm">No permissions found</p>
+                <p className="text-black/75 text-sm">No enabled permissions</p>
               </div>
             )}
           </div>
