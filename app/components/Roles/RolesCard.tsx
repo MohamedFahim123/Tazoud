@@ -57,7 +57,7 @@ const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: 
           </span>
         ))}
 
-        {permissions.length > 3 && <span className="bg-primary/20 text-primary/90 text-xs font-medium px-2.5 py-0.5 rounded">+{permissions.length - 6} more</span>}
+        {permissions.length > 6 && <span className="bg-primary/20 text-primary/90 text-xs font-medium px-2.5 py-0.5 rounded">+{permissions.length - 6} more</span>}
       </div>
 
       <AnimatePresence>
