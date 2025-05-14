@@ -31,9 +31,9 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
   rolesAndPermissions: {
     allowedPermissions: `${baseUrl}/staff/permissions?t=${new Date().getTime()}`,
     allRoles: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
-    filterRoles: `${baseUrl}/staff/filter-roles`,
+    filterRoles: `${baseUrl}/staff/filter-roles?t=${new Date().getTime()}`,
     createRole: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
-    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}`,
     updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
     deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
   },

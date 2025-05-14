@@ -3,15 +3,27 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
-interface Role {
+interface SingleRole {
   id: number;
   name: string;
-  permissions?: string[];
+}
+
+export interface Permission {
+  id: number;
+  name: string;
+  enable: boolean;
+}
+export interface Role {
+  id: number;
+  name: string;
+  role?: SingleRole;
+  permissions?: Permission[];
 }
 
 interface RolesState {
   roles: Role[];
   allowedRoles: Role[];
+  singleRole: Role | null;
   loading: boolean;
   error: string | null;
 }
@@ -19,6 +31,7 @@ interface RolesState {
 const initialState: RolesState = {
   roles: [],
   allowedRoles: [],
+  singleRole: null,
   loading: false,
   error: null,
 };
@@ -37,6 +50,21 @@ export const getAllRoles = createAsyncThunk<Role[], void, { rejectValue: string 
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to fetch roles");
+  }
+});
+
+export const getSingleRole = createAsyncThunk<Role, string, { rejectValue: string }>("roles/getSingleRole", async (id, { rejectWithValue }) => {
+  try {
+    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+    const singleRole = dashboardEndPoints?.rolesAndPermissions?.oneRole as (id: string) => string;
+
+    const res = await axios.get(`${singleRole(id)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch role");
   }
 });
 
@@ -59,19 +87,6 @@ export const getAllowedRoles = createAsyncThunk<Role[], void, { rejectValue: str
   }
 });
 
-export const singleRole = createAsyncThunk<Role, number, { rejectValue: string }>("roles/singleRole", async (id, { rejectWithValue }) => {
-  try {
-    const token = Cookies.get("TAZOUD_TOKEN") ?? "";
-    const res = await axios.get(`${dashboardEndPoints?.rolesAndPermissions?.oneRole}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return res.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch role");
-  }
-});
-
 export const filterRoles = createAsyncThunk<Role[], { name: string }, { rejectValue: string }>("roles/filterRoles", async (query, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
@@ -84,7 +99,7 @@ export const filterRoles = createAsyncThunk<Role[], { name: string }, { rejectVa
       params: query,
       headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data;
+    return res.data.data.roles;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error.response?.data?.message || "Failed to filter roles");
@@ -96,6 +111,7 @@ export const createRole = createAsyncThunk<Role, { name: string; permission_id: 
   async ({ name, permission_id }, { rejectWithValue }) => {
     try {
       const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
       const formData = new FormData();
       formData.append("name", name);
       permission_id.forEach((id) => formData.append("permission_id[]", id.toString()));
@@ -140,7 +156,10 @@ export const updateRole = createAsyncThunk<Role, { id: number; name: string; per
 export const deleteRole = createAsyncThunk<number, number, { rejectValue: string }>("roles/deleteRole", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
-    await axios.delete(`${dashboardEndPoints?.rolesAndPermissions?.deleteRole}/${id}`, {
+
+    const deleteRole = dashboardEndPoints?.rolesAndPermissions?.deleteRole as (id: string) => string;
+
+    await axios.delete(`${deleteRole(id.toString())}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return id;
@@ -186,11 +205,18 @@ const rolesSlice = createSlice({
       })
 
       // single role
-      .addCase(singleRole.fulfilled, (state, action) => {
+      .addCase(getSingleRole.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSingleRole.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.roles.findIndex((r) => r.id === action.payload.id);
-        if (index !== -1) state.roles[index] = action.payload;
-        else state.roles.push(action.payload);
+        state.singleRole = action.payload;
+      })
+      .addCase(getSingleRole.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Unknown error";
+        state.singleRole = null;
       })
 
       // filter roles
