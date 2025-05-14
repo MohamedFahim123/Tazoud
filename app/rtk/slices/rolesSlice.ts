@@ -111,6 +111,7 @@ export const createRole = createAsyncThunk<Role, { name: string; permission_id: 
   async ({ name, permission_id }, { rejectWithValue }) => {
     try {
       const token = Cookies.get("TAZOUD_TOKEN") ?? "";
+
       const formData = new FormData();
       formData.append("name", name);
       permission_id.forEach((id) => formData.append("permission_id[]", id.toString()));
