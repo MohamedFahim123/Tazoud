@@ -156,7 +156,10 @@ export const updateRole = createAsyncThunk<Role, { id: number; name: string; per
 export const deleteRole = createAsyncThunk<number, number, { rejectValue: string }>("roles/deleteRole", async (id, { rejectWithValue }) => {
   try {
     const token = Cookies.get("TAZOUD_TOKEN") ?? "";
-    await axios.delete(`${dashboardEndPoints?.rolesAndPermissions?.deleteRole}/${id}`, {
+
+    const deleteRole = dashboardEndPoints?.rolesAndPermissions?.deleteRole as (id: string) => string;
+
+    await axios.delete(`${deleteRole(id.toString())}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return id;

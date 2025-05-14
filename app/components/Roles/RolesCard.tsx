@@ -1,12 +1,25 @@
 "use client";
 
-import { Role } from "@/app/rtk/slices/rolesSlice";
-import { BiEdit } from "react-icons/bi";
-import { BsTrash2 } from "react-icons/bs";
-import RolesDetailsCard from "./RolesDetailsCard";
+import { deleteRole, Role } from "@/app/rtk/slices/rolesSlice";
+import { AppDispatch } from "@/app/rtk/store";
 import { AnimatePresence, motion } from "framer-motion";
+import { BsTrash2 } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import RolesDetailsCard from "./RolesDetailsCard";
 
 const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: boolean; openRole: () => void; closeRole: () => void }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteRole(role.id)).unwrap();
+      toast.success("Role deleted successfully");
+    } catch (err) {
+      toast.error(err as string);
+    }
+  };
+
   return (
     <div className="border border-gray rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
       <div className="p-4 flex justify-between items-center">
@@ -16,8 +29,8 @@ const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: 
           </h3>
         </div>
         <div className="flex gap-2">
-          <BiEdit className="h-4 w-4 cursor-pointer text-primary" />
-          <BsTrash2 className="h-4 w-4 cursor-pointer text-red-500" />
+          {/* <BiEdit className="h-4 w-4 cursor-pointer text-primary" /> */}
+          <BsTrash2 onClick={handleDelete} className="h-4 w-4 cursor-pointer text-red-500" />
         </div>
       </div>
 
