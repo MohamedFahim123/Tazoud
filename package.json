@@ -21,6 +21,7 @@
     "react-pro-sidebar": "^1.1.0",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.2",
+    "sweetalert2": "^11.21.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {

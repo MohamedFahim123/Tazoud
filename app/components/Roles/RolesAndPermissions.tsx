@@ -63,7 +63,7 @@ const RolesAndPermissions = () => {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mt-8">
         {filteredRoles && filteredRoles.length > 0 ? (
           filteredRoles.map((role) => (
             <RolesCard
