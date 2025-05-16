@@ -7,20 +7,21 @@ import { useEffect, useState } from "react";
 import { BsTrash2 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import RolesDetailsCard from "./RolesDetailsCard";
 import Swal from "sweetalert2";
+import RolesDetailsCard from "./RolesDetailsCard";
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "bg-primary text-white mx-2 px-4 py-2 rounded-md",
+    cancelButton: "bg-red-500 text-white mx-2 px-4 py-2 rounded-md",
+  },
+  buttonsStyling: false,
+});
 
 const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: boolean; openRole: () => void; closeRole: () => void }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { singleRole } = useSelector((state: RootState) => state.roles);
   const [permissions, setPermissions] = useState<Permission[]>([]);
-
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: "bg-primary text-white mx-2 px-4 py-2 rounded-md",
-      cancelButton: "bg-red-500 text-white mx-2 px-4 py-2 rounded-md",
-    },
-  });
 
   const handleDelete = () => {
     swalWithBootstrapButtons

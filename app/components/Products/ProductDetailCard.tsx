@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "bg-primary text-white mx-2 px-4 py-2 rounded-md",
+    cancelButton: "bg-red-500 text-white mx-2 px-4 py-2 rounded-md",
+  },
+  buttonsStyling: false,
+});
 
 const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
   const [quantity, setQuantity] = useState(1);
@@ -14,11 +23,35 @@ const ProductDetailCard = ({ product }: { product: ProductTypes }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const handleDelete = (id: number) => {
-    dispatch(deleteProduct(id));
-    router.push("/dashboard/products");
-  };
 
+  const handleDelete = (id: number) => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await dispatch(deleteProduct(id)).unwrap();
+            window.location.reload();
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Product has been deleted.",
+              icon: "success",
+            });
+            router.push("/dashboard/products");
+          } catch (error) {
+            Swal.fire("Error", error as string, "error");
+          }
+        }
+      });
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
