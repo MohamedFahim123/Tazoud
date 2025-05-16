@@ -4,28 +4,29 @@ import { getBrands } from "@/app/rtk/slices/brandsSlice";
 import { getCategories, getSingleCategory } from "@/app/rtk/slices/categoriesSlice";
 import { getUnitsMeasures } from "@/app/rtk/slices/unitsMeasuresSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-interface ProductFilterProps {
-  onFilterChange: (filters: Record<string, string>) => void;
+interface Filters {
+  code: string;
+  title: string;
+  category: string;
+  sub_category: string;
+  brand: string;
+  unit_of_measure: string;
+  status: string;
 }
-const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
-  const dispatch = useDispatch<AppDispatch>();
 
+interface ProductFilterProps {
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
+}
+
+const ProductFilter = ({ filters, setFilters }: ProductFilterProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { categories, singleCategory } = useSelector((state: RootState) => state.categories);
   const { brands } = useSelector((state: RootState) => state.brands);
   const { units } = useSelector((state: RootState) => state.unitsMeasures);
-
-  const [filters, setFilters] = useState({
-    code: "",
-    title: "",
-    category: "",
-    sub_category: "",
-    brand: "",
-    unit_of_measure: "",
-    status: "",
-  });
 
   useEffect(() => {
     dispatch(getCategories());
@@ -41,20 +42,14 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
+    setFilters({
+      ...filters,
       [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanedFilters = Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== ""));
-    onFilterChange(cleanedFilters);
+    });
   };
 
   const handleReset = () => {
-    const empty = {
+    setFilters({
       code: "",
       title: "",
       category: "",
@@ -62,13 +57,11 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
       brand: "",
       unit_of_measure: "",
       status: "",
-    };
-    setFilters(empty);
-    onFilterChange({});
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap gap-2 mb-6">
+    <form className="flex flex-wrap gap-2 mb-6" onSubmit={(e) => e.preventDefault()}>
       <input name="code" value={filters.code} onChange={handleInputChange} placeholder="Code" className="border px-2 py-1 rounded" />
       <input name="title" value={filters.title} onChange={handleInputChange} placeholder="Title" className="border px-2 py-1 rounded" />
 
@@ -114,10 +107,7 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
         <option value="deactive">Deactive</option>
       </select>
 
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-        Filter
-      </button>
-      <button type="button" onClick={handleReset} className="bg-gray-500 text-white px-4 py-2 rounded">
+      <button type="button" onClick={handleReset} className="bg-gray_dark text-white px-4 py-2 rounded">
         Reset
       </button>
     </form>

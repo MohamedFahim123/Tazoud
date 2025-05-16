@@ -8,6 +8,7 @@ import { CgSearch } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import AddRole from "./AddRole";
 import RolesCard from "./RolesCard";
+import Loading from "../Loading/Loading";
 
 const RolesAndPermissions = () => {
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
@@ -15,7 +16,7 @@ const RolesAndPermissions = () => {
   const [filterText, setFilterText] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-  const { roles } = useSelector((state: RootState) => state.roles);
+  const { roles, loading } = useSelector((state: RootState) => state.roles);
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -74,8 +75,12 @@ const RolesAndPermissions = () => {
               closeRole={() => setSelectedRoleId(null)}
             />
           ))
+        ) : loading ? (
+          <div className="flex justify-center items-center w-[1300px]">
+            <Loading />
+          </div>
         ) : (
-          <div className="col-span-full text-center text-gray-500">Not Found</div>
+          <h2 className="text-2xl font-semibold text-gray-600">No roles found</h2>
         )}
       </div>
 

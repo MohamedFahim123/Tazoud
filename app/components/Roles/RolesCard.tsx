@@ -15,7 +15,6 @@ const swalWithBootstrapButtons = Swal.mixin({
     confirmButton: "bg-primary text-white mx-2 px-4 py-2 rounded-md",
     cancelButton: "bg-red-500 text-white mx-2 px-4 py-2 rounded-md",
   },
-  buttonsStyling: false,
 });
 
 const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: boolean; openRole: () => void; closeRole: () => void }) => {

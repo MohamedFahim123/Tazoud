@@ -2,17 +2,14 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { AiFillProduct } from "react-icons/ai";
 import { BsBoxFill } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaUser, FaUserEdit } from "react-icons/fa";
-import { HiUsers } from "react-icons/hi";
-import { IoMdAdd } from "react-icons/io";
-import { MdDashboard } from "react-icons/md";
-import { RiUserSettingsFill } from "react-icons/ri";
-import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
-import styles from "./sideBar.module.css";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaUser } from "react-icons/fa";
 import { GoPasskeyFill } from "react-icons/go";
+import { HiUsers } from "react-icons/hi";
+import { MdDashboard } from "react-icons/md";
+import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
+import styles from "./sideBar.module.css";
 
 interface SideBarProps {
   collapsed: boolean;
@@ -55,23 +52,17 @@ export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
           Dashboard
         </MenuItem>
 
-        <SubMenu className={isActive("/dashboard/profile") ? `${styles.activeMenuItem}` : ""} label="Profile Settings" icon={<RiUserSettingsFill />}>
-          <MenuItem icon={<FaUser />} onClick={() => router.push("/dashboard/profile")}>
-            Profile Details
-          </MenuItem>
-          <MenuItem icon={<FaUserEdit />} onClick={() => router.push("/dashboard/profile/update-profile")}>
-            Update Profile
-          </MenuItem>
-        </SubMenu>
+        <MenuItem icon={<FaUser />} onClick={() => router.push("/dashboard/profile")} className={pathname === "/dashboard/profile" ? `${styles.activeMenuItem}` : ""}>
+          Profile
+        </MenuItem>
 
-        <SubMenu className={isActive("/dashboard/products") ? `${styles.activeMenuItem}` : ""} label="Products" icon={<AiFillProduct />}>
-          <MenuItem icon={<BsBoxFill />} onClick={() => router.push("/dashboard/products")}>
-            Products
-          </MenuItem>
-          <MenuItem icon={<IoMdAdd />} onClick={() => router.push("/dashboard/products/add-product")}>
-            Add Product
-          </MenuItem>
-        </SubMenu>
+        <MenuItem
+          icon={<BsBoxFill />}
+          onClick={() => router.push("/dashboard/products")}
+          className={pathname === "/dashboard/products" ? `${styles.activeMenuItem}` : ""}
+        >
+          Products
+        </MenuItem>
 
         <MenuItem
           className={isActive("/dashboard/orders") ? `${styles.activeMenuItem}` : ""}
