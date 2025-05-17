@@ -6,6 +6,8 @@ import { getUnitsMeasures } from "@/app/rtk/slices/unitsMeasuresSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
+import CustomInput from "../CustomInput/CustomInput";
 
 interface Filters {
   code: string;
@@ -61,53 +63,60 @@ const ProductFilter = ({ filters, setFilters }: ProductFilterProps) => {
   };
 
   return (
-    <form className="flex flex-wrap gap-2 mb-6" onSubmit={(e) => e.preventDefault()}>
-      <input name="code" value={filters.code} onChange={handleInputChange} placeholder="Code" className="border px-2 py-1 rounded" />
-      <input name="title" value={filters.title} onChange={handleInputChange} placeholder="Title" className="border px-2 py-1 rounded" />
+    <form className="flex flex-wrap gap-3 items-end mb-6" onSubmit={(e) => e.preventDefault()}>
+      <CustomInput name="code" value={filters.code} onChange={handleInputChange} placeHolder="Code" className="max-w-[180px] py-1" type="text" />
 
-      <select name="category" value={filters.category} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Categories</option>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
+      <CustomInput name="title" value={filters.title} onChange={handleInputChange} placeHolder="Title" className="max-w-[180px] py-1" type="text" />
 
-      <select name="sub_category" value={filters.sub_category} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Subcategories</option>
-        {singleCategory?.subcategories?.map((sub) => (
-          <option key={sub.id} value={sub.id}>
-            {sub.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="category"
+        label="Category"
+        value={filters.category}
+        onChange={handleInputChange}
+        options={categories.map((cat) => ({ id: cat.id, name: cat.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="brand" value={filters.brand} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Brands</option>
-        {brands.map((brand) => (
-          <option key={brand.id} value={brand.id}>
-            {brand.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="sub_category"
+        label="Sub Category"
+        value={filters.sub_category}
+        onChange={handleInputChange}
+        options={singleCategory?.subcategories?.map((sub) => ({ id: sub.id, name: sub.name })) || []}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="unit_of_measure" value={filters.unit_of_measure} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Units</option>
-        {units.map((unit) => (
-          <option key={unit.id} value={unit.id}>
-            {unit.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="brand"
+        label="Brand"
+        value={filters.brand}
+        onChange={handleInputChange}
+        options={brands.map((b) => ({ id: b.id, name: b.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="status" value={filters.status} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="deactive">Deactive</option>
-      </select>
+      <CustomSelectOptions
+        id="unit_of_measure"
+        label="Unit"
+        value={filters.unit_of_measure}
+        onChange={handleInputChange}
+        options={units.map((u) => ({ id: u.id, name: u.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <button type="button" onClick={handleReset} className="bg-gray_dark text-white px-4 py-2 rounded">
+      <CustomSelectOptions
+        id="status"
+        label="Status"
+        value={filters.status}
+        onChange={handleInputChange}
+        options={[
+          { id: 1, name: "active" },
+          { id: 2, name: "deactive" },
+        ]}
+        className="max-w-[180px] py-1"
+      />
+
+      <button type="button" onClick={handleReset} className="bg-gray_dark text-white px-4 py-1 rounded">
         Reset
       </button>
     </form>
