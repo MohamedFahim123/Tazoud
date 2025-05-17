@@ -81,9 +81,7 @@ export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue:
 export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectValue: string }>("products/getSingleProduct", async (id, { rejectWithValue }) => {
   try {
     const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
-    if (!singleProduct) {
-      throw new Error("Invalid endpoint URL");
-    }
+
     const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -100,9 +98,7 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
   async (formData, { rejectWithValue }) => {
     try {
       const endPoint: string = dashboardEndPoints?.products?.createProduct ? dashboardEndPoints?.products?.createProduct : "";
-      if (!endPoint) {
-        throw new Error("Invalid endpoint URL");
-      }
+
       const response = await axios.post(endPoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -126,9 +122,7 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
 export const deleteProduct = createAsyncThunk<number, number, { rejectValue: string }>("products/deleteProduct", async (id, { rejectWithValue }) => {
   try {
     const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
-    if (!deleteProduct) {
-      throw new Error("Invalid endpoint URL");
-    }
+
     await axios.delete(deleteProduct(id.toString()), {
       headers: {
         Authorization: `Bearer ${token}`,
