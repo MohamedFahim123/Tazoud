@@ -52,11 +52,11 @@ export default function Layout({ children }: LayoutInterface) {
 
                   <motion.div
                     key="modal"
-                    className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[90%] max-w-[500px] overflow-hidden overflow-y-scroll"
-                    initial={{ opacity: 0, scale: 0.9, y: "-50%", x: "-50%" }}
-                    animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
+                    className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[55%] w-[90%] max-w-[500px] overflow-hidden overflow-y-scroll"
+                    initial={{ opacity: 0, scale: 0.8, x: "-100%", y: "100%" }}
+                    animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+                    exit={{ opacity: 0, scale: 0.8, x: "-100%", y: "100%" }}
+                    transition={{ duration: 0.3 }}
                   >
                     <div className="h-full w-full flex items-center justify-center flex-col gap-6 font-semibold text-lg text-black/70">
                       <Link

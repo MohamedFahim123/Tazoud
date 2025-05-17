@@ -2,7 +2,6 @@ import { dashboardEndPoints } from "@/app/dashboard/utils/dashboardEndPoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
 export interface Variation {
   id?: number;
@@ -65,6 +64,8 @@ interface ProductsState {
 
 export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue: string }>("products/getProducts", async (_, { rejectWithValue }) => {
   try {
+    const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+
     if (!dashboardEndPoints?.products?.allProducts) {
       throw new Error("Invalid endpoint URL");
     }
@@ -80,6 +81,8 @@ export const getProducts = createAsyncThunk<ProductTypes[], void, { rejectValue:
 
 export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectValue: string }>("products/getSingleProduct", async (id, { rejectWithValue }) => {
   try {
+    const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+
     const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
 
     const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
@@ -97,6 +100,8 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
   "products/addProduct",
   async (formData, { rejectWithValue }) => {
     try {
+      const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+
       const endPoint: string = dashboardEndPoints?.products?.createProduct ? dashboardEndPoints?.products?.createProduct : "";
 
       const response = await axios.post(endPoint, formData, {
@@ -121,6 +126,8 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
 
 export const deleteProduct = createAsyncThunk<number, number, { rejectValue: string }>("products/deleteProduct", async (id, { rejectWithValue }) => {
   try {
+    const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+
     const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
 
     await axios.delete(deleteProduct(id.toString()), {
@@ -137,6 +144,8 @@ export const deleteProduct = createAsyncThunk<number, number, { rejectValue: str
 
 export const filterProducts = createAsyncThunk<ProductTypes[], FilterParams, { rejectValue: string }>("products/filterProducts", async (filters, { rejectWithValue }) => {
   try {
+    const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
+
     const cleanedFilters: Record<string, string> = {};
     const mapToApi: Record<string, string> = {
       code: "code",
