@@ -19,7 +19,7 @@ export default function ProductCard({
   const imageSrc: string = typeof thumbnail === "string" ? thumbnail : "/images/profile.png";
 
   return (
-    <div key={id} className="w-[300px] bg-white rounded-lg border border-gray shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div key={id} className="max-w-[350px] w-full bg-white rounded-lg border border-gray shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-[300px] w-full bg-primary/5 shadow-sm overflow-hidden">
         <Link href={`/dashboard/products/${id}`}>
           <Image

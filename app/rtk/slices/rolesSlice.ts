@@ -220,15 +220,31 @@ const rolesSlice = createSlice({
       })
 
       // filter roles
+      .addCase(filterRoles.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(filterRoles.fulfilled, (state, action) => {
         state.loading = false;
         state.roles = action.payload;
       })
+      .addCase(filterRoles.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Unknown error";
+      })
 
       // create role
+      .addCase(createRole.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(createRole.fulfilled, (state, action) => {
         state.loading = false;
         state.roles.push(action.payload);
+      })
+      .addCase(createRole.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Unknown error";
       })
 
       // update role

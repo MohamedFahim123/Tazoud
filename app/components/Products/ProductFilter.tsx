@@ -4,28 +4,31 @@ import { getBrands } from "@/app/rtk/slices/brandsSlice";
 import { getCategories, getSingleCategory } from "@/app/rtk/slices/categoriesSlice";
 import { getUnitsMeasures } from "@/app/rtk/slices/unitsMeasuresSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
+import CustomInput from "../CustomInput/CustomInput";
+
+interface Filters {
+  code: string;
+  title: string;
+  category: string;
+  sub_category: string;
+  brand: string;
+  unit_of_measure: string;
+  status: string;
+}
 
 interface ProductFilterProps {
-  onFilterChange: (filters: Record<string, string>) => void;
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
 }
-const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
-  const dispatch = useDispatch<AppDispatch>();
 
+const ProductFilter = ({ filters, setFilters }: ProductFilterProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { categories, singleCategory } = useSelector((state: RootState) => state.categories);
   const { brands } = useSelector((state: RootState) => state.brands);
   const { units } = useSelector((state: RootState) => state.unitsMeasures);
-
-  const [filters, setFilters] = useState({
-    code: "",
-    title: "",
-    category: "",
-    sub_category: "",
-    brand: "",
-    unit_of_measure: "",
-    status: "",
-  });
 
   useEffect(() => {
     dispatch(getCategories());
@@ -41,20 +44,14 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
+    setFilters({
+      ...filters,
       [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanedFilters = Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== ""));
-    onFilterChange(cleanedFilters);
+    });
   };
 
   const handleReset = () => {
-    const empty = {
+    setFilters({
       code: "",
       title: "",
       category: "",
@@ -62,62 +59,64 @@ const ProductFilter = ({ onFilterChange }: ProductFilterProps) => {
       brand: "",
       unit_of_measure: "",
       status: "",
-    };
-    setFilters(empty);
-    onFilterChange({});
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap gap-2 mb-6">
-      <input name="code" value={filters.code} onChange={handleInputChange} placeholder="Code" className="border px-2 py-1 rounded" />
-      <input name="title" value={filters.title} onChange={handleInputChange} placeholder="Title" className="border px-2 py-1 rounded" />
+    <form className="flex flex-wrap gap-3 items-end mb-6" onSubmit={(e) => e.preventDefault()}>
+      <CustomInput name="code" value={filters.code} onChange={handleInputChange} placeHolder="Code" className="max-w-[180px] py-1" type="text" />
 
-      <select name="category" value={filters.category} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Categories</option>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
+      <CustomInput name="title" value={filters.title} onChange={handleInputChange} placeHolder="Title" className="max-w-[180px] py-1" type="text" />
 
-      <select name="sub_category" value={filters.sub_category} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Subcategories</option>
-        {singleCategory?.subcategories?.map((sub) => (
-          <option key={sub.id} value={sub.id}>
-            {sub.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="category"
+        label="Category"
+        value={filters.category}
+        onChange={handleInputChange}
+        options={categories.map((cat) => ({ id: cat.id, name: cat.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="brand" value={filters.brand} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Brands</option>
-        {brands.map((brand) => (
-          <option key={brand.id} value={brand.id}>
-            {brand.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="sub_category"
+        label="Sub Category"
+        value={filters.sub_category}
+        onChange={handleInputChange}
+        options={singleCategory?.subcategories?.map((sub) => ({ id: sub.id, name: sub.name })) || []}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="unit_of_measure" value={filters.unit_of_measure} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Units</option>
-        {units.map((unit) => (
-          <option key={unit.id} value={unit.id}>
-            {unit.name}
-          </option>
-        ))}
-      </select>
+      <CustomSelectOptions
+        id="brand"
+        label="Brand"
+        value={filters.brand}
+        onChange={handleInputChange}
+        options={brands.map((b) => ({ id: b.id, name: b.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <select name="status" value={filters.status} onChange={handleInputChange} className="border px-2 py-1 rounded">
-        <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="deactive">Deactive</option>
-      </select>
+      <CustomSelectOptions
+        id="unit_of_measure"
+        label="Unit"
+        value={filters.unit_of_measure}
+        onChange={handleInputChange}
+        options={units.map((u) => ({ id: u.id, name: u.name }))}
+        className="max-w-[180px] py-1"
+      />
 
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-        Filter
-      </button>
-      <button type="button" onClick={handleReset} className="bg-gray-500 text-white px-4 py-2 rounded">
+      <CustomSelectOptions
+        id="status"
+        label="Status"
+        value={filters.status}
+        onChange={handleInputChange}
+        options={[
+          { id: 1, name: "active" },
+          { id: 2, name: "deactive" },
+        ]}
+        className="max-w-[180px] py-1"
+      />
+
+      <button type="button" onClick={handleReset} className="bg-gray_dark text-white px-4 py-1 rounded">
         Reset
       </button>
     </form>
