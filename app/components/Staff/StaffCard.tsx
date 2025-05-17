@@ -8,6 +8,15 @@ import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "bg-primary text-white mx-2 px-4 py-2 rounded-md",
+    cancelButton: "bg-red-500 text-white mx-2 px-4 py-2 rounded-md",
+  },
+  buttonsStyling: false,
+});
 
 const StaffCard = ({ staff }: { staff: StaffTypes }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,15 +32,37 @@ const StaffCard = ({ staff }: { staff: StaffTypes }) => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await dispatch(deleteStaff(String(id))).unwrap();
-      await dispatch(getStaff()).unwrap();
-      window.location.reload();
-      toast.success("Staff deleted");
-    } catch (error) {
-      toast.error(typeof error === "string" ? error : "Failed to delete");
-    }
+  const handleDelete = (id: string) => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await dispatch(deleteStaff(id)).unwrap();
+            await dispatch(getStaff()).unwrap();
+
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Staff has been deleted.",
+              icon: "success",
+            });
+
+            toast.success("Staff deleted");
+            // Optionally avoid full reload:
+            // window.location.reload();
+          } catch (error) {
+            toast.error(typeof error === "string" ? error : "Failed to delete");
+          }
+        }
+      });
   };
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
