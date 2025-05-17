@@ -84,7 +84,9 @@ export const getSingleProduct = createAsyncThunk<ProductTypes, number, { rejectV
     const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
     const singleProduct = dashboardEndPoints?.products?.singleProduct as (id: string) => string;
-
+    if (!singleProduct) {
+      throw new Error("Invalid endpoint URL");
+    }
     const response = await axios.get<{ data: { product: ProductTypes } }>(singleProduct(id.toString()), {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -103,7 +105,9 @@ export const addProduct = createAsyncThunk<{ message: string }, FormData, { reje
       const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
       const endPoint: string = dashboardEndPoints?.products?.createProduct ? dashboardEndPoints?.products?.createProduct : "";
-
+      if (!endPoint) {
+        throw new Error("Invalid endpoint URL");
+      }
       const response = await axios.post(endPoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -129,7 +133,9 @@ export const deleteProduct = createAsyncThunk<number, number, { rejectValue: str
     const token: string = Cookies.get("TAZOUD_TOKEN") ?? "";
 
     const deleteProduct = dashboardEndPoints?.products?.deleteProduct as (id: string) => string;
-
+    if (!deleteProduct) {
+      throw new Error("Invalid endpoint URL");
+    }
     await axios.delete(deleteProduct(id.toString()), {
       headers: {
         Authorization: `Bearer ${token}`,
