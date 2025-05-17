@@ -2,12 +2,13 @@
 
 import { filterProducts, getProducts } from "@/app/rtk/slices/ProductSlice";
 import { AppDispatch, RootState } from "@/app/rtk/store";
-import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { IoMdAdd } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/Loading";
 import ProductCard from "./ProductCard";
 import ProductFilter from "./ProductFilter";
-import Link from "next/link";
 
 interface Filters {
   code: string;
@@ -68,17 +69,20 @@ const Product = () => {
         <Loading />
       ) : (
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-5">
+          <div className="flex justify-between items-center flex-wrap  mb-5">
             <h1 className="text-3xl font-bold mb-8">Our Products</h1>
-            <Link href="/dashboard/products/add-product" className="bg-primary px-8 py-3 text-white rounded-md hover:bg-opacity-90">
-              Add New Product
+            <Link href="/dashboard/products/add-product" className="bg-primary whitespace-nowrap px-8 py-3 w-fit text-white rounded-md hover:bg-opacity-90">
+              <span className="inline md:hidden w-fit">
+                <IoMdAdd size={20} className="text-white font-bold" />
+              </span>
+              <span className="hidden md:inline"> Add New Product</span>
             </Link>
           </div>
 
           <ProductFilter filters={filters} setFilters={setFilters} />
 
           {products && products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 lg:gap-6 p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto p-6">
               {products.map((product, index) => (
                 <ProductCard key={index} {...product} />
               ))}

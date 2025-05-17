@@ -9,6 +9,7 @@ import CustomInput from "../CustomInput/CustomInput";
 import CustomSelectOptions from "../CustomSelectOptions/CustomSelectOptions";
 import Loading from "../Loading/Loading";
 import StaffCard from "./StaffCard";
+import { IoMdAdd } from "react-icons/io";
 
 const Staff = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -54,7 +55,12 @@ const Staff = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-black/75">Our Team</h1>
             <Link href="/dashboard/staff/add-staff">
-              <p className="text-md bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-opacity-85">Add New</p>
+              <p className="text-md bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-opacity-85">
+                <span className="inline md:hidden w-fit">
+                  <IoMdAdd size={20} className="text-white font-bold" />
+                </span>
+                <span className="hidden md:inline"> Add New Staff</span>
+              </p>
             </Link>
           </div>
           <p className="mt-2 text-lg text-gray_dark">Meet the people who make it all happen</p>

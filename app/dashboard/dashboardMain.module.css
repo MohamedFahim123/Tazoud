@@ -1,11 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
 .sideBarContainer {
   background-color: #ebecfa !important;
   transition: all 0.5s ease;
 }
 .dashBoardMainColor {
   color: #424242 !important;
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 .contentRadius {
   border-radius: 20px 20px 0 0 !important;
   overflow: hidden;
+}
+.activeMenuItem {
+  transition: all 0.5s ease;
+  background-color: #6176fe !important;
+  color: #f9f9f9 !important;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+}
+.activeMenuItem:hover {
+  background-color: #6176fe !important;
+  color: #f9f9f9 !important;
 }

@@ -102,7 +102,7 @@ const RolesCard = ({ role, isOpen, openRole, closeRole }: { role: Role; isOpen: 
 
             <motion.div
               key="modal"
-              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[600px] overflow-hidden overflow-y-scroll "
+              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[90%] max-w-[600px] overflow-hidden overflow-y-scroll"
               initial={{ opacity: 0, scale: 0.9, y: "-50%", x: "-50%" }}
               animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
               exit={{ opacity: 0, scale: 0.9 }}

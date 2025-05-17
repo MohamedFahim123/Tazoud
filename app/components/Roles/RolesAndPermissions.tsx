@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddRole from "./AddRole";
 import RolesCard from "./RolesCard";
 import Loading from "../Loading/Loading";
+import { IoMdAdd } from "react-icons/io";
 
 const RolesAndPermissions = () => {
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
@@ -40,7 +41,10 @@ const RolesAndPermissions = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-semibold">Roles & Permissions</h1>
         <button className="bg-primary px-8 py-3 text-white rounded-md hover:bg-opacity-90" onClick={() => setIsOpen(true)}>
-          Add Role
+          <span className="inline md:hidden w-fit">
+            <IoMdAdd size={20} className="text-white font-bold" />
+          </span>
+          <span className="hidden md:inline"> Add New Role</span>
         </button>
       </div>
 
@@ -76,7 +80,7 @@ const RolesAndPermissions = () => {
             />
           ))
         ) : loading ? (
-          <div className="flex justify-center items-center w-[1300px]">
+          <div className="flex justify-center items-center h-[400px] w-[100%]">
             <Loading />
           </div>
         ) : (
@@ -97,7 +101,7 @@ const RolesAndPermissions = () => {
 
             <motion.div
               key="modal"
-              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[600px] overflow-hidden overflow-y-scroll"
+              className="fixed top-1/2 left-1/2 z-50 bg-white p-8 rounded-md h-[90%] w-[90%] max-w-[600px] overflow-hidden overflow-y-scroll"
               initial={{ opacity: 0, scale: 0.9, y: "-50%", x: "-50%" }}
               animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
               exit={{ opacity: 0, scale: 0.9 }}

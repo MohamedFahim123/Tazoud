@@ -15,12 +15,12 @@ const RolesDetailsCard = ({ roleId }: { roleId: number }) => {
   }, [dispatch, roleId]);
 
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-8 rounded-md h-full w-[600px] ">
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-8 rounded-md h-full w-full  max-w-[600px] ">
       {loading ? (
         <Loading />
       ) : (
         <div>
-          <h3 className="text-2xl font-bold text-black/75">
+          <h3 className="text-2xl font-bold text-black/75 whitespace-nowrap">
             Permissions of
             <span className="text-primary mx-2">{singleRole?.role?.name}</span>
           </h3>

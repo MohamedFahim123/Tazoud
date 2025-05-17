@@ -13,25 +13,5 @@ export default function LogoutBtn() {
     dispatch(logout());
     router.push("/auth/login");
   };
-  return (
-    <button
-      type="button"
-      onClick={handleLogout}
-      className={`
-                flex items-center gap-2 
-                px-4 py-2
-                outline-none 
-                bg-red-500 text-white
-                rounded-lg 
-                hover:bg-white transition-all duration-300 
-                hover:text-red-500
-                active:bg-white 
-                shadow-md
-                focus:outline-none 
-            `}
-    >
-      <FaSignOutAlt size={18} />
-      Logout
-    </button>
-  );
+  return <FaSignOutAlt className={`cursor-pointer text-red-500 `} size={28} onClick={handleLogout} />;
 }
