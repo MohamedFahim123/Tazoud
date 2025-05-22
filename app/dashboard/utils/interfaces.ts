@@ -13,6 +13,9 @@ interface dashboardEndPointsInterface {
   orders?: {
     allOrders?: string;
     singleOrder?: (id?: string) => string;
+    allowedDrivers?: (id?: string) => string;
+    assignToDriver?: string;
+    updateOrderStatusEndPoint?: string;
   };
   unitsMeasures?: {
     allUnitsMeasures?: string;

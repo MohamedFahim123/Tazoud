@@ -26,7 +26,7 @@ export default function Layout({ children }: LayoutInterface) {
 
         <div className="flex-1 bg-[#F7F8FA] overflow-scroll flex flex-col">
           <header className="flex justify-between items-center px-4 md:px-6 py-4">
-            <h1 className={`text-2xl font-bold  ${styles.dashBoardMainColor}`}>TAZWAD</h1>
+            <h1 className={`text-2xl font-bold  ${styles.dashBoardMainColor}`}>TAZAWOD</h1>
             <div className="flex items-center gap-4">
               {/* <button title="Notifications" type="button" onClick={() => router.push("/dashboard/notifications")} className={styles.dashBoardMainColor}>
                 <FaBell size={24} />

@@ -8,25 +8,34 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
   },
   categories: {
     allCategories: `${baseUrl}/categories?t=${new Date().getTime()}`,
-    singleCategory: (id?: string) => `${baseUrl}/categories/${id}?t=${new Date().getTime()}`,
+    singleCategory: (id?: string) =>
+      `${baseUrl}/categories/${id}?t=${new Date().getTime()}`,
   },
   brands: {
     allBrands: `${baseUrl}/brands?t=${new Date().getTime()}`,
   },
   orders: {
     allOrders: `${baseUrl}/staff/orders?t=${new Date().getTime()}`,
-    singleOrder: (id?: string) => `${baseUrl}/staff/orders/${id}?t=${new Date().getTime()}`,
+    singleOrder: (id?: string) =>
+      `${baseUrl}/staff/orders/${id}?t=${new Date().getTime()}`,
+    allowedDrivers: (id?: string) =>
+      `${baseUrl}/staff/allowed-drivers/${id}?t=${new Date().getTime()}`,
+    assignToDriver: `${baseUrl}/staff/assign-order-to-driver?t=${new Date().getTime()}`,
+    updateOrderStatusEndPoint: `${baseUrl}/staff/update-order-status?t=${new Date().getTime()}`,
   },
   unitsMeasures: {
     allUnitsMeasures: `${baseUrl}/units-of-measure?t=${new Date().getTime()}`,
   },
   products: {
     allProducts: `${baseUrl}/staff/products?t=${new Date().getTime()}`,
-    singleProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
+    singleProduct: (id?: string) =>
+      `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
     createProduct: `${baseUrl}/staff/products?t=${new Date().getTime()}`,
     filterProducts: `${baseUrl}/staff/filter-products`,
-    updateProduct: (id?: string) => `${baseUrl}/staff/update-product-status/${id}?t=${new Date().getTime()}`,
-    deleteProduct: (id?: string) => `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
+    updateProduct: (id?: string) =>
+      `${baseUrl}/staff/update-product-status/${id}?t=${new Date().getTime()}`,
+    deleteProduct: (id?: string) =>
+      `${baseUrl}/staff/products/${id}?t=${new Date().getTime()}`,
   },
   rolesAndPermissions: {
     allowedPermissions: `${baseUrl}/staff/permissions?t=${new Date().getTime()}`,
@@ -34,8 +43,10 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     filterRoles: `${baseUrl}/staff/filter-roles?t=${new Date().getTime()}`,
     createRole: `${baseUrl}/staff/roles?t=${new Date().getTime()}`,
     oneRole: (id?: string) => `${baseUrl}/staff/roles/${id}`,
-    updateRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
-    deleteRole: (id?: string) => `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    updateRole: (id?: string) =>
+      `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
+    deleteRole: (id?: string) =>
+      `${baseUrl}/staff/roles/${id}?t=${new Date().getTime()}`,
   },
   staff: {
     allStaff: `${baseUrl}/staff/staff?t=${new Date().getTime()}`,
@@ -43,7 +54,9 @@ export const dashboardEndPoints: dashboardEndPointsInterface = {
     allowedRoles: `${baseUrl}/staff/allowed-roles?t=${new Date().getTime()}`,
     createStaff: `${baseUrl}/staff/staff?t=${new Date().getTime()}`,
     updateStaff: (id?: string) => `${baseUrl}/staff/staff/${id}`,
-    updateStaffStatus: (id?: string) => `${baseUrl}/staff/update-staff-status/${id}?t=${new Date().getTime()}`,
-    deleteStaff: (id?: string) => `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
+    updateStaffStatus: (id?: string) =>
+      `${baseUrl}/staff/update-staff-status/${id}?t=${new Date().getTime()}`,
+    deleteStaff: (id?: string) =>
+      `${baseUrl}/staff/staff/${id}?t=${new Date().getTime()}`,
   },
 };

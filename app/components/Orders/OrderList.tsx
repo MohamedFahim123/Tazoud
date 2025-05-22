@@ -6,7 +6,7 @@ import { getAllOrders } from "@/app/rtk/slices/orderSlice";
 import Loading from "../Loading/Loading";
 import CustomInput from "../CustomInput/CustomInput";
 
-const columns = ["Code", "latitude", "latitude", "Payment Status", "Price", "Payment Method", "Order Status", "Action"];
+const columns = ["Code", "latitude", "latitude", "Payment Status", "Price", "Payment Method", "Order Status"];
 const OrderList = () => {
   const [searchCode, setSearchCode] = useState("");
 
