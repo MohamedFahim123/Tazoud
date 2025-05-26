@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/Loading";
 import TablesDetails from "./TablesDeatails";
+import Link from "next/link";
 
 const OrderDetails = ({ id }: { id: string }) => {
   const [underUpdating, setUnderUpdating] = useState<boolean>(false);
@@ -60,13 +61,13 @@ const OrderDetails = ({ id }: { id: string }) => {
                     <p className="text-md text-gray-500">
                       Driver Phone:{" "}
                       <span className="underline font-bold">
-                        {singleOrder?.driver?.phone}
+                        <Link href={`tel:${singleOrder?.driver?.phone}`}>{singleOrder?.driver?.phone}</Link>
                       </span>
                     </p>
                     <p className="text-md text-gray-500">
-                      Driver Email:
+                      Driver Email:{" "}
                       <span className="underline font-bold">
-                        {singleOrder?.driver?.email}
+                        <Link href={`mailto:${singleOrder?.driver?.email}`}>{singleOrder?.driver?.email}</Link>
                       </span>
                     </p>
                   </>
